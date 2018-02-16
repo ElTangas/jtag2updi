@@ -21,8 +21,8 @@ Currently, I have not tested this software with a level shifter, so the target M
  |          |          |                     |                           |                    |
  |          |          |                     +--+                     +--+                    |
  +----------+          +---------------------+  |                     |  +--------------------+
-              STK500v2                         +-+     UPDI          +-+
-              Protocol                         GND     Protocol      GND
+             JTAGICE MkII                      +-+     UPDI          +-+
+             Protocol                          GND     Protocol      GND
 
 </pre>
 Drawing adapted from: https://github.com/mraardvark/pyupdi
