@@ -84,3 +84,8 @@ avrdude: jtagmkII_close(): bad response to sign-off command: RSP_ILLEGAL_MCU_STA
 
 avrdude done.  Thank you.
 </pre>
+
+To unlock the chip, you need to erase it. Currently, the "-e" option is not working with jtag2updi, let's call it a known bug, so you need to enter interactive mode, using "-t" and "-F" to override the error:
+<pre>
+avrdude -c jtag2updi -P com7 -p t1614 -U flash -t -F
+</pre>
