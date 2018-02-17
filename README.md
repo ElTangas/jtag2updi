@@ -57,7 +57,7 @@ It's major limitation is speed; it can't go over 115200 Baud, because the protoc
 
 Fortunately, the current UPDI chips do not have very large flash memories, so I think this isn't a major issue.
 
-Example command line (windows):
+<b>Example command line (windows):</b>
 <pre>
 avrdude -c jtag2updi -P com7 -p t1614
 </pre>
