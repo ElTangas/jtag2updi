@@ -63,3 +63,12 @@ avrdude -c jtag2updi -P com7 -p t1614
 </pre>
 
 If all the connections are correct and the target is indeed an *unlocked* tiny1614, the output will be:
+<pre>
+avrdude: AVR device initialized and ready to accept instructions
+
+Reading | ################################################## | 100% 0.03s
+
+avrdude: Device signature = 0x1e9422 (probably t1614)
+
+avrdude done.  Thank you.
+</pre>
