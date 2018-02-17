@@ -30,7 +30,7 @@ Drawing adapted from: https://github.com/mraardvark/pyupdi
 If you use an Arduino as host for this program, be sure that, after burning the software, you disable its auto-reset feature, using one of the techniques described here:
 https://playground.arduino.cc/Main/DisablingAutoResetOnSerialConnection
 
-Alternatively, you can use an Arduino without integrated USB/serial adapter, like the pro-mini; in that case, just disconecting the DTR wire will disable the auto-reset. Just remember the UPDI chip must be connected to the same supply voltage as the Arduino!
+Alternatively, you can use an Arduino without integrated USB/serial adapter, like the pro-mini; in that case, just disconecting the DTR wire will disable the auto-reset. Just remember the UPDI chip must be connected to the same supply voltage as the Arduino's MCU!
 
 To build, run the make.bat file, after editing it with the path of AVR-GCC on your system and the correct target MCU. I provide a makefile suitable for a MS-Windows environment, but I'm sure Linux users can manage.
 
