@@ -37,6 +37,8 @@ To build, run the make.bat file, after editing it with the path of AVR-GCC on yo
 There are also pre-built files on the "build" directory. They were built using avr-gcc 8.0.1 compiled for MinGW by sprintersb:
 https://sourceforge.net/projects/mobilechessboar/files/avr-gcc%20snapshots%20%28Win32%29/
 
+The pre-built hex file is for ATMega 328P; to use a different MCU of the same family, like the mega168, you will need to rebuild.
+
 
 ## Using with avrdude
 
