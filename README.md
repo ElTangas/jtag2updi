@@ -102,3 +102,14 @@ avrdude: NOTE: Programmer supports page erase for Xmega devices.
          To disable page erases, specify the -D option; for a chip-erase, use the -e option.
 avrdude>
 </pre>
+
+Enter "erase" then "quit" and the chip will be unlocked (and erased).
+<pre>
+avrdude> erase
+>>> erase
+avrdude: erasing chip
+avrdude> quit
+>>> quit
+
+avrdude done.  Thank you.
+</pre>
