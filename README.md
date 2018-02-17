@@ -89,3 +89,16 @@ To unlock the chip, you need to erase it. Currently, the "-e" option is not work
 <pre>
 avrdude -c jtag2updi -P com7 -p t1614 -U flash -t -F
 </pre>
+
+You will enter the avrdude prompt:
+<pre>
+avrdude: jtagmkII_reset(): bad response to reset command: RSP_ILLEGAL_MCU_STATE
+avrdude: initialization failed, rc=-1
+avrdude: AVR device initialized and ready to accept instructions
+avrdude: Device signature = 0xffff00
+avrdude: Expected signature for ATtiny1614 is 1E 94 22
+avrdude: NOTE: Programmer supports page erase for Xmega devices.
+         Each page will be erased before programming it, but no chip erase is performed.
+         To disable page erases, specify the -D option; for a chip-erase, use the -e option.
+avrdude>
+</pre>
