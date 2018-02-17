@@ -30,7 +30,7 @@ Drawing adapted from: https://github.com/mraardvark/pyupdi
 If you use an Arduino as host for this program, be sure that, after burning the software, you disable its auto-reset feature, using one of the techniques described here:
 https://playground.arduino.cc/Main/DisablingAutoResetOnSerialConnection
 
-To build, run the make.bat file, after editing it with the path of AVR-GCC on your system. I provide a makefile suitable for a MS-Windows environment, but I'm sure Linux users can manage.
+To build, run the make.bat file, after editing it with the path of AVR-GCC on your system and the correct target MCU. I provide a makefile suitable for a MS-Windows environment, but I'm sure Linux users can manage.
 
 There are also pre-built files on the "build" directory. They were built using avr-gcc 8.0.1 compiled for MinGW by sprintersb:
 https://sourceforge.net/projects/mobilechessboar/files/avr-gcc%20snapshots%20%28Win32%29/
