@@ -72,3 +72,15 @@ avrdude: Device signature = 0x1e9422 (probably t1614)
 
 avrdude done.  Thank you.
 </pre>
+
+If the chip is locked, the output will be:
+<pre>
+avrdude: jtagmkII_reset(): bad response to reset command: RSP_ILLEGAL_MCU_STATE
+avrdude: initialization failed, rc=-1
+         Double check connections and try again, or use -F to override
+         this check.
+
+avrdude: jtagmkII_close(): bad response to sign-off command: RSP_ILLEGAL_MCU_STATE
+
+avrdude done.  Thank you.
+</pre>
