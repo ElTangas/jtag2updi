@@ -27,6 +27,8 @@ Currently, I have not tested this software with a level shifter, so the target M
 </pre>
 Drawing adapted from: https://github.com/mraardvark/pyupdi
 
+If you use an Arduino as host for this program, be sure that, after burning the software, you disable its auto-reset feature, using one of the techniques described here:
+https://playground.arduino.cc/Main/DisablingAutoResetOnSerialConnection
 
 To build, run the make.bat file, after editing it with the path of AVR-GCC on your system. I provide a makefile suitable for a MS-Windows environment, but I'm sure Linux users can manage.
 
@@ -41,6 +43,8 @@ http://svn.savannah.gnu.org/viewvc/*checkout*/avrdude/trunk/avrdude/avrdude.conf
 
 It has been modified to work with avrdude 6.3, by removing (actually, commenting out) some incompatible stuff, and adding the "jtag2updi" programmer type.
 
-The definitions for UPDI chips were slightly modified so that avrdude thinks they use the PDI programming interface instead of UPDI (i.e., avrdude thinks they are XMegas).
+The definitions for UPDI chips were slightly modified so that avrdude thinks they use the PDI programming interface instead of UPDI (i.e., avrdude thinks they are some kind of XMegas).
 
-This allows the jtagice mk2 protocol to be used for programming UPDI chips, since this protocol predates UPDI and is not formaly compatible with it.
+This allows the jtagice mk2 protocol to be used for programming UPDI chips, since this protocol predates UPDI and is not formaly compatible with it. Originaly, I had planed to use the STK500v2 protocol, and emulate the ISP interface, and I actually wrote an ISP version of the programmer software.
+
+However, this would require entirely new definitions for the UPDI chips inside the avrdude.conf file, while using jtagice2 requires only very slight changes to the definions provided by Atmel (now Microchip).
