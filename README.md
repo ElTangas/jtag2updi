@@ -32,3 +32,12 @@ To build, run the make.bat file, after editing it with the path of AVR-GCC on yo
 
 There are also pre-built files on the "build" directory. They were built using avr-gcc 8.0.1 compiled for MinGW by sprintersb:
 https://sourceforge.net/projects/mobilechessboar/files/avr-gcc%20snapshots%20%28Win32%29/
+
+
+# Using with avrdude
+
+You will find a modified avrdude.conf file in the base folder. This is the current avrdude.conf file from:
+http://svn.savannah.gnu.org/viewvc/*checkout*/avrdude/trunk/avrdude/avrdude.conf.in?revision=1422
+It has been modified to work with avrdude 6.3, by removing some incompatible stuff, and adding the "jtag2updi" programmer type.
+The definitions for UPDI chips were slightly modified so that avrdude thinks they use the PDI programming interface instead of UPDI (i.e., avrdude thinks they are XMegas).
+This allows the jtagice mk2 protocol to be used for programming UPDI chips, since this protocol predates UPDI and is not formaly compatible with it.
