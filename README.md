@@ -30,6 +30,8 @@ Drawing adapted from: https://github.com/mraardvark/pyupdi
 If you use an Arduino as host for this program, be sure that, after burning the software, you disable its auto-reset feature, using one of the techniques described here:
 https://playground.arduino.cc/Main/DisablingAutoResetOnSerialConnection
 
+Alternatively, you can use an Arduino without integrated USB/serial adapter, like the pro-mini; in that case, just disconecting the DTR wire will disable the auto-reset. Just remember the UPDI chip must be connected to the same supply voltage as the Arduino!
+
 To build, run the make.bat file, after editing it with the path of AVR-GCC on your system and the correct target MCU. I provide a makefile suitable for a MS-Windows environment, but I'm sure Linux users can manage.
 
 There are also pre-built files on the "build" directory. They were built using avr-gcc 8.0.1 compiled for MinGW by sprintersb:
@@ -48,3 +50,5 @@ The definitions for UPDI chips were slightly modified so that avrdude thinks the
 This allows the jtagice mk2 protocol to be used for programming UPDI chips, since this protocol predates UPDI and is not formaly compatible with it. Originaly, I had planed to use the STK500v2 protocol, and emulate the ISP interface, and I actually wrote an ISP version of the programmer software.
 
 However, this would require entirely new definitions for the UPDI chips inside the avrdude.conf file, while using jtagice2 requires only very slight changes to the definions provided by Atmel (now Microchip).
+
+Jtagice mk2 is the most advanced of Atmel's programming protocols that still supports a UART serial connection instead of USB, making it easily compatible with any Arduino you choose to host this software, and any OS you run avrdude on.
