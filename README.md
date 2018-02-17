@@ -38,7 +38,7 @@ There are also pre-built files on the "build" directory. They were built using a
 https://sourceforge.net/projects/mobilechessboar/files/avr-gcc%20snapshots%20%28Win32%29/
 
 
-# Using with avrdude
+## Using with avrdude
 
 You will find a modified avrdude.conf file in the base folder. This is based on the current avrdude.conf file from:
 http://svn.savannah.gnu.org/viewvc/*checkout*/avrdude/trunk/avrdude/avrdude.conf.in?revision=1422
@@ -62,4 +62,4 @@ Fortunately, the current UPDI chips do not have very large flash memories, so I 
 avrdude -c jtag2updi -P com7 -p t1614
 </pre>
 
-If all the connections are correct and the target is indeed an <span style="color:blue;">unlocked</span> tiny1614, the output will be:
+If all the connections are correct and the target is indeed an *unlocked* tiny1614, the output will be:
