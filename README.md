@@ -40,7 +40,7 @@ https://sourceforge.net/projects/mobilechessboar/files/avr-gcc%20snapshots%20%28
 
 # Using with avrdude
 
-You will find a modified avrdude.conf file in the base folder. This is the current avrdude.conf file from:
+You will find a modified avrdude.conf file in the base folder. This is based on the current avrdude.conf file from:
 http://svn.savannah.gnu.org/viewvc/*checkout*/avrdude/trunk/avrdude/avrdude.conf.in?revision=1422
 
 It has been modified to work with avrdude 6.3, by removing (actually, commenting out) some incompatible stuff, and adding the "jtag2updi" programmer type.
@@ -52,3 +52,7 @@ This allows the jtagice mk2 protocol to be used for programming UPDI chips, sinc
 However, this would require entirely new definitions for the UPDI chips inside the avrdude.conf file, while using jtagice2 requires only very slight changes to the definions provided by Atmel (now Microchip).
 
 Jtagice mk2 is the most advanced of Atmel's programming protocols that still supports a UART serial connection instead of USB, making it easily compatible with any Arduino you choose to host this software, and any OS you run avrdude on.
+
+It's major limitation is speed; it can't go over 115200 Baud, because the protocol lacks definitions for higher speeds. It's actually inferior to the STK500v2 protocol in this respect, this older standard can run at any speed avrdude instructs it to.
+
+Fortunatelly, the current UPDI chips do not have very large flash memories, so I think this isn't a major issue.
