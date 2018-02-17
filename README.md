@@ -62,4 +62,4 @@ Fortunately, the current UPDI chips do not have very large flash memories, so I 
 avrdude -c jtag2updi -P com7 -p t1614
 </pre>
 
-If all the connections are correct and the target is indeed an <u>unlocked</u> tiny1614, the output will be:
+If all the connections are correct and the target is indeed an <span style="color:blue;">unlocked</span> tiny1614, the output will be:
