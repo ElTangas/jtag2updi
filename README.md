@@ -47,7 +47,7 @@ It has been modified to work with avrdude 6.3, by removing (actually, commenting
 
 The definitions for UPDI chips were slightly modified so that avrdude thinks they use the PDI programming interface instead of UPDI (i.e., avrdude thinks they are some kind of XMegas).
 
-This allows the jtagice mk2 protocol to be used for programming UPDI chips, since this protocol predates UPDI and is not formaly compatible with it. Originaly, I had planed to use the STK500v2 protocol, and emulate the ISP interface, and I actually wrote an ISP version of the programmer software.
+This allows the jtagice mk2 protocol to be used for programming UPDI chips, since this protocol predates UPDI and is not formally compatible with it. Originally, I had planed to use the STK500v2 protocol, and emulate the ISP interface, and I actually wrote an ISP version of the programmer software.
 
 However, this would require entirely new definitions for the UPDI chips inside the avrdude.conf file, while using jtagice2 requires only very slight changes to the definions provided by Atmel (now Microchip).
 
@@ -55,4 +55,9 @@ Jtagice mk2 is the most advanced of Atmel's programming protocols that still sup
 
 It's major limitation is speed; it can't go over 115200 Baud, because the protocol lacks definitions for higher speeds. It's actually inferior to the STK500v2 protocol in this respect, this older standard can run at any speed avrdude instructs it to.
 
-Fortunatelly, the current UPDI chips do not have very large flash memories, so I think this isn't a major issue.
+Fortunately, the current UPDI chips do not have very large flash memories, so I think this isn't a major issue.
+
+Example command line (windows):
+<pre>
+avrdude -c jtag2updi -P com7 -p t1614
+</pre>
