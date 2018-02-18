@@ -40,6 +40,13 @@ https://sourceforge.net/projects/mobilechessboar/files/avr-gcc%20snapshots%20%28
 The pre-built hex file is for ATMega 328P; to use a different MCU of the same family, like the mega168, you will need to rebuild.
 
 
+## Building with Arduino IDE
+
+If you prefer, the program can be built as if it was an Arduino sketch. Inside the "source" directory, there is an empty file called "jtag2updi.ino" so that the Arduino IDE can recognize the source code.
+
+Just copy all the files inside "source" to a new directory called "jtag2updi" inside your sketch main directory.
+
+
 ## Using with avrdude
 
 You will find a modified avrdude.conf file in the base folder. This is based on the current avrdude.conf file from:
