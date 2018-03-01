@@ -23,6 +23,7 @@ uint32_t & JTAG2::size = reinterpret_cast<uint32_t &> (JTAG2::prologue[2]);
 uint8_t (& JTAG2::size_byte)[4] = (uint8_t (&)[4]) JTAG2::size;
 uint16_t (& JTAG2::size_word)[2] = (uint16_t (&)[2]) JTAG2::size;
 
+
 uint8_t JTAG2::body [512];
 
 // *** Baud rate lookup table for UBRR0 register ***
@@ -43,6 +44,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 		for (uint8_t i = 0; i < sizeof(prologue); i++) {
 			crc = CRC::next(prologue[i] = JICE_io::get(), crc);
 		}
+		if (size > sizeof(body)) return false;
 		if (JICE_io::get() != TOKEN) return false;
 		crc = CRC::next(TOKEN, crc);
 		for (uint16_t i = 0; i < size; i++) {
@@ -75,7 +77,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 
 // *** Set status function ***
 	void JTAG2::set_status(uint8_t status_code){
-		size_word[0] = 1;
+		size = 1;
 		body[0] = status_code;
 	}
 
