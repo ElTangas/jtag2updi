@@ -11,7 +11,7 @@
 
 // Defines
 #define F_CPU 16000000U
-#define BIT_RATE 250000U // (max 570000)
+#define BIT_RATE 225000U // (max 225000 min 160000)
 #define BIT_TIME (F_CPU/BIT_RATE)
 //#define _DEBUG
 
@@ -35,21 +35,14 @@ int UPDI_io::put(char c) {
 	/* no more wait is needed and we only need to clear overflow flag */
 	//wait_for_bit();
 	TIFR0 = (1 << OCF0A);
-	/* Send data bits */
-	for (uint8_t i = 1; i; i <<= 1) {
-		if (c & i)	{		// Current bit is 1
-			setup_bit_high();
-			parity = ~parity;
-		}
-		else				// Current bit is 0
-			setup_bit_low();
+	/* Send data bits and calculate parity */
+	for (uint8_t mask = 1; mask; mask <<= 1) {
+		// Check bit, transmit high or low bit accordingly and update parity bit
+		parity = (c & mask) ? (setup_bit_high(), ~parity) : (setup_bit_low(), parity);
 		wait_for_bit();
 	}
 	/* Send parity bit */
-	if (parity)
-		setup_bit_high();
-	else
-		setup_bit_low();
+	parity ? setup_bit_high() : setup_bit_low();
 	wait_for_bit();
 	/* Send stop bits */
 	setup_bit_high();
