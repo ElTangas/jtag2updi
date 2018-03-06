@@ -164,7 +164,8 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 // *** Target mode set functions ***
 	// *** Sets MCU in program mode, if possibe ***
 	void JTAG2::enter_progmode(){
-		switch (UPDI::lcds(UPDI::reg::ASI_System_Status)){
+		const uint8_t system_status = UPDI::lcds(UPDI::reg::ASI_System_Status);
+		switch (system_status){
 			// in normal operation mode
 			case 0x82:
 				// Write NVN unlock key (allows read access to all addressing space)
@@ -192,7 +193,8 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 
 	// *** Sets MCU in normal runnning mode, if possibe ***
 	void JTAG2::leave_progmode(){
-		switch (UPDI::lcds(UPDI::reg::ASI_System_Status)){
+		const uint8_t system_status = UPDI::lcds(UPDI::reg::ASI_System_Status);
+		switch (system_status){
 			// in program mode
 			case 0x08:
 				// Request reset
@@ -227,7 +229,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 			// in program mode
 			const uint16_t NumBytes = (body[3] << 8) | body[2];
 			// Get physical address for reading
-			uint16_t address = (body[7] << 8) | body[6];
+			const uint16_t address = (body[7] << 8) | body[6];
 			// Set UPDI pointer to address
 			UPDI::stptr_w(address);
 			// Read block
@@ -252,7 +254,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 			// in program mode
 			const uint8_t mem_type = body[1];
 			const uint16_t address = body[6] | (body[7] << 8);
-			uint16_t lenght = body[2] | (body[3] << 8);							/* number of bytes to write */
+			const uint16_t lenght = body[2] | (body[3] << 8);							/* number of bytes to write */
 			const bool is_flash = ((mem_type == MTYPE_FLASH) || (mem_type == MTYPE_BOOT_FLASH));
 			const uint8_t buff_size = is_flash ? flash_pagesize : eeprom_pagesize;
 			const uint8_t write_cmnd = is_flash ? NVM::WP : NVM::ERWP;
