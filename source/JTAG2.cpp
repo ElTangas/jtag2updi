@@ -164,7 +164,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 // *** Target mode set functions ***
 	// *** Sets MCU in program mode, if possibe ***
 	void JTAG2::enter_progmode(){
-		const uint8_t system_status = UPDI::lcds(UPDI::reg::ASI_System_Status);
+		const uint8_t system_status = UPDI::CPU_mode<0xEF>();
 		switch (system_status){
 			// in normal operation mode
 			case 0x82:
@@ -173,7 +173,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 				// Request reset
 				UPDI::CPU_reset();
 				// Wait for NVM unlock state
-				while (UPDI::lcds(UPDI::reg::ASI_System_Status) != 0x08);
+				while (UPDI::CPU_mode() != 0x08);
 			// already in program mode
 			case 0x08:
 				// better clear the page buffer, just in case.
@@ -186,21 +186,21 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 			default:
 				size_word[0] = 2;
 				body[0] = RSP_ILLEGAL_MCU_STATE;
-				body[1] = 0x01;
+				body[1] = system_status; // 0x01;
 				return;
 		}
 	}
 
 	// *** Sets MCU in normal runnning mode, if possibe ***
 	void JTAG2::leave_progmode(){
-		const uint8_t system_status = UPDI::lcds(UPDI::reg::ASI_System_Status);
+		const uint8_t system_status = UPDI::CPU_mode<0xEF>();
 		switch (system_status){
 			// in program mode
 			case 0x08:
 				// Request reset
 				UPDI::CPU_reset();
 				// Wait for normal mode
-				while (UPDI::lcds(UPDI::reg::ASI_System_Status) != 0x82);
+				while (UPDI::CPU_mode<0xEF>() != 0x82);
 			// already in normal mode
 			case 0x82:
 				// Turn off LED to indicate normal mode
@@ -211,7 +211,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 			default:
 				size_word[0] = 2;
 				body[0] = RSP_ILLEGAL_MCU_STATE;
-				body[1] = 0x01;
+				body[1] = system_status; // 0x01;
 				return;
 		}
 	}
@@ -219,7 +219,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 // *** Read/Write/Erase functions ***
 
 	void JTAG2::read_mem() {
-		if (UPDI::lcds(UPDI::reg::ASI_System_Status) != 0x08){
+		if (UPDI::CPU_mode() != 0x08){
 			// fail if not in program mode
 			size_word[0] = 2;
 			body[0] = RSP_ILLEGAL_MCU_STATE;
@@ -244,7 +244,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 	}
 	
 	void JTAG2::write_mem() {
-		if (UPDI::lcds(UPDI::reg::ASI_System_Status) != 0x08){
+		if (UPDI::CPU_mode() != 0x08){
 			// fail if not in program mode
 			size_word[0] = 2;
 			body[0] = RSP_ILLEGAL_MCU_STATE;
@@ -287,7 +287,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 				// Request reset
 				UPDI::CPU_reset();
 				// Wait for NVM unlock state
-				while (UPDI::lcds(UPDI::reg::ASI_System_Status) & 0x01);
+				while (UPDI::CPU_mode<0x01>());
 				// Erase chip process exits program mode, reenter...
 				enter_progmode();
 				return;

@@ -13,6 +13,13 @@
 
 namespace UPDI {
 	void CPU_reset();
+	
+	// returns the current CPU mode, optionally a mask can be applied to ignore "don't care" status bits
+	template <uint8_t mask = 0xFF>
+	uint8_t CPU_mode() {
+		uint8_t mode = UPDI::lcds(UPDI::reg::ASI_System_Status);
+		return mode & mask;	
+	}
 }
 
 #endif /* UPDI_HI_LVL_H_ */
