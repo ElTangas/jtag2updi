@@ -27,7 +27,7 @@ uint16_t (& JTAG2::size_word)[2] = (uint16_t (&)[2]) JTAG2::size;
 uint8_t JTAG2::body [512];
 
 // *** Baud rate lookup table for UBRR0 register ***
-FLASH(uint16_t) baud_tbl[8] = {0x0340, 0x01A0, 0x00CF, 0x0067, 0x0033, 0x0022, 0x0010, 0x008A};
+FLASH<uint16_t> baud_tbl[8] = {0x0340, 0x01A0, 0x00CF, 0x0067, 0x0033, 0x0022, 0x0010, 0x008A};
 
 // *** Local variables ***
 uint8_t flash_pagesize;
@@ -83,7 +83,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 
 // *** General command functions ***
 	// *** Signature response message ***
-	FLASH(uint8_t) JTAG2::sgn_resp[29] {	0x86, 1,
+	FLASH<uint8_t> JTAG2::sgn_resp[29] {	0x86, 1,
 											1, PARAM_FW_VER_M_MIN_VAL, PARAM_FW_VER_M_MAJ_VAL, PARAM_HW_VER_M_VAL,
 											1, PARAM_FW_VER_S_MIN_VAL, PARAM_FW_VER_S_MAJ_VAL, PARAM_HW_VER_S_VAL,
 											0, 0, 0, 0, 0, 0,

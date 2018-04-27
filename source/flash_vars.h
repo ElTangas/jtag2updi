@@ -11,7 +11,7 @@
 
 #include <avr/pgmspace.h>
 
-#define FLASH(T) const flash<T> PROGMEM
+#define FLASH const PROGMEM flash
 
 template <typename T>
 class flash {

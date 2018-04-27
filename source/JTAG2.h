@@ -100,7 +100,7 @@ namespace JTAG2 {
 	extern uint8_t body [512];
 	
 	//  *** Signature response ***
-	extern FLASH(uint8_t) sgn_resp[29];
+	extern FLASH<uint8_t> sgn_resp[29];
 	// *** Parameter initialization ***
 	void init();
 

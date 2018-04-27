@@ -31,9 +31,9 @@ namespace UPDI {
 	constexpr uint8_t RESET_OFF = 0x00;
 	
 	// Activation Keys
-	extern FLASH(uint8_t) Chip_Erase[8];
-	extern FLASH(uint8_t) NVM_Prog[8];
-	extern FLASH(uint8_t) UserRow_Write[8];
+	extern FLASH<uint8_t> Chip_Erase[8];
+	extern FLASH<uint8_t> NVM_Prog[8];
+	extern FLASH<uint8_t> UserRow_Write[8];
 	
 
 	// Function prototypes
