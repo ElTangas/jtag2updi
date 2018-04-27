@@ -19,9 +19,9 @@ namespace UPDI_io {
 	void wait_for_bit() __attribute__((always_inline));
 	void stop_timer();
 	void start_timer();
-	int put(char) __attribute__((optimize("no-tree-loop-optimize")));
-	int put(ctrl);	
-	int get();
+	uint8_t put(char) __attribute__((optimize("no-tree-loop-optimize")));
+	uint8_t put(ctrl);	
+	uint8_t get();
 	void init(void);
 }
 

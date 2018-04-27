@@ -17,7 +17,7 @@
 
 // Functions
 /* Sends regular characters through the UPDI link */
-int UPDI_io::put(char c) {
+uint8_t UPDI_io::put(char c) {
 	/* Wait for end of stop bits */
 	wait_for_bit();
 	stop_timer();
@@ -51,11 +51,10 @@ int UPDI_io::put(char c) {
 	/* Ready for RX input, but high due to pull-up */
 	DDRD &= ~(1 << DDD6);
 	return c;
-	//return EOF;
 }
 
 /* Sends special sequences through the UPDI link */
-int UPDI_io::put(ctrl c)
+uint8_t UPDI_io::put(ctrl c)
 {
 	/* This nested function expects the timer output to just have gone low */
 	/* It waits for 12 minimum baud bit times (break character) then goes high */
@@ -108,7 +107,7 @@ int UPDI_io::put(ctrl c)
 	return 0;
 }
 
-int UPDI_io::get() {
+uint8_t UPDI_io::get() {
 	stop_timer();
 	/* Wait for middle of start bit */
 	OCR0A = BIT_TIME / 2 - 1;
