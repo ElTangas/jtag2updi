@@ -122,3 +122,12 @@ avrdude> quit
 
 avrdude done.  Thank you.
 </pre>
+
+
+## Contact the author
+
+I usually lurk around in the AVRFreaks forum. If you have questions/suggestions/etc. about this program, please post to this thread:
+
+https://www.avrfreaks.net/forum/updi-programmer-software-arduino-compatible-avrdude
+
+For serious problems with the code, like bugs, please open a github issue.
