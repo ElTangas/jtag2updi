@@ -12,6 +12,11 @@
 #include "UPDI_lo_lvl.h"
 
 namespace UPDI {
+	// Constant Expressions
+	constexpr uint8_t RESET_ON = 0x59;
+	constexpr uint8_t RESET_OFF = 0x00;
+
+	// Function prototypes		
 	void CPU_reset();
 	
 	// returns the current CPU mode, optionally a mask can be applied to ignore "don't care" status bits

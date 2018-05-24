@@ -27,8 +27,6 @@ namespace UPDI {
 	// Constant Expressions
 	constexpr uint8_t SYNCH = 0x55;
 	constexpr uint8_t ACK = 0x40;
-	constexpr uint8_t RESET_ON = 0x59;
-	constexpr uint8_t RESET_OFF = 0x00;
 	
 	// Activation Keys
 	extern FLASH<uint8_t> Chip_Erase[8];
@@ -69,6 +67,9 @@ namespace UPDI {
 	void write_key(T (& k)[8]) {
 		UPDI_io::put(SYNCH);
 		UPDI_io::put(0xE0);
+		/*for (T* i = k; i < k+8; i++) {
+			UPDI_io::put(i[0]);
+		}*/
 		for (uint8_t i = 0; i < 8; i++) {
 			UPDI_io::put(k[i]);
 		}
