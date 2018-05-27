@@ -7,7 +7,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   1 .text         00000a72  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          0000020a  00800100  00800100  00000ae6  2**0
+  2 .bss          000001cc  00800100  00800100  00000ae6  2**0
                   ALLOC
   3 .comment      00000041  00000000  00000000  00000ae6  2**0
                   CONTENTS, READONLY
@@ -150,7 +150,7 @@ Disassembly of section .text:
  2b0:	cd bf       	out	0x3d, r28	; 61
 
 000002b2 <__do_clear_bss>:
- 2b2:	23 e0       	ldi	r18, 0x03	; 3
+ 2b2:	22 e0       	ldi	r18, 0x02	; 2
  2b4:	a0 e0       	ldi	r26, 0x00	; 0
  2b6:	b1 e0       	ldi	r27, 0x01	; 1
  2b8:	01 c0       	rjmp	.+2      	; 0x2bc <.do_clear_bss_start>
@@ -159,7 +159,7 @@ Disassembly of section .text:
  2ba:	1d 92       	st	X+, r1
 
 000002bc <.do_clear_bss_start>:
- 2bc:	aa 30       	cpi	r26, 0x0A	; 10
+ 2bc:	ac 3c       	cpi	r26, 0xCC	; 204
  2be:	b2 07       	cpc	r27, r18
  2c0:	e1 f7       	brne	.-8      	; 0x2ba <.do_clear_bss_loop>
  2c2:	60 d1       	rcall	.+704    	; 0x584 <main>
@@ -607,9 +607,9 @@ Disassembly of section .text:
  612:	90 90 07 01 	lds	r9, 0x0107	; 0x800107 <_ZN5JTAG28prologueE+0x3>
  616:	a0 90 08 01 	lds	r10, 0x0108	; 0x800108 <_ZN5JTAG28prologueE+0x4>
  61a:	b0 90 09 01 	lds	r11, 0x0109	; 0x800109 <_ZN5JTAG28prologueE+0x5>
- 61e:	f1 e0       	ldi	r31, 0x01	; 1
+ 61e:	f3 ec       	ldi	r31, 0xC3	; 195
  620:	8f 16       	cp	r8, r31
- 622:	f2 e0       	ldi	r31, 0x02	; 2
+ 622:	f1 e0       	ldi	r31, 0x01	; 1
  624:	9f 06       	cpc	r9, r31
  626:	a1 04       	cpc	r10, r1
  628:	b1 04       	cpc	r11, r1
