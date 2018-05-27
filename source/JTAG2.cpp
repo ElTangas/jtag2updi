@@ -24,7 +24,7 @@ uint8_t (& JTAG2::size_byte)[4] = (uint8_t (&)[4]) JTAG2::size;
 uint16_t (& JTAG2::size_word)[2] = (uint16_t (&)[2]) JTAG2::size;
 
 
-uint8_t JTAG2::body [512];
+uint8_t JTAG2::body [MAX_BODY_SIZE];
 
 // *** Baud rate lookup table for UBRR0 register ***
 FLASH<uint16_t> baud_tbl[8] = {0x0340, 0x01A0, 0x00CF, 0x0067, 0x0033, 0x0022, 0x0010, 0x008A};

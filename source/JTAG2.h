@@ -97,7 +97,8 @@ namespace JTAG2 {
 	extern uint8_t (& size_byte)[4];
 	extern uint16_t (& size_word)[2];
 	constexpr uint8_t TOKEN = 0x0E;
-	extern uint8_t body [512];
+	constexpr int MAX_BODY_SIZE = 450;				// Note: should not be reduced to less than 300 bytes.
+	extern uint8_t body [MAX_BODY_SIZE];
 	
 	//  *** Signature response ***
 	extern FLASH<uint8_t> sgn_resp[29];
