@@ -12,9 +12,7 @@
 #include <stdint.h>
 
 namespace CRC {
-	constexpr uint16_t first = 0xFFFF;
-	
-	uint16_t next (uint8_t newchar, uint16_t previous);
+	uint16_t next (uint8_t newchar, uint16_t previous = 0xFFFF);		// 'previous' defaults to CRC seed value, 0xFFFF
 }
 
 #endif /* CRC16_H_ */

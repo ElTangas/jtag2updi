@@ -40,7 +40,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 // *** Packet functions *** 
 	bool JTAG2::receive() {
 		while (JICE_io::get() != MESSAGE_START);
-		uint16_t crc = CRC::next(MESSAGE_START, CRC::first);
+		uint16_t crc = CRC::next(MESSAGE_START);
 		for (uint8_t i = 0; i < sizeof(prologue); i++) {
 			crc = CRC::next(prologue[i] = JICE_io::get(), crc);
 		}
@@ -55,7 +55,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 	}
 
 	void JTAG2::answer() {
-		uint16_t crc = CRC::next(JICE_io::put(MESSAGE_START), CRC::first);
+		uint16_t crc = CRC::next(JICE_io::put(MESSAGE_START));
 		for (uint8_t i = 0; i < sizeof(prologue); i++) {
 			crc = CRC::next(JICE_io::put(prologue[i]), crc);
 		}
@@ -91,7 +91,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 	void JTAG2::sign_on(){
 		// Initialize JTAGICE2 variables
 		JTAG2::PARAM_EMU_MODE_VAL = 0x02;
-		JTAG2::PARAM_BAUD_RATE_VAL = 0x04;
+		JTAG2::PARAM_BAUD_RATE_VAL = JTAG2::baud_19200;
 		/* Initialize or enable UPDI */
 		UPDI_io::put(UPDI_io::double_break);
 		UPDI::stcs(UPDI::reg::Control_A, 6);

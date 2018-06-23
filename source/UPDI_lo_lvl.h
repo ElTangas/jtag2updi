@@ -14,15 +14,14 @@
 #include "updi_io.h"
 
 namespace UPDI {
-	namespace reg {
-		// Enums
-		enum reg_t {
-			Status_A, Status_B, Control_A, Control_B,
-			Reg_4, Reg_5, Reg_6, ASI_Key_Status,
-			ASI_Reset_Request, ASI_Control_A, ASI_System_Control_A, ASI_System_Status,
-			ASI_CRC_Status, Reg_13, Reg_14, Reg_15
-		};
-	}
+	// UPDI registers
+	enum reg {
+		Status_A, Status_B, Control_A, Control_B,
+		Reg_4, Reg_5, Reg_6, ASI_Key_Status,
+		ASI_Reset_Request, ASI_Control_A, ASI_System_Control_A, ASI_System_Status,
+		ASI_CRC_Status, Reg_13, Reg_14, Reg_15
+	};
+
 	
 	// Constant Expressions
 	constexpr uint8_t SYNCH = 0x55;
@@ -37,8 +36,8 @@ namespace UPDI {
 	// Function prototypes
 	void rep(uint8_t);
 	
-	void stcs(reg::reg_t, uint8_t);
-	uint8_t lcds(reg::reg_t);
+	void stcs(reg, uint8_t);
+	uint8_t lcds(reg);
 
 	void read_sib(uint8_t (&)[16]);
 

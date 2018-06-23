@@ -55,7 +55,7 @@ inline void loop() {
 				break;
 			case JTAG2::CMND_SIGN_OFF:
 				// Restore default baud rate before exiting
-				JTAG2::PARAM_BAUD_RATE_VAL = 0x04;
+				JTAG2::PARAM_BAUD_RATE_VAL = JTAG2::baud_19200;
 			case JTAG2::CMND_LEAVE_PROGMODE:
 				JTAG2::leave_progmode();
 				break;

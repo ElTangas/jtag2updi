@@ -20,13 +20,13 @@ void UPDI::rep(uint8_t repeats) {
 	UPDI_io::put(repeats);
 }
 
-void UPDI::stcs(reg::reg_t r, uint8_t data) {
+void UPDI::stcs(reg r, uint8_t data) {
 	UPDI_io::put(UPDI::SYNCH);
 	UPDI_io::put(0xC0 + r);
 	UPDI_io::put(data);
 }
 
-uint8_t UPDI::lcds(reg::reg_t r) {
+uint8_t UPDI::lcds(reg r) {
 	UPDI_io::put(UPDI::SYNCH);
 	UPDI_io::put(0x80 + r);
 	return UPDI_io::get();
