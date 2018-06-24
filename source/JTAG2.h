@@ -108,12 +108,20 @@ namespace JTAG2 {
 	
 	// *** STK500 packet *** 
 	constexpr uint8_t MESSAGE_START = 0x1B;
-	extern uint8_t prologue[6];
-	extern uint16_t & number;
-	extern uint8_t (& number_byte)[2];
-	extern uint32_t & size;
-	extern uint8_t (& size_byte)[4];
-	extern uint16_t (& size_word)[2];
+	union header_t {
+		uint8_t raw[6];
+		struct {
+			union {
+				uint16_t number;
+				uint8_t number_byte[2];
+			};
+			union {
+				uint32_t size;
+				uint16_t size_word[2];
+				uint8_t size_byte[4];
+			};
+		};
+	} extern header;
 	constexpr uint8_t TOKEN = 0x0E;
 	constexpr int MAX_BODY_SIZE = 450;				// Note: should not be reduced to less than 300 bytes.
 	extern uint8_t body [MAX_BODY_SIZE];
