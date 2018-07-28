@@ -187,7 +187,7 @@ Disassembly of section .text:
 000002e4 <_ZZN7UPDI_io3putENS_4ctrlEENKUlvE_clEv.isra.0>:
  2e4:	84 e0       	ldi	r24, 0x04	; 4
  2e6:	85 bd       	out	0x25, r24	; 37
- 2e8:	8f e7       	ldi	r24, 0x7F	; 127
+ 2e8:	80 e8       	ldi	r24, 0x80	; 128
  2ea:	87 bd       	out	0x27, r24	; 39
  2ec:	8b e0       	ldi	r24, 0x0B	; 11
  2ee:	92 e0       	ldi	r25, 0x02	; 2
