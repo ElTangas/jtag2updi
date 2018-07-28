@@ -8,6 +8,7 @@
 #include "JTAG2.h"
 #include "crc16.h"
 #include "UPDI_hi_lvl.h"
+#include "baud.h"
 
 // *** Writeable Parameter Values ***
 uint8_t JTAG2::PARAM_EMU_MODE_VAL;
@@ -19,7 +20,7 @@ JTAG2::header_t JTAG2::header;
 uint8_t JTAG2::body [MAX_BODY_SIZE];
 
 // *** Baud rate lookup table for UBRR0 register ***
-FLASH<uint16_t> baud_tbl[8] = {0x0340, 0x01A0, 0x00CF, 0x0067, 0x0033, 0x0022, 0x0010, 0x008A};
+FLASH<uint16_t> baud_tbl[8] = {baud(2400), baud(4800), baud(9600), baud(19200), baud(38400), baud(57600), baud(115200), baud(14400)};
 
 // *** Local variables ***
 uint8_t flash_pagesize;

@@ -10,9 +10,13 @@
 #include "updi_io.h"
 
 // Defines
-#define F_CPU 16000000U
-#define BIT_RATE 225000U // (max 225000 min 160000)
-#define BIT_TIME (F_CPU/BIT_RATE)
+#ifndef F_CPU
+#	define F_CPU 16000000U
+#endif
+#ifndef UPDI_BAUD
+#	define UPDI_BAUD 225000U			// (max 225000 min approx. F_CPU/100)
+#endif
+#define BIT_TIME (F_CPU/UPDI_BAUD)
 //#define _DEBUG
 
 // Functions
@@ -59,9 +63,9 @@ uint8_t UPDI_io::put(ctrl c)
 	/* This nested function expects the timer output to just have gone low */
 	/* It waits for 12 minimum baud bit times (break character) then goes high */
 	auto break_pulse = [] {
-		TCCR0B = 4;
-		OCR0A = 127;
-		for (uint8_t i = 0; i < 11; i++) wait_for_bit();
+		TCCR0B = 4;											// timer tick = 256/F_CPU seconds
+		OCR0A = F_CPU/125000;								// bit time = F_CPU/125000 ticks ~ 2.048 ms
+		for (uint8_t i = 0; i < 11; i++) wait_for_bit();	// 12 bits ~ 24.6 ms, as recommended on the datasheet
 		setup_bit_high();
 		wait_for_bit();
 		DDRD &= ~(1 << DDD6);

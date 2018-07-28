@@ -8,6 +8,7 @@
 // Includes
 #include <avr/io.h>
 #include "JICE_io.h"
+#include "baud.h"
 
 // Functions
 uint8_t JICE_io::put(char c) {
@@ -24,12 +25,8 @@ void JICE_io::init(void)
 {
 	/* Set double speed */
 	UCSR0A = (1<<U2X0);
-	/* Best approximation for 115.2 kBd with U2Xn = 1 and 16MHz clock */
-	//UBRR0L = 0x0010;
-	UBRR0L = 0x0067;		// 19.2 kBd
-	//UBRR0L = 0x0007;		// 250 kBd
-	//UBRR0L = 0x0003;		// 500 kbaud
-	//UBRR0L = 0x0001;		// 1 MBd
+	/* Set initial baud rate */
+	UBRR0L = baud(19200);
 	/* Enable receiver and transmitter */
 	UCSR0B = (1<<RXEN0)|(1<<TXEN0);
 	/* Set frame format: 8data, 1stop bit */
