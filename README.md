@@ -1,6 +1,6 @@
 # jtag2updi
 
-This is a firmware, that when uploaded on an atmega328p, or a similar AVR MCU running @16Mhz, enables it to interface with avrdude using the jtagice Mk2 protocol via a serial link. In particular, you can use an Arduino to host this firmware.
+This is a firmware, that when uploaded on an atmega328p, or a similar AVR MCU, enables it to interface with avrdude using the jtagice Mk2 protocol via a serial link. In particular, you can use an Arduino to host this firmware.
 It provides a bridge to program the new attiny817 family of MCUs, that use the UPDI interface:
 
 avrdude -> HW Serial interface -> Programmer MCU (e.g. Mega328P) -> SW Serial on PD6 -> Target MCU (e.g. tiny817)
@@ -32,12 +32,20 @@ https://playground.arduino.cc/Main/DisablingAutoResetOnSerialConnection
 
 Alternatively, you can use an Arduino without integrated USB/serial adapter, like the pro-mini; in that case, just disconecting the DTR wire will disable the auto-reset. Just remember the UPDI chip must be connected to the same supply voltage as the Arduino's MCU!
 
-To build, run the make.bat file, after editing it with the path of AVR-GCC on your system and the correct target MCU. I provide a makefile suitable for a MS-Windows environment, but I'm sure Linux users can manage.
+## Building with avr-gcc
+
+To build, run the make.bat file, after editing it with the following options: 
+1) path of AVR-GCC on your system
+2) correct target MCU
+3) Frequency at which your MCU is running (F_CPU, defaults to 16MHz)
+4) Baud rate of UPDI link (UPDI_BAUD, defaults to 225 kbaud)
+
+I provide a makefile suitable for a MS-Windows environment, but I'm sure Linux users can manage.
 
 There are also pre-built files on the "build" directory. They were built using avr-gcc 8.0.1 compiled for MinGW by sprintersb:
 https://sourceforge.net/projects/mobilechessboar/files/avr-gcc%20snapshots%20%28Win32%29/
 
-The pre-built hex file is for ATMega 328P; to use a different MCU of the same family, like the mega168, you will need to rebuild.
+The pre-built hex file is for ATMega 328P@16MHz; to use a different MCU of the same family, like the mega168, or running at a frequency different from 16MHz, you will need to rebuild.
 
 
 ## Building with Arduino IDE
@@ -45,6 +53,8 @@ The pre-built hex file is for ATMega 328P; to use a different MCU of the same fa
 If you prefer, the program can be built as if it was an Arduino sketch. Inside the "source" directory, there is an empty file called "jtag2updi.ino" so that the Arduino IDE can recognize the source code.
 
 Just copy all the files inside "source" to a new directory called "jtag2updi" inside your sketch main directory.
+
+The Arduino IDE will automatically set the correct MCU model and F_CPU, but if you want to change the speed of the UPDI link, you will have to edit UPDI_BAUD directly in the source code.
 
 
 ## Using with avrdude
@@ -123,6 +133,14 @@ avrdude> quit
 avrdude done.  Thank you.
 </pre>
 
+
+## Troubleshooting
+
+If you have triple-checked all the connections but still getting errors, the problem might be the speed of the serial links. I have set the jtag2updi entry on the avrdude configuration file to run at 115200 baud by default. This baud rate can cause errors, for example, if your MCU is running at 8MHz.
+
+This can be changed with the avrdude "-b" option. Valid baud rates are 2400, 4800, 9600, 14400, 19200, 38400, 57600 and 115200. You can make the setting permanent by editing the jtag2updi entry on "avrdude.conf".
+
+If the trouble is on the UPDI link, a slower speed can be selected by changing UPDI_BAUD and recompiling.
 
 ## Contact the author
 
