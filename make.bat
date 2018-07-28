@@ -12,14 +12,20 @@ set CSTDFLAGS=-funsigned-char -funsigned-bitfields -std=gnu++14
 rem select atmega168 or atmega328p as target
 set TARGETMCU=atmega328p
 
+rem configuration macros
+rem NDEBUG -> disable debug output
+rem F_CPU=value -> declares at which speed the CPU is running (defaults to 16000000, 16MHz)
+rem UPDI_BAUD=value -> sets UPDI baud rate. Maxumum is 225000 (225 kbaud, default value). Minimum is F_CPU/100
+set DEFINES=-DNDEBUG -DUPDI_BAUD=225000U -DF_CPU=16000000
+
 echo Compiling for %TARGETMCU%...
-%BINPATH%\avr-g++.exe -DNDEBUG -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o UPDI_lo_lvl.o %SOURCEPATH%/UPDI_lo_lvl.cpp
-%BINPATH%\avr-g++.exe -DNDEBUG -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o UPDI_hi_lvl.o %SOURCEPATH%/UPDI_hi_lvl.cpp
-%BINPATH%\avr-g++.exe -DNDEBUG -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o jtag2updi.o %SOURCEPATH%/jtag2updi.cpp
-%BINPATH%\avr-g++.exe -DNDEBUG -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o jice_io.o %SOURCEPATH%/jice_io.cpp
-%BINPATH%\avr-g++.exe -DNDEBUG -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o JTAG2.o %SOURCEPATH%/JTAG2.cpp
-%BINPATH%\avr-g++.exe -DNDEBUG -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o updi_io.o %SOURCEPATH%/updi_io.cpp
-%BINPATH%\avr-g++.exe -DNDEBUG -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o crc16.o %SOURCEPATH%/crc16.cpp
+%BINPATH%\avr-g++.exe %DEFINES% -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o UPDI_lo_lvl.o %SOURCEPATH%/UPDI_lo_lvl.cpp
+%BINPATH%\avr-g++.exe %DEFINES% -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o UPDI_hi_lvl.o %SOURCEPATH%/UPDI_hi_lvl.cpp
+%BINPATH%\avr-g++.exe %DEFINES% -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o jtag2updi.o %SOURCEPATH%/jtag2updi.cpp
+%BINPATH%\avr-g++.exe %DEFINES% -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o jice_io.o %SOURCEPATH%/jice_io.cpp
+%BINPATH%\avr-g++.exe %DEFINES% -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o JTAG2.o %SOURCEPATH%/JTAG2.cpp
+%BINPATH%\avr-g++.exe %DEFINES% -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o updi_io.o %SOURCEPATH%/updi_io.cpp
+%BINPATH%\avr-g++.exe %DEFINES% -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o crc16.o %SOURCEPATH%/crc16.cpp
 
 echo Linking...
 mkdir %BUILDPATH%
