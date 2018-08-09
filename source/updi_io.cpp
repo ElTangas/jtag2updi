@@ -137,11 +137,14 @@ uint8_t UPDI_io::get() {
 	/* Setup sampling time */
 	OCR0A = BIT_TIME - 1;
 	/* Sample bits */
-	uint8_t c;
+	uint8_t c = 0x00;
 	for (uint8_t i = 0; i < 8; i++) {
 		wait_for_bit();
 		/* Take sample */
-		c = (c >> 1) | ((uint8_t) ((PIND & (1 << PIND6)) << 1));		// The cast is to prevent promotion to 16 bit
+		c /= 2;
+		if ( PIND & (1 << PIND6) ) {
+			c |= 0x80;
+		}
 #		ifdef _DEBUG
 		/* Timing pulse */
 		PIND |= (1 << PIND7);
