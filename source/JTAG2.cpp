@@ -70,7 +70,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 
 // *** Set status function ***
 	void JTAG2::set_status(uint8_t status_code){
-		header.size = 1;
+		header.size_word[0] = 1;
 		body[0] = status_code;
 	}
 

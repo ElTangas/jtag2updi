@@ -137,7 +137,7 @@ namespace JTAG2 {
 	void delay_exec();
 
 	// *** Set status function ***
-	void set_status(uint8_t);
+	void set_status(uint8_t) __attribute__ ((noinline));
 
 	// *** General command functions ***
 	void sign_on();
