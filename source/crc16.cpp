@@ -45,6 +45,15 @@ FLASH<uint16_t> crc_table[256] =
 };
 
 uint16_t CRC::next(uint8_t newchar, uint16_t previous) {
-	uint16_t crc = (previous >> 8) ^ crc_table[((uint8_t) previous) ^ newchar];
-	return crc;
+	union {
+		uint16_t word;
+		struct {
+			uint8_t	low;
+			uint8_t high;
+		} byte;
+	} crc;
+	crc.word = previous;
+	crc.word = crc_table[crc.byte.low ^ newchar];
+	crc.byte.low ^= (previous >> 8);
+	return crc.word;
 }
