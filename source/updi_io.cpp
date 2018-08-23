@@ -17,6 +17,8 @@
 #	define UPDI_BAUD 225000U			// (max 225000 min approx. F_CPU/100)
 #endif
 #define BIT_TIME (F_CPU/UPDI_BAUD)
+
+// Enable to get pulses on PD7 showing the sample times for the software UART input
 //#define _DEBUG
 
 // Functions
@@ -129,21 +131,21 @@ uint8_t UPDI_io::get() {
 
 	start_timer();
 	wait_for_bit();
+	/* Setup sampling time */
+	OCR0A = BIT_TIME - 1;
 #	ifdef _DEBUG
 	/* Timing pulse */
 	PIND |= (1 << PIND7);
 	PIND |= (1 << PIND7);
 #	endif // _DEBUG
-	/* Setup sampling time */
-	OCR0A = BIT_TIME - 1;
 	/* Sample bits */
-	uint8_t c = 0x00;
+	uint8_t c = 0;
 	for (uint8_t i = 0; i < 8; i++) {
 		wait_for_bit();
 		/* Take sample */
 		c /= 2;
 		if ( PIND & (1 << PIND6) ) {
-			c |= 0x80;
+			c |=  0x80;
 		}
 #		ifdef _DEBUG
 		/* Timing pulse */
@@ -206,23 +208,3 @@ inline void UPDI_io::start_timer() {
 	TCCR0B = 1;
 }
 
-/*
-inline uint8_t UPDI_io::get_parity(uint8_t c) {
-	asm(
-	"mov	r0, %0	\n"
-	"swap	r0		\n"
-	"eor	%0, r0	\n"
-	"mov	r0, %0	\n"
-	"lsr	r0		\n"
-	"lsr	r0		\n"
-	"eor	%0, r0	\n"
-	"mov	r0, %0	\n"
-	"lsr	r0		\n"
-	"eor	%0, r0	\n"
-	:"+r" (c)
-	:
-	:"r0"
-	);
-	return c & 0x01;
-}
-*/
