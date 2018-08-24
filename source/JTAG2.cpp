@@ -14,15 +14,13 @@
 uint8_t JTAG2::PARAM_EMU_MODE_VAL;
 uint8_t JTAG2::PARAM_BAUD_RATE_VAL;
 
-
 // *** STK500 packet ***
-JTAG2::header_t JTAG2::header;
-uint8_t JTAG2::body [MAX_BODY_SIZE];
+JTAG2::packet_t JTAG2::packet;
 
 // *** Baud rate lookup table for UBRR0 register ***
 FLASH<uint16_t> baud_tbl[8] = {baud(2400), baud(4800), baud(9600), baud(19200), baud(38400), baud(57600), baud(115200), baud(14400)};
 
-// *** Local variables ***
+// *** Private variables ***
 uint8_t flash_pagesize;
 uint8_t eeprom_pagesize;
 
@@ -34,14 +32,14 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 	bool JTAG2::receive() {
 		while (JICE_io::get() != MESSAGE_START);
 		uint16_t crc = CRC::next(MESSAGE_START);
-		for (uint8_t i = 0; i < sizeof(header); i++) {
-			crc = CRC::next(header.raw[i] = JICE_io::get(), crc);
+		for (uint16_t i = 0; i < 6; i++) {
+			crc = CRC::next(packet.raw[i] = JICE_io::get(), crc);
 		}
-		if (header.size_word[0] > sizeof(body)) return false;
+		if (packet.size_word[0] > sizeof(packet.body)) return false;
 		if (JICE_io::get() != TOKEN) return false;
 		crc = CRC::next(TOKEN, crc);
-		for (uint16_t i = 0; i < header.size_word[0]; i++) {
-			crc = CRC::next(body[i] = JICE_io::get(), crc);
+		for (uint16_t i = 0; i < packet.size_word[0]; i++) {
+			crc = CRC::next(packet.body[i] = JICE_io::get(), crc);
 		}
 		if ((uint16_t)(JICE_io::get() | (JICE_io::get() << 8)) != crc) return false;
 		return true;
@@ -49,12 +47,12 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 
 	void JTAG2::answer() {
 		uint16_t crc = CRC::next(JICE_io::put(MESSAGE_START));
-		for (uint8_t i = 0; i < sizeof(header); i++) {
-			crc = CRC::next(JICE_io::put(header.raw[i]), crc);
+		for (uint16_t i = 0; i < 6; i++) {
+			crc = CRC::next(JICE_io::put(packet.raw[i]), crc);
 		}
 		crc = CRC::next(JICE_io::put(TOKEN), crc);
-		for (uint16_t i = 0; i < header.size_word[0]; i++) {
-			crc = CRC::next(JICE_io::put(body[i]), crc);
+		for (uint16_t i = 0; i < packet.size_word[0]; i++) {
+			crc = CRC::next(JICE_io::put(packet.body[i]), crc);
 		}
 		JICE_io::put(crc);
 		JICE_io::put(crc >> 8);
@@ -70,8 +68,8 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 
 // *** Set status function ***
 	void JTAG2::set_status(uint8_t status_code){
-		header.size_word[0] = 1;
-		body[0] = status_code;
+		packet.size_word[0] = 1;
+		packet.body[0] = status_code;
 	}
 
 // *** General command functions ***
@@ -89,40 +87,40 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 		UPDI_io::put(UPDI_io::double_break);
 		UPDI::stcs(UPDI::reg::Control_A, 6);
 		// Send sign on message
-		header.size_word[0] = sizeof(sgn_resp);
+		packet.size_word[0] = sizeof(sgn_resp);
 		for (uint8_t i = 0; i < sizeof(sgn_resp); i++) {
-			body[i] = sgn_resp[i];
+			packet.body[i] = sgn_resp[i];
 		}
 	}
 
 	void JTAG2::get_parameter(){
-		uint8_t & status = body[0];
-		uint8_t & parameter = body[1];
+		uint8_t & status = packet.body[0];
+		uint8_t & parameter = packet.body[1];
 		switch (parameter) {
 			case PARAM_HW_VER:
-				header.size_word[0] = 3;
-				body[1] = PARAM_HW_VER_M_VAL;
-				body[2] = PARAM_HW_VER_S_VAL;
+				packet.size_word[0] = 3;
+				packet.body[1] = PARAM_HW_VER_M_VAL;
+				packet.body[2] = PARAM_HW_VER_S_VAL;
 				break;
 			case PARAM_FW_VER:
-				header.size_word[0] = 5;
-				body[1] = PARAM_FW_VER_M_MIN_VAL;
-				body[2] = PARAM_FW_VER_M_MAJ_VAL;
-				body[3] = PARAM_FW_VER_S_MIN_VAL;
-				body[4] = PARAM_FW_VER_S_MAJ_VAL;
+				packet.size_word[0] = 5;
+				packet.body[1] = PARAM_FW_VER_M_MIN_VAL;
+				packet.body[2] = PARAM_FW_VER_M_MAJ_VAL;
+				packet.body[3] = PARAM_FW_VER_S_MIN_VAL;
+				packet.body[4] = PARAM_FW_VER_S_MAJ_VAL;
 				break;
 			case PARAM_EMU_MODE:
-				header.size_word[0] = 2;
-				body[1] = PARAM_EMU_MODE_VAL;
+				packet.size_word[0] = 2;
+				packet.body[1] = PARAM_EMU_MODE_VAL;
 				break;
 			case PARAM_BAUD_RATE:
-				header.size_word[0] = 2;
-				body[1] = PARAM_BAUD_RATE_VAL;
+				packet.size_word[0] = 2;
+				packet.body[1] = PARAM_BAUD_RATE_VAL;
 				break;
 			case PARAM_VTARGET:
-				header.size_word[0] = 3;
-				body[1] = PARAM_VTARGET_VAL & 0xFF;
-				body[2] = PARAM_VTARGET_VAL >> 8;
+				packet.size_word[0] = 3;
+				packet.body[1] = PARAM_VTARGET_VAL & 0xFF;
+				packet.body[2] = PARAM_VTARGET_VAL >> 8;
 				break;
 			default:
 				set_status(RSP_ILLEGAL_PARAMETER);
@@ -133,13 +131,13 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 	}
 
 	void JTAG2::set_parameter(){
-		uint8_t & parameter = body[1];
+		uint8_t & parameter = packet.body[1];
 		switch (parameter) {
 			case PARAM_EMU_MODE:
-				PARAM_EMU_MODE_VAL = body[2];
+				PARAM_EMU_MODE_VAL = packet.body[2];
 				break;
 			case PARAM_BAUD_RATE:
-				PARAM_BAUD_RATE_VAL = body[2];
+				PARAM_BAUD_RATE_VAL = packet.body[2];
 				break;
 			default:
 				set_status(RSP_ILLEGAL_PARAMETER);
@@ -149,8 +147,8 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 	}
 
 	void JTAG2::set_device_descriptor(){
-		flash_pagesize = body[244];
-		eeprom_pagesize = body[246];
+		flash_pagesize = packet.body[244];
+		eeprom_pagesize = packet.body[246];
 		set_status(RSP_OK);
 	}
 		
@@ -177,9 +175,9 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 				return;
 			// in other modes fail and inform host of wrong mode
 			default:
-				header.size_word[0] = 2;
-				body[0] = RSP_ILLEGAL_MCU_STATE;
-				body[1] = system_status; // 0x01;
+				packet.size_word[0] = 2;
+				packet.body[0] = RSP_ILLEGAL_MCU_STATE;
+				packet.body[1] = system_status; // 0x01;
 				return;
 		}
 	}
@@ -202,9 +200,9 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 				return;
 			// in other modes fail and inform host of wrong mode
 			default:
-				header.size_word[0] = 2;
-				body[0] = RSP_ILLEGAL_MCU_STATE;
-				body[1] = system_status; // 0x01;
+				packet.size_word[0] = 2;
+				packet.body[0] = RSP_ILLEGAL_MCU_STATE;
+				packet.body[1] = system_status; // 0x01;
 				return;
 		}
 	}
@@ -214,47 +212,47 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 	void JTAG2::read_mem() {
 		if (UPDI::CPU_mode() != 0x08){
 			// fail if not in program mode
-			header.size_word[0] = 2;
-			body[0] = RSP_ILLEGAL_MCU_STATE;
-			body[1] = 0x01;
+			packet.size_word[0] = 2;
+			packet.body[0] = RSP_ILLEGAL_MCU_STATE;
+			packet.body[1] = 0x01;
 		}
 		else {
 			// in program mode
-			const uint16_t NumBytes = (body[3] << 8) | body[2];
+			const uint16_t NumBytes = (packet.body[3] << 8) | packet.body[2];
 			// Get physical address for reading
-			const uint16_t address = (body[7] << 8) | body[6];
+			const uint16_t address = (packet.body[7] << 8) | packet.body[6];
 			// Set UPDI pointer to address
 			UPDI::stptr_w(address);
 			// Read block
 			UPDI::rep(NumBytes - 1);
-			body[1] = UPDI::ldinc_b();
+			packet.body[1] = UPDI::ldinc_b();
 			for (uint16_t i = 2; i <= NumBytes; i++) {
-				body[i] = UPDI_io::get();
+				packet.body[i] = UPDI_io::get();
 			}
-			header.size_word[0] = NumBytes + 1;
-			body[0] = RSP_MEMORY;
+			packet.size_word[0] = NumBytes + 1;
+			packet.body[0] = RSP_MEMORY;
 		}
 	}
 	
 	void JTAG2::write_mem() {
 		if (UPDI::CPU_mode() != 0x08){
 			// fail if not in program mode
-			header.size_word[0] = 2;
-			body[0] = RSP_ILLEGAL_MCU_STATE;
-			body[1] = 0x01;
+			packet.size_word[0] = 2;
+			packet.body[0] = RSP_ILLEGAL_MCU_STATE;
+			packet.body[1] = 0x01;
 		}
 		else {
 			// in program mode
-			const uint8_t mem_type = body[1];
-			const uint16_t address = body[6] | (body[7] << 8);
-			const uint16_t lenght = body[2] | (body[3] << 8);							/* number of bytes to write */
+			const uint8_t mem_type = packet.body[1];
+			const uint16_t address = packet.body[6] | (packet.body[7] << 8);
+			const uint16_t lenght = packet.body[2] | (packet.body[3] << 8);							/* number of bytes to write */
 			const bool is_flash = ((mem_type == MTYPE_FLASH) || (mem_type == MTYPE_BOOT_FLASH));
 			const uint8_t buff_size = is_flash ? flash_pagesize : eeprom_pagesize;
 			const uint8_t write_cmnd = is_flash ? NVM::WP : NVM::ERWP;
 			switch (mem_type) {
 				case MTYPE_FUSE_BITS:
 				case MTYPE_LOCK_BITS:
-					NVM_fuse_write (address, body[10]);
+					NVM_fuse_write (address, packet.body[10]);
 					break;
 				case MTYPE_FLASH:
 				case MTYPE_BOOT_FLASH:
@@ -271,8 +269,8 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 	}
 
 	void JTAG2::erase() {
-		const uint8_t erase_type = body[1];
-		const uint16_t address = body[2] | (body[3] << 8);
+		const uint8_t erase_type = packet.body[1];
+		const uint16_t address = packet.body[2] | (packet.body[3] << 8);
 		switch (erase_type) {
 			case 0:
 				// Write Chip Erase key
@@ -326,9 +324,9 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 		auto updi_send_block = [] (uint8_t count, uint8_t & index) {
 			NVM::wait<true>();
 			UPDI::rep(count - 1);
-			UPDI::stinc_b(JTAG2::body[index++]);
+			UPDI::stinc_b(JTAG2::packet.body[index++]);
 			for (uint8_t i = 0; i < (count - 1); i++) {
-				UPDI_io::put(JTAG2::body[index++]);
+				UPDI_io::put(JTAG2::packet.body[index++]);
 				UPDI_io::get();
 			}
 		};

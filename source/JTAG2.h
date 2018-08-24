@@ -108,8 +108,9 @@ namespace JTAG2 {
 	
 	// *** STK500 packet *** 
 	constexpr uint8_t MESSAGE_START = 0x1B;
-	union header_t {
-		uint8_t raw[6];
+	constexpr int MAX_BODY_SIZE = 450;				// Note: should not be reduced to less than 300 bytes.
+	union packet_t {
+		uint8_t raw[6 + MAX_BODY_SIZE];
 		struct {
 			union {
 				uint16_t number;
@@ -120,11 +121,10 @@ namespace JTAG2 {
 				uint16_t size_word[2];
 				uint8_t size_byte[4];
 			};
+			uint8_t body[MAX_BODY_SIZE];
 		};
-	} extern header;
+	} extern packet;
 	constexpr uint8_t TOKEN = 0x0E;
-	constexpr int MAX_BODY_SIZE = 450;				// Note: should not be reduced to less than 300 bytes.
-	extern uint8_t body [MAX_BODY_SIZE];
 	
 	//  *** Signature response ***
 	extern FLASH<uint8_t> sgn_resp[29];

@@ -39,7 +39,7 @@ inline void loop() {
 		// Receive command
 		while(!JTAG2::receive());
 		// Process command
-		switch (JTAG2::body[0]) {
+		switch (JTAG2::packet.body[0]) {
 			case JTAG2::CMND_GET_SIGN_ON:
 				JTAG2::sign_on();
 				break;
