@@ -6,7 +6,7 @@ set INCPATH="C:\avr-gcc\avr-gcc-8.0.1_2018-01-19_mingw32\avr\include"
 set SOURCEPATH=.\source
 set BUILDPATH=.\build
 
-set OPTFLAGS=-Os -fno-jump-tables -flto -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax
+set OPTFLAGS=-Os -fno-jump-tables -fno-gcse -flto -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax
 set CSTDFLAGS=-funsigned-char -funsigned-bitfields -std=gnu++14
 
 rem select atmega168 or atmega328p as target
