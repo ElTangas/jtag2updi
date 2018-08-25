@@ -18,6 +18,10 @@ rem F_CPU=value -> declares at which speed the CPU is running (defaults to 16000
 rem UPDI_BAUD=value -> sets UPDI baud rate. Maxumum is 225000 (225 kbaud, default value). Minimum is F_CPU/100
 set DEFINES=-DNDEBUG -DUPDI_BAUD=225000U -DF_CPU=16000000
 
+rem Optional optimization settings
+rem Otherwise unused r/w I/O registers residing in I/O addresses 0-63 can be used here
+set DEFINES=%DEFINES% -DTEMP0=GPIOR0 -DTEMP1=GPIOR1 -DTEMP2=GPIOR2
+
 echo Compiling for %TARGETMCU%...
 %BINPATH%\avr-g++.exe %DEFINES% -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o UPDI_lo_lvl.o %SOURCEPATH%/UPDI_lo_lvl.cpp
 %BINPATH%\avr-g++.exe %DEFINES% -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o UPDI_hi_lvl.o %SOURCEPATH%/UPDI_hi_lvl.cpp
