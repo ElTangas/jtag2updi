@@ -155,6 +155,9 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 // *** Target mode set functions ***
 	// *** Sets MCU in program mode, if possibe ***
 	void JTAG2::enter_progmode(){
+		// Reset the MCU now, to prevent the WDT (if active) to reset it at an unpredictable moment
+		UPDI::CPU_reset();
+		// Now we have time to enter program mode (this mode also disables the WDT)
 		const uint8_t system_status = UPDI::CPU_mode<0xEF>();
 		switch (system_status){
 			// in normal operation mode
@@ -164,7 +167,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 				// Request reset
 				UPDI::CPU_reset();
 				// Wait for NVM unlock state
-				while (UPDI::CPU_mode() != 0x08);
+				//while (UPDI::CPU_mode() != 0x08);
 			// already in program mode
 			case 0x08:
 				// better clear the page buffer, just in case.
@@ -191,7 +194,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 				// Request reset
 				UPDI::CPU_reset();
 				// Wait for normal mode
-				while (UPDI::CPU_mode<0xEF>() != 0x82);
+				// while (UPDI::CPU_mode<0xEF>() != 0x82);
 			// already in normal mode
 			case 0x82:
 				// Turn off LED to indicate normal mode
@@ -278,7 +281,7 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 				// Request reset
 				UPDI::CPU_reset();
 				// Wait for NVM unlock state
-				while (UPDI::CPU_mode<0x01>());
+				// while (UPDI::CPU_mode<0x01>());
 				// Erase chip process exits program mode, reenter...
 				enter_progmode();
 				return;
