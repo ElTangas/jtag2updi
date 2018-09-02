@@ -140,12 +140,14 @@ uint8_t UPDI_io::get() {
 #	endif // _DEBUG
 	/* Sample bits */
 	uint8_t c = 0;
-	for (uint8_t i = 0; i < 8; i++) {
+	//for (uint8_t i = 0; i < 8; i++) {
+	for (uint8_t mask = 1; mask; mask <<= 1) {
 		wait_for_bit();
 		/* Take sample */
-		c /= 2;
+		//c /= 2;
 		if ( PIND & (1 << PIND6) ) {
-			c |=  0x80;
+			//c |=  0x80;
+			c |= mask;
 		}
 #		ifdef _DEBUG
 		/* Timing pulse */

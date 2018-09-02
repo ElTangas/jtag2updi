@@ -61,16 +61,18 @@ namespace UPDI {
 	void stinc_b(uint8_t);
 	void stinc_w(uint16_t);
 
+	template <class T>
+	inline void write_key(T (& k)[8]) __attribute__(( optimize("no-tree-loop-optimize") ));
+
 	// Function Templates
 	template <class T>
 	void write_key(T (& k)[8]) {
 		UPDI_io::put(SYNCH);
 		UPDI_io::put(0xE0);
-		/*for (T* i = k; i < k+8; i++) {
-			UPDI_io::put(i[0]);
-		}*/
-		for (uint8_t i = 0; i < 8; i++) {
-			UPDI_io::put(k[i]);
+		T* key_ptr = k;
+		for (uint8_t i = 8; i != 0; i--) {
+			UPDI_io::put(*key_ptr);
+			key_ptr++;
 		}
 	}
 }

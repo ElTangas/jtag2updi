@@ -21,7 +21,7 @@ namespace UPDI_io {
 	void start_timer();
 	uint8_t put(char) __attribute__((optimize("no-tree-loop-optimize")));
 	uint8_t put(ctrl);	
-	uint8_t get();
+	uint8_t get() __attribute__((optimize("no-tree-loop-optimize")));
 	void init(void);
 }
 

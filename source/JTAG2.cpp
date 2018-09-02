@@ -280,8 +280,6 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 				UPDI::write_key(UPDI::Chip_Erase);
 				// Request reset
 				UPDI::CPU_reset();
-				// Wait for NVM unlock state
-				// while (UPDI::CPU_mode<0x01>());
 				// Erase chip process exits program mode, reenter...
 				enter_progmode();
 				return;
@@ -316,22 +314,24 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 		NVM::command<false>(NVM::WFU);
 	}
 	
-	void NVM_buffered_write(uint16_t address, uint16_t length, uint8_t buff_size, uint8_t write_cmnd) {
+	void NVM_buffered_write(const uint16_t address, const uint16_t length, const uint8_t buff_size, const uint8_t write_cmnd) {
 		uint8_t current_byte_index = 10;					/* Index of the first byte to send inside the JTAG2 command body */
 		uint16_t bytes_remaining = length;					/* number of bytes to write */
 		
 		// Sends a block of bytes from the command body to memory, using the UPDI interface
 		// On entry, the UPDI pointer must already point to the desired address
 		// On exit, the UPDI pointer points to the next byte after the last one written
-		// The index into the command body is also updated to point to the first unsent byte.
-		auto updi_send_block = [] (uint8_t count, uint8_t & index) {
+		// Returns updated index into the command body, pointing to the first unsent byte.
+		auto updi_send_block = [] (uint8_t count, uint8_t index) {
+			count--;
 			NVM::wait<true>();
-			UPDI::rep(count - 1);
-			UPDI::stinc_b(JTAG2::packet.body[index++]);
-			for (uint8_t i = 0; i < (count - 1); i++) {
-				UPDI_io::put(JTAG2::packet.body[index++]);
+			UPDI::rep(count);
+			UPDI::stinc_b(JTAG2::packet.body[index]);
+			for (uint8_t i = count; i; i--) {
+				UPDI_io::put(JTAG2::packet.body[++index]);
 				UPDI_io::get();
 			}
+			return ++index;
 		};
 
 		// Setup UPDI pointer for block transfer
@@ -342,19 +342,19 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 		/* If there are unaligned bytes, they must be sent first */
 		if (unaligned_bytes) {
 			// Send unaligned block
-			updi_send_block(unaligned_bytes, current_byte_index);
+			current_byte_index = updi_send_block(unaligned_bytes, current_byte_index);
 			bytes_remaining -= unaligned_bytes;
 			NVM::command<true>(write_cmnd);
 		}
 		while (bytes_remaining) {
 			/* Send a buff_size amount of bytes */
 			if (bytes_remaining >= buff_size) {
-				updi_send_block(buff_size, current_byte_index);
+				current_byte_index = updi_send_block(buff_size, current_byte_index);
 				bytes_remaining -= buff_size;
 			}
 			/* Send a NumBytes amount of bytes */
 			else {
-				updi_send_block(bytes_remaining, current_byte_index);
+				current_byte_index = updi_send_block(bytes_remaining, current_byte_index);
 				bytes_remaining = 0;
 			}
 			NVM::command<true>(write_cmnd);
