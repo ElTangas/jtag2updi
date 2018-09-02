@@ -3,13 +3,13 @@ Archive member included to satisfy reference by file (symbol)
 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
                               c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o (exit)
 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
-                              C:\Users\JMR_2\AppData\Local\Temp\ccjrDyYq.ltrans0.ltrans.o (__do_clear_bss)
+                              C:\Users\JMR_2\AppData\Local\Temp\cct7ZYQX.ltrans0.ltrans.o (__do_clear_bss)
 
 Discarded input sections
 
  .data          0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
  .bss           0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
- .data          0x00000000        0x0 C:\Users\JMR_2\AppData\Local\Temp\ccjrDyYq.ltrans0.ltrans.o
+ .data          0x00000000        0x0 C:\Users\JMR_2\AppData\Local\Temp\cct7ZYQX.ltrans0.ltrans.o
  .text          0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
  .data          0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
  .bss           0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
@@ -59,7 +59,7 @@ Linker script and memory map
 
 Address of section .data set to 0x800100
 LOAD c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
-LOAD C:\Users\JMR_2\AppData\Local\Temp\ccjrDyYq.ltrans0.ltrans.o
+LOAD C:\Users\JMR_2\AppData\Local\Temp\cct7ZYQX.ltrans0.ltrans.o
 START GROUP
 LOAD c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5\libm.a
 END GROUP
@@ -169,7 +169,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x9d4
+.text           0x00000000      0x98c
  *(.vectors)
  .vectors       0x00000000       0x68 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -185,7 +185,7 @@ END GROUP
  *libprintf_flt.a:*(.progmem.data)
  *libc.a:*(.progmem.data)
  *(.progmem.*)
- .progmem.data  0x00000068      0x23d C:\Users\JMR_2\AppData\Local\Temp\ccjrDyYq.ltrans0.ltrans.o
+ .progmem.data  0x00000068      0x23d C:\Users\JMR_2\AppData\Local\Temp\cct7ZYQX.ltrans0.ltrans.o
                 0x000002a6                . = ALIGN (0x2)
  *fill*         0x000002a5        0x1 
  *(.lowtext)
@@ -252,16 +252,16 @@ END GROUP
                 0x000002c6                __vector_16
                 0x000002c6                __vector_18
                 0x000002c6                __vector_20
- .text          0x000002c8      0x29c C:\Users\JMR_2\AppData\Local\Temp\ccjrDyYq.ltrans0.ltrans.o
-                0x00000564                . = ALIGN (0x2)
+ .text          0x000002c8      0x27e C:\Users\JMR_2\AppData\Local\Temp\cct7ZYQX.ltrans0.ltrans.o
+                0x00000546                . = ALIGN (0x2)
  *(.text.*)
- .text.startup  0x00000564      0x46c C:\Users\JMR_2\AppData\Local\Temp\ccjrDyYq.ltrans0.ltrans.o
-                0x00000564                main
-                0x000009d0                . = ALIGN (0x2)
+ .text.startup  0x00000546      0x442 C:\Users\JMR_2\AppData\Local\Temp\cct7ZYQX.ltrans0.ltrans.o
+                0x00000546                main
+                0x00000988                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000009d0        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
-                0x000009d0                _exit
-                0x000009d0                exit
+ .fini9         0x00000988        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
+                0x00000988                _exit
+                0x00000988                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -280,17 +280,17 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000009d0        0x4 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
+ .fini0         0x00000988        0x4 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
  *(.fini0)
  *(.hightext)
  *(.hightext*)
  *(.progmemx.*)
-                0x000009d4                . = ALIGN (0x2)
+                0x0000098c                . = ALIGN (0x2)
  *(.jumptables)
  *(.jumptables*)
-                0x000009d4                _etext = .
+                0x0000098c                _etext = .
 
-.data           0x00800100        0x0 load address 0x000009d4
+.data           0x00800100        0x0 load address 0x0000098c
                 [!provide]                PROVIDE (__data_start = .)
  *(.data)
  *(.data*)
@@ -305,12 +305,12 @@ END GROUP
 .bss            0x00800100      0x1cc
                 0x00800100                PROVIDE (__bss_start = .)
  *(.bss)
- .bss           0x00800100      0x1cc C:\Users\JMR_2\AppData\Local\Temp\ccjrDyYq.ltrans0.ltrans.o
+ .bss           0x00800100      0x1cc C:\Users\JMR_2\AppData\Local\Temp\cct7ZYQX.ltrans0.ltrans.o
  *(.bss*)
  *(COMMON)
                 0x008002cc                PROVIDE (__bss_end = .)
-                0x000009d4                __data_load_start = LOADADDR (.data)
-                0x000009d4                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0000098c                __data_load_start = LOADADDR (.data)
+                0x0000098c                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x008002cc        0x0
                 [!provide]                PROVIDE (__noinit_start = .)
@@ -355,7 +355,7 @@ END GROUP
 
 .comment        0x00000000       0x41
  *(.comment)
- .comment       0x00000000       0x41 C:\Users\JMR_2\AppData\Local\Temp\ccjrDyYq.ltrans0.ltrans.o
+ .comment       0x00000000       0x41 C:\Users\JMR_2\AppData\Local\Temp\cct7ZYQX.ltrans0.ltrans.o
                                  0x42 (size before relaxing)
 
 .note.gnu.avr.deviceinfo
