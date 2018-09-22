@@ -16,7 +16,6 @@ namespace NVM {
 	// *** Base Addresses ***
 	enum base {
 		NVM_base	= 0x1000,		/* Base address of the NVM controller */
-		Flash_base	= 0x8000,		/* Base address of the flash memory */
 		Sig_base	= 0x1100,		/* Base address of the signature */
 		Fuse_base	= 0x1280,		/* Base address of the fuses */
 		User_base	= 0x1300,		/* Base address of the User Row EEPROM */
