@@ -100,13 +100,13 @@ Disassembly of section .text:
 00000085 <_ZN4UPDI10Chip_EraseE>:
   85:	65 73 61 72 45 4d 56 4e                             esarEMVN
 
-0000008d <_ZL8baud_tbl>:
+0000008d <_ZN12_GLOBAL__N_1L8baud_tblE>:
   8d:	40 03 a0 01 cf 00 67 00 33 00 22 00 10 00 8a 00     @.....g.3.".....
 
 0000009d <_ZN4UPDI8NVM_ProgE>:
   9d:	20 67 6f 72 50 4d 56 4e                              gorPMVN
 
-000000a5 <_ZL9crc_table>:
+000000a5 <_ZN12_GLOBAL__N_1L9crc_tableE>:
   a5:	00 00 89 11 12 23 9b 32 24 46 ad 57 36 65 bf 74     .....#.2$F.W6e.t
   b5:	48 8c c1 9d 5a af d3 be 6c ca e5 db 7e e9 f7 f8     H...Z...l...~...
   c5:	81 10 08 01 93 33 1a 22 a5 56 2c 47 b7 75 3e 64     .....3.".V,G.u>d
@@ -414,7 +414,7 @@ Disassembly of section .text:
  47a:	80 93 c6 00 	sts	0x00C6, r24	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
  47e:	08 95       	ret
 
-00000480 <_ZZ18NVM_buffered_writejjhhENKUlhhE_clEhh.isra.4>:
+00000480 <_ZZN12_GLOBAL__N_118NVM_buffered_writeEjjhhENKUlhhE_clEhh.isra.4>:
  480:	ef 92       	push	r14
  482:	ff 92       	push	r15
  484:	1f 93       	push	r17
@@ -428,7 +428,7 @@ Disassembly of section .text:
  494:	7c 01       	movw	r14, r24
  496:	91 df       	rcall	.-222    	; 0x3ba <_ZN4UPDI5lds_bEj.constprop.2>
  498:	83 70       	andi	r24, 0x03	; 3
- 49a:	e9 f7       	brne	.-6      	; 0x496 <_ZZ18NVM_buffered_writejjhhENKUlhhE_clEhh.isra.4+0x16>
+ 49a:	e9 f7       	brne	.-6      	; 0x496 <_ZZN12_GLOBAL__N_118NVM_buffered_writeEjjhhENKUlhhE_clEhh.isra.4+0x16>
  49c:	c7 01       	movw	r24, r14
  49e:	b3 df       	rcall	.-154    	; 0x406 <_ZN4UPDI7stptr_wEj>
  4a0:	81 2f       	mov	r24, r17
@@ -442,7 +442,7 @@ Disassembly of section .text:
  4b0:	dc 0f       	add	r29, r28
  4b2:	cf 5f       	subi	r28, 0xFF	; 255
  4b4:	cd 17       	cp	r28, r29
- 4b6:	41 f0       	breq	.+16     	; 0x4c8 <_ZZ18NVM_buffered_writejjhhENKUlhhE_clEhh.isra.4+0x48>
+ 4b6:	41 f0       	breq	.+16     	; 0x4c8 <_ZZN12_GLOBAL__N_118NVM_buffered_writeEjjhhENKUlhhE_clEhh.isra.4+0x48>
  4b8:	ec 2f       	mov	r30, r28
  4ba:	f0 e0       	ldi	r31, 0x00	; 0
  4bc:	ec 5f       	subi	r30, 0xFC	; 252
@@ -450,7 +450,7 @@ Disassembly of section .text:
  4c0:	86 81       	ldd	r24, Z+6	; 0x06
  4c2:	48 df       	rcall	.-368    	; 0x354 <_ZN7UPDI_io3putEc>
  4c4:	21 df       	rcall	.-446    	; 0x308 <_ZN7UPDI_io3getEv>
- 4c6:	f5 cf       	rjmp	.-22     	; 0x4b2 <_ZZ18NVM_buffered_writejjhhENKUlhhE_clEhh.isra.4+0x32>
+ 4c6:	f5 cf       	rjmp	.-22     	; 0x4b2 <_ZZN12_GLOBAL__N_118NVM_buffered_writeEjjhhENKUlhhE_clEhh.isra.4+0x32>
  4c8:	8c 2f       	mov	r24, r28
  4ca:	df 91       	pop	r29
  4cc:	cf 91       	pop	r28
@@ -597,8 +597,8 @@ Disassembly of section .text:
  5e2:	ce 0c       	add	r12, r14
  5e4:	df 1c       	adc	r13, r15
  5e6:	87 01       	movw	r16, r14
- 5e8:	0c 15       	cp	r16, r12
- 5ea:	1d 05       	cpc	r17, r13
+ 5e8:	c0 16       	cp	r12, r16
+ 5ea:	d1 06       	cpc	r13, r17
  5ec:	49 f0       	breq	.+18     	; 0x600 <main+0xba>
  5ee:	38 df       	rcall	.-400    	; 0x460 <_ZN7JICE_io3getEv>
  5f0:	f8 01       	movw	r30, r16
@@ -661,11 +661,11 @@ Disassembly of section .text:
  662:	ee ef       	ldi	r30, 0xFE	; 254
  664:	f1 e0       	ldi	r31, 0x01	; 1
  666:	80 81       	ld	r24, Z
- 668:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <flash_pagesize>
+ 668:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <_ZN12_GLOBAL__N_114flash_pagesizeE>
  66c:	e0 e0       	ldi	r30, 0x00	; 0
  66e:	f2 e0       	ldi	r31, 0x02	; 2
  670:	80 81       	ld	r24, Z
- 672:	80 93 01 01 	sts	0x0101, r24	; 0x800101 <eeprom_pagesize>
+ 672:	80 93 01 01 	sts	0x0101, r24	; 0x800101 <_ZN12_GLOBAL__N_115eeprom_pagesizeE>
  676:	ad c0       	rjmp	.+346    	; 0x7d2 <main+0x28c>
  678:	85 31       	cpi	r24, 0x15	; 21
  67a:	09 f4       	brne	.+2      	; 0x67e <main+0x138>
@@ -899,12 +899,12 @@ Disassembly of section .text:
  850:	cd 84       	ldd	r12, Y+13	; 0x0d
  852:	90 e4       	ldi	r25, 0x40	; 64
  854:	98 0f       	add	r25, r24
- 856:	60 90 02 01 	lds	r6, 0x0102	; 0x800102 <flash_pagesize>
+ 856:	60 90 02 01 	lds	r6, 0x0102	; 0x800102 <_ZN12_GLOBAL__N_114flash_pagesizeE>
  85a:	55 24       	eor	r5, r5
  85c:	53 94       	inc	r5
  85e:	92 30       	cpi	r25, 0x02	; 2
  860:	f0 f0       	brcs	.+60     	; 0x89e <main+0x358>
- 862:	60 90 01 01 	lds	r6, 0x0101	; 0x800101 <eeprom_pagesize>
+ 862:	60 90 01 01 	lds	r6, 0x0101	; 0x800101 <_ZN12_GLOBAL__N_115eeprom_pagesizeE>
  866:	82 3b       	cpi	r24, 0xB2	; 178
  868:	38 f0       	brcs	.+14     	; 0x878 <main+0x332>
  86a:	84 3b       	cpi	r24, 0xB4	; 180
@@ -953,7 +953,7 @@ Disassembly of section .text:
  8c0:	71 f0       	breq	.+28     	; 0x8de <main+0x398>
  8c2:	6a e0       	ldi	r22, 0x0A	; 10
  8c4:	8d 2d       	mov	r24, r13
- 8c6:	dc dd       	rcall	.-1096   	; 0x480 <_ZZ18NVM_buffered_writejjhhENKUlhhE_clEhh.isra.4>
+ 8c6:	dc dd       	rcall	.-1096   	; 0x480 <_ZZN12_GLOBAL__N_118NVM_buffered_writeEjjhhENKUlhhE_clEhh.isra.4>
  8c8:	78 2e       	mov	r7, r24
  8ca:	0d 19       	sub	r16, r13
  8cc:	11 09       	sbc	r17, r1
@@ -976,7 +976,7 @@ Disassembly of section .text:
  8ee:	1d 05       	cpc	r17, r13
  8f0:	70 f0       	brcs	.+28     	; 0x90e <__stack+0xf>
  8f2:	86 2d       	mov	r24, r6
- 8f4:	c5 dd       	rcall	.-1142   	; 0x480 <_ZZ18NVM_buffered_writejjhhENKUlhhE_clEhh.isra.4>
+ 8f4:	c5 dd       	rcall	.-1142   	; 0x480 <_ZZN12_GLOBAL__N_118NVM_buffered_writeEjjhhENKUlhhE_clEhh.isra.4>
  8f6:	78 2e       	mov	r7, r24
  8f8:	0c 19       	sub	r16, r12
  8fa:	1d 09       	sbc	r17, r13
@@ -990,7 +990,7 @@ Disassembly of section .text:
  90a:	7d dd       	rcall	.-1286   	; 0x406 <_ZN4UPDI7stptr_wEj>
  90c:	ea cf       	rjmp	.-44     	; 0x8e2 <main+0x39c>
  90e:	80 2f       	mov	r24, r16
- 910:	b7 dd       	rcall	.-1170   	; 0x480 <_ZZ18NVM_buffered_writejjhhENKUlhhE_clEhh.isra.4>
+ 910:	b7 dd       	rcall	.-1170   	; 0x480 <_ZZN12_GLOBAL__N_118NVM_buffered_writeEjjhhENKUlhhE_clEhh.isra.4>
  912:	78 2e       	mov	r7, r24
  914:	10 e0       	ldi	r17, 0x00	; 0
  916:	00 e0       	ldi	r16, 0x00	; 0
@@ -1009,7 +1009,7 @@ Disassembly of section .text:
  930:	ab ce       	rjmp	.-682    	; 0x688 <main+0x142>
  932:	88 30       	cpi	r24, 0x08	; 8
  934:	08 f4       	brcc	.+2      	; 0x938 <__stack+0x39>
- 936:	4d cf       	rjmp	.-358    	; 0x7d2 <main+0x28c>
+ 936:	e2 ce       	rjmp	.-572    	; 0x6fc <main+0x1b6>
  938:	7a ce       	rjmp	.-780    	; 0x62e <main+0xe8>
  93a:	08 85       	ldd	r16, Y+8	; 0x08
  93c:	19 85       	ldd	r17, Y+9	; 0x09
