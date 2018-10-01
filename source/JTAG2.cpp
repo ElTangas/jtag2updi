@@ -17,16 +17,18 @@ uint8_t JTAG2::PARAM_BAUD_RATE_VAL;
 // *** STK500 packet ***
 JTAG2::packet_t JTAG2::packet;
 
-// *** Baud rate lookup table for UBRR0 register ***
-FLASH<uint16_t> baud_tbl[8] = {baud(2400), baud(4800), baud(9600), baud(19200), baud(38400), baud(57600), baud(115200), baud(14400)};
+namespace {
+	// *** Private variables ***
+	uint8_t flash_pagesize;
+	uint8_t eeprom_pagesize;
 
-// *** Private variables ***
-uint8_t flash_pagesize;
-uint8_t eeprom_pagesize;
+	// *** Local functions declaration ***
+	void NVM_fuse_write (uint16_t address, uint8_t data);
+	void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, uint8_t write_type);
 
-// *** Local functions declaration ***
-void NVM_fuse_write (uint16_t address, uint8_t data);
-void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, uint8_t write_type);
+	// *** Baud rate lookup table for UBRR0 register ***
+	FLASH<uint16_t> baud_tbl[8] = {baud(2400), baud(4800), baud(9600), baud(19200), baud(38400), baud(57600), baud(115200), baud(14400)};
+}
 
 // *** Packet functions *** 
 	bool JTAG2::receive() {
@@ -175,13 +177,12 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 				// Turn on LED to indicate program mode
 				PORTB |= 1 << 5;
 				set_status(RSP_OK);
-				return;
+				break;
 			// in other modes fail and inform host of wrong mode
 			default:
 				packet.size_word[0] = 2;
 				packet.body[0] = RSP_ILLEGAL_MCU_STATE;
 				packet.body[1] = system_status; // 0x01;
-				return;
 		}
 	}
 
@@ -200,13 +201,12 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 				// Turn off LED to indicate normal mode
 				PORTB &= ~(1 << 5);
 				set_status(RSP_OK);
-				return;
+				break;
 			// in other modes fail and inform host of wrong mode
 			default:
 				packet.size_word[0] = 2;
 				packet.body[0] = RSP_ILLEGAL_MCU_STATE;
 				packet.body[1] = system_status; // 0x01;
-				return;
 		}
 	}
 	
@@ -282,25 +282,24 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 				UPDI::CPU_reset();
 				// Erase chip process exits program mode, reenter...
 				enter_progmode();
-				return;
+				break;
 			case 4:
 			case 5:
 				NVM::wait<false>();
 				UPDI::sts_b(address, 0xFF);
 				NVM::command<false>(NVM::ER);
+				set_status(RSP_OK);
 				break;
 			case 6:
 			case 7:
 				break;
 			default:
 				set_status(RSP_FAILED);
-				return;
 		}
-		set_status(RSP_OK);
 	}
 
-
 // *** Local functions definition ***
+namespace {
 	void NVM_fuse_write (uint16_t address, uint8_t data) {
 		// Setup UPDI pointer
 		UPDI::stptr_w(NVM::NVM_base + NVM::DATA_lo);
@@ -360,3 +359,4 @@ void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, ui
 			NVM::command<true>(write_cmnd);
 		}
 	}
+}

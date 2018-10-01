@@ -18,6 +18,15 @@
 #endif
 #define BIT_TIME (F_CPU/UPDI_BAUD)
 
+// Local functions
+namespace {
+	void setup_bit_low();
+	void setup_bit_high();
+	void wait_for_bit() __attribute__((always_inline));
+	void stop_timer();
+	void start_timer();
+}
+
 // Enable to get pulses on PD7 showing the sample times for the software UART input
 //#define _DEBUG
 
@@ -184,29 +193,31 @@ void UPDI_io::init(void)
 	start_timer();
 }
 
-inline void UPDI_io::setup_bit_low() {
-	/* OC0A will go low on match with OCR0A */
-	/* Also, set CTC mode - reset timer on match with OCR0A */
-	TCCR0A = (1 << COM0A1) | (0 << COM0A0) | (1 << WGM01);
-}
+namespace {
+	inline void setup_bit_low() {
+		/* OC0A will go low on match with OCR0A */
+		/* Also, set CTC mode - reset timer on match with OCR0A */
+		TCCR0A = (1 << COM0A1) | (0 << COM0A0) | (1 << WGM01);
+	}
 
-inline void UPDI_io::setup_bit_high() {
-	/* OC0A will go high on match with OCR0A */
-	/* Also, set CTC mode - reset timer on match with OCR0A */
-	TCCR0A = (1 << COM0A1) | (1 << COM0A0) | (1 << WGM01);
-}
+	inline void setup_bit_high() {
+		/* OC0A will go high on match with OCR0A */
+		/* Also, set CTC mode - reset timer on match with OCR0A */
+		TCCR0A = (1 << COM0A1) | (1 << COM0A0) | (1 << WGM01);
+	}
 
-inline void UPDI_io::wait_for_bit() {
-	/* Wait for compare match */
-	loop_until_bit_is_set(TIFR0, OCF0A);
-	TIFR0 = (1 << OCF0A);
-}
+	inline void wait_for_bit() {
+		/* Wait for compare match */
+		loop_until_bit_is_set(TIFR0, OCF0A);
+		TIFR0 = (1 << OCF0A);
+	}
 
-inline void UPDI_io::stop_timer() {
-	TCCR0B = 0;
-}
+	inline void stop_timer() {
+		TCCR0B = 0;
+	}
 
-inline void UPDI_io::start_timer() {
-	TCCR0B = 1;
+	inline void start_timer() {
+		TCCR0B = 1;
+	}
 }
 
