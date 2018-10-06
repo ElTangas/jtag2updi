@@ -9,10 +9,8 @@
 #ifndef JTAG2_H_
 #define JTAG2_H_
 
-#include "JICE_io.h"
 #include <stdint.h>
-#include "flash_vars.h"
-#include "NVM.h"
+#include "sys.h"
 
 namespace JTAG2 {
 	
@@ -24,20 +22,9 @@ namespace JTAG2 {
 		PARAM_BAUD_RATE				= 0x05,
 		PARAM_VTARGET				= 0x06
 	};
-	
-	// *** Parameter Values ***
-	constexpr uint8_t PARAM_HW_VER_M_VAL			= 0x01;
-	constexpr uint8_t PARAM_HW_VER_S_VAL			= 0x01;
-	constexpr uint8_t PARAM_FW_VER_M_MIN_VAL		= 0x00;
-	constexpr uint8_t PARAM_FW_VER_M_MAJ_VAL		= 0x06;
-	constexpr uint8_t PARAM_FW_VER_S_MIN_VAL		= 0x00;
-	constexpr uint8_t PARAM_FW_VER_S_MAJ_VAL		= 0x06;
-	extern uint8_t PARAM_EMU_MODE_VAL;
-	extern uint8_t PARAM_BAUD_RATE_VAL;
-	constexpr uint16_t PARAM_VTARGET_VAL			= 5000;	
 
 	// *** valid values for PARAM_BAUD_RATE_VAL
-	enum baud_rates {
+	enum baud_rate {
 		baud_2400	= 0x01,
 		baud_4800,
 		baud_9600,
@@ -47,6 +34,17 @@ namespace JTAG2 {
 		baud_115200,
 		baud_14400
 	};
+	
+	// *** Parameter Values ***
+	constexpr uint8_t PARAM_HW_VER_M_VAL			= 0x01;
+	constexpr uint8_t PARAM_HW_VER_S_VAL			= 0x01;
+	constexpr uint8_t PARAM_FW_VER_M_MIN_VAL		= 0x00;
+	constexpr uint8_t PARAM_FW_VER_M_MAJ_VAL		= 0x06;
+	constexpr uint8_t PARAM_FW_VER_S_MIN_VAL		= 0x00;
+	constexpr uint8_t PARAM_FW_VER_S_MAJ_VAL		= 0x06;
+	extern uint8_t PARAM_EMU_MODE_VAL;
+	extern baud_rate PARAM_BAUD_RATE_VAL;
+	constexpr uint16_t PARAM_VTARGET_VAL			= 5000;	
 
 	// *** General command constants ***
 	enum cmnd {

@@ -10,7 +10,7 @@
 #define UPDI_LO_LVL_H_
 
 #include <stdint.h>
-#include "flash_vars.h"
+#include "sys.h"
 #include "updi_io.h"
 
 namespace UPDI {

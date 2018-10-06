@@ -8,11 +8,9 @@
 // Includes
 #include <avr/io.h>
 #include "updi_io.h"
+#include "sys.h"
 
 // Defines
-#ifndef F_CPU
-#	define F_CPU 16000000U
-#endif
 #ifndef UPDI_BAUD
 #	define UPDI_BAUD 225000U			// (max 225000 min approx. F_CPU/100)
 #endif
