@@ -1,13 +1,12 @@
 /*
- * flash_vars.h
+ * sys.h
  *
- * Created: 26-11-2017 16:36:35
+ * Created: 02-10-2018 13:07:18
  *  Author: JMR_2
  */ 
 
-
-#ifndef FLASH_VARS_H_
-#define FLASH_VARS_H_
+#ifndef SYS_H_
+#define SYS_H_
 
 #include <avr/pgmspace.h>
 
@@ -33,4 +32,16 @@ class flash {
 	}
 };
 
-#endif /* FLASH_VARS_H_ */
+#ifndef F_CPU
+#define F_CPU 16000000U
+#endif
+
+constexpr unsigned int baud(unsigned long b) {
+	return F_CPU/(b*8.0) - 0.5;
+}
+
+namespace SYS {
+	void init(void);
+}
+
+#endif /* SYS_H_ */

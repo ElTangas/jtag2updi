@@ -6,13 +6,14 @@
  */
 
 #include "JTAG2.h"
+#include "JICE_io.h"
+#include "NVM.h"
 #include "crc16.h"
 #include "UPDI_hi_lvl.h"
-#include "baud.h"
 
 // *** Writeable Parameter Values ***
 uint8_t JTAG2::PARAM_EMU_MODE_VAL;
-uint8_t JTAG2::PARAM_BAUD_RATE_VAL;
+JTAG2::baud_rate JTAG2::PARAM_BAUD_RATE_VAL;
 
 // *** STK500 packet ***
 JTAG2::packet_t JTAG2::packet;
@@ -25,9 +26,6 @@ namespace {
 	// *** Local functions declaration ***
 	void NVM_fuse_write (uint16_t address, uint8_t data);
 	void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, uint8_t write_type);
-
-	// *** Baud rate lookup table for UBRR0 register ***
-	FLASH<uint16_t> baud_tbl[8] = {baud(2400), baud(4800), baud(9600), baud(19200), baud(38400), baud(57600), baud(115200), baud(14400)};
 }
 
 // *** Packet functions *** 
@@ -62,10 +60,9 @@ namespace {
 	
 	void JTAG2::delay_exec() {
 		// wait for transmission complete
-		UCSR0A |= 1 << TXC0;
-		loop_until_bit_is_set(UCSR0A, TXC0);
+		JICE_io::flush();
 		// set baud rate
-		UBRR0 = baud_tbl[PARAM_BAUD_RATE_VAL - 1];
+		JICE_io::set_baud(PARAM_BAUD_RATE_VAL);
 	}
 
 // *** Set status function ***
@@ -139,7 +136,7 @@ namespace {
 				PARAM_EMU_MODE_VAL = packet.body[2];
 				break;
 			case PARAM_BAUD_RATE:
-				PARAM_BAUD_RATE_VAL = packet.body[2];
+				PARAM_BAUD_RATE_VAL = (baud_rate)packet.body[2];
 				break;
 			default:
 				set_status(RSP_ILLEGAL_PARAMETER);

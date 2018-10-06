@@ -30,11 +30,12 @@ echo Compiling for %TARGETMCU%...
 %BINPATH%\avr-g++.exe %DEFINES% -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o JTAG2.o %SOURCEPATH%/JTAG2.cpp
 %BINPATH%\avr-g++.exe %DEFINES% -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o updi_io.o %SOURCEPATH%/updi_io.cpp
 %BINPATH%\avr-g++.exe %DEFINES% -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o crc16.o %SOURCEPATH%/crc16.cpp
+%BINPATH%\avr-g++.exe %DEFINES% -c -I%INCPATH% %OPTFLAGS% %CSTDFLAGS% -Wall -mmcu=%TARGETMCU% -o sys.o %SOURCEPATH%/sys.cpp
 
 echo Linking...
 mkdir %BUILDPATH%
 set OPTFLAGS=-Os -flto -mrelax
-%BINPATH%\avr-g++.exe -o %BUILDPATH%\JTAG2UPDI.elf jtag2updi.o JTAG2.o jice_io.o UPDI_lo_lvl.o UPDI_hi_lvl.o updi_io.o crc16.o -Wl,-Map="%BUILDPATH%\STK2UPDI.map" -Wl,--start-group -Wl,-lm -Wl,--end-group -Wl,--gc-sections -mmcu=%TARGETMCU% %OPTFLAGS%
+%BINPATH%\avr-g++.exe -o %BUILDPATH%\JTAG2UPDI.elf jtag2updi.o JTAG2.o jice_io.o UPDI_lo_lvl.o UPDI_hi_lvl.o updi_io.o crc16.o sys.o -Wl,-Map="%BUILDPATH%\STK2UPDI.map" -Wl,--start-group -Wl,-lm -Wl,--end-group -Wl,--gc-sections -mmcu=%TARGETMCU% %OPTFLAGS%
 
 echo Cleaning up...
 del *.o

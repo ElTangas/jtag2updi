@@ -6,7 +6,7 @@
  */ 
 
 #include "crc16.h"
-#include "flash_vars.h"
+#include "sys.h"
 #include "JICE_io.h"
 
 namespace {

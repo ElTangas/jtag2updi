@@ -6,18 +6,16 @@
  */ 
 
 // Includes
-#include "JTAG2.h"
+#include "sys.h"
 #include "updi_io.h"
 #include "JICE_io.h"
-#include "UPDI_lo_lvl.h"
-#include "NVM.h"
+#include "JTAG2.h"
 
 /* Internal stuff */
 namespace {
 	// Prototypes
 	void setup();
 	void loop();
-	void sys_init();
 }
 
 int main(void)
@@ -30,7 +28,7 @@ int main(void)
 namespace {
 	inline void setup() {
 		/* Initialize MCU */
-		sys_init();
+		SYS::init();
 	
 		/* Initialize serial links */
 		JICE_io::init();
@@ -89,22 +87,5 @@ namespace {
 			// some commands need to be executed after sending the answer
 			JTAG2::delay_exec();
 		}
-	}
-
-	void sys_init() {
-		/* Disable digital input buffers on port C */
-		DIDR0 = 0x3F;
-		/* Enable all port D pull-ups */
-		PORTD = 0xFF;
-		/* Enable all port B pull-ups, except for LED */
-		PORTB = 0xFF - (1 << PORTB5);
-		/* Disable unused peripherals */
-		ACSR = 1 << ACD;		// turn off comparator
-		PRR =
-			(1 << PRTWI) |		// turn off 2 wire interface
-			(1 << PRTIM2) |		// turn off timer 2
-			(1 << PRTIM1) |		// turn off timer 1
-			(1 << PRSPI) |		// turn off SPI interface
-			(1 << PRADC);		// turn off the ADC		
 	}
 }
