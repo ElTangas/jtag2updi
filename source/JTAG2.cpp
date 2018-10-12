@@ -172,7 +172,7 @@ namespace {
 				// better clear the page buffer, just in case.
 				UPDI::sts_b(NVM::NVM_base | NVM::CTRLA, NVM::PBC);
 				// Turn on LED to indicate program mode
-				PORTB |= 1 << 5;
+				SYS::setLED();
 				set_status(RSP_OK);
 				break;
 			// in other modes fail and inform host of wrong mode
@@ -196,7 +196,7 @@ namespace {
 			// already in normal mode
 			case 0x82:
 				// Turn off LED to indicate normal mode
-				PORTB &= ~(1 << 5);
+				SYS::clearLED();
 				set_status(RSP_OK);
 				break;
 			// in other modes fail and inform host of wrong mode

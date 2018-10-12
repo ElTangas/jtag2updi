@@ -15,6 +15,8 @@
 #	define UPDI_BAUD 225000U			// (max 225000 min approx. F_CPU/100)
 #endif
 #define BIT_TIME (F_CPU/UPDI_BAUD)
+#define IO_PORT D
+#define IO_PIN 6
 
 // Local functions
 namespace {
@@ -40,7 +42,7 @@ uint8_t UPDI_io::put(char c) {
 	setup_bit_low();
 	start_timer();
 	/* Enable TX output */
-	DDRD |= (1 << DDD6);
+	DDR(IO_PORT) |= (1 << IO_PIN);
 	/* Calculate parity */
 	uint8_t parity;		//get_parity(c);
 	parity = 0;
@@ -62,7 +64,7 @@ uint8_t UPDI_io::put(char c) {
 	wait_for_bit();
 	OCR0A = 2 * BIT_TIME - 1;		// 2 bits
 	/* Ready for RX input, but high due to pull-up */
-	DDRD &= ~(1 << DDD6);
+	DDR(IO_PORT) &= ~(1 << IO_PIN);
 	return c;
 }
 
@@ -77,7 +79,7 @@ uint8_t UPDI_io::put(ctrl c)
 		for (uint8_t i = 0; i < 11; i++) wait_for_bit();	// 12 bits ~ 24.6 ms, as recommended on the datasheet
 		setup_bit_high();
 		wait_for_bit();
-		DDRD &= ~(1 << DDD6);
+		DDR(IO_PORT) &= ~(1 << IO_PIN);
 	};
 	
 	stop_timer();
@@ -87,7 +89,7 @@ uint8_t UPDI_io::put(ctrl c)
 	setup_bit_low();
 	start_timer();
 	/* Enable TX output */
-	DDRD |= (1 << DDD6);
+	DDR(IO_PORT) |= (1 << IO_PIN);
 	/* clear overflow flag */
 	TIFR0 = (1 << OCF0A);
 	switch (c) {
@@ -95,7 +97,7 @@ uint8_t UPDI_io::put(ctrl c)
 			break_pulse();
 			setup_bit_low();
 			wait_for_bit();
-			DDRD |= (1 << DDD6);	
+			DDR(IO_PORT) |= (1 << IO_PIN);	
 		case single_break:
 			break_pulse();
 			wait_for_bit();	
@@ -132,9 +134,9 @@ uint8_t UPDI_io::get() {
 	/* If pull up is enabled, there will be a drift to high state that results in erroneous input sampling. */
 	/* As a side effect, random electrical fluctuations of the input prevent an infinite wait loop */
 	/* in case no target is connected. */
-	PORTD &= ~(1 << PIND6);
+	PORT(IO_PORT) &= ~(1 << IO_PIN);
 	/* Wait for start bit */
-	loop_until_bit_is_clear(PIND, PIND6);
+	loop_until_bit_is_clear(PIN(IO_PORT), IO_PIN);
 
 	start_timer();
 	wait_for_bit();
@@ -152,7 +154,7 @@ uint8_t UPDI_io::get() {
 		wait_for_bit();
 		/* Take sample */
 		//c /= 2;
-		if ( PIND & (1 << PIND6) ) {
+		if ( PIN(IO_PORT) & (1 << IO_PIN) ) {
 			//c |=  0x80;
 			c |= mask;
 		}
@@ -171,9 +173,9 @@ uint8_t UPDI_io::get() {
 #	endif // _DEBUG
 	OCR0A = 2 * BIT_TIME + BIT_TIME / 2 - 1;		// 2.5 bits
 	/* Return as soon as high parity or stop bits start */
-	loop_until_bit_is_set(PIND, PIND6);
+	loop_until_bit_is_set(PIN(IO_PORT), IO_PIN);
 	/* Re-enable pull up */
-	PORTD |= (1 << PIND6);
+	PORT(IO_PORT) |= (1 << IO_PIN);
 	return c;
 }
 

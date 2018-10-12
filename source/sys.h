@@ -8,6 +8,12 @@
 #ifndef SYS_H_
 #define SYS_H_
 
+// Auxiliary Macros
+#define CONCAT(A,B) A##B
+#define PIN(x) CONCAT(PIN,x)
+#define PORT(x) CONCAT(PORT,x)
+#define DDR(x) CONCAT(DDR,x)
+
 #include <avr/pgmspace.h>
 
 #define FLASH const PROGMEM flash
@@ -42,6 +48,8 @@ constexpr unsigned int baud(unsigned long b) {
 
 namespace SYS {
 	void init(void);
+	void setLED(void);
+	void clearLED(void);
 }
 
 #endif /* SYS_H_ */
