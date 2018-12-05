@@ -5,6 +5,9 @@
  *  Author: JMR_2
  */ 
 
+
+#ifndef __AVR_ATmega16__
+
 // Includes
 #include <avr/io.h>
 #include "updi_io.h"
@@ -221,3 +224,5 @@ namespace {
 	}
 }
 
+
+#endif //__AVR_ATmega16__
