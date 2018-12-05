@@ -134,6 +134,13 @@ avrdude done.  Thank you.
 </pre>
 
 
+## Using with AVR JTAG ICE usb stick
+
+The code can be used with the compact **AVR JTAG ICE** usb stick available to buy online from various sources.
+
+See [Tools](tools/avrjtagicev2) section of the project on how to prepare and use the stick.
+
+
 ## Troubleshooting
 
 If you have triple-checked all the connections but still getting errors, the problem might be the speed of the serial links. I have set the jtag2updi entry on the avrdude configuration file to run at 115200 baud by default. This baud rate can cause errors, for example, if your MCU is running at 8MHz.
