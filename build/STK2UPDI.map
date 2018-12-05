@@ -3,13 +3,13 @@ Archive member included to satisfy reference by file (symbol)
 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
                               c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o (exit)
 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
-                              C:\Users\JMR_2\AppData\Local\Temp\ccrxfDTd.ltrans0.ltrans.o (__do_clear_bss)
+                              C:\Users\JMR_2\AppData\Local\Temp\ccVvKlsX.ltrans0.ltrans.o (__do_clear_bss)
 
 Discarded input sections
 
  .data          0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
  .bss           0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
- .data          0x00000000        0x0 C:\Users\JMR_2\AppData\Local\Temp\ccrxfDTd.ltrans0.ltrans.o
+ .data          0x00000000        0x0 C:\Users\JMR_2\AppData\Local\Temp\ccVvKlsX.ltrans0.ltrans.o
  .text          0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
  .data          0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
  .bss           0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
@@ -59,7 +59,7 @@ Linker script and memory map
 
 Address of section .data set to 0x800100
 LOAD c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
-LOAD C:\Users\JMR_2\AppData\Local\Temp\ccrxfDTd.ltrans0.ltrans.o
+LOAD C:\Users\JMR_2\AppData\Local\Temp\ccVvKlsX.ltrans0.ltrans.o
 START GROUP
 LOAD c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5\libm.a
 END GROUP
@@ -185,7 +185,7 @@ END GROUP
  *libprintf_flt.a:*(.progmem.data)
  *libc.a:*(.progmem.data)
  *(.progmem.*)
- .progmem.data  0x00000068      0x23d C:\Users\JMR_2\AppData\Local\Temp\ccrxfDTd.ltrans0.ltrans.o
+ .progmem.data  0x00000068      0x23d C:\Users\JMR_2\AppData\Local\Temp\ccVvKlsX.ltrans0.ltrans.o
                 0x000002a6                . = ALIGN (0x2)
  *fill*         0x000002a5        0x1 
  *(.lowtext)
@@ -252,10 +252,10 @@ END GROUP
                 0x000002c6                __vector_16
                 0x000002c6                __vector_18
                 0x000002c6                __vector_20
- .text          0x000002c8      0x27e C:\Users\JMR_2\AppData\Local\Temp\ccrxfDTd.ltrans0.ltrans.o
+ .text          0x000002c8      0x27e C:\Users\JMR_2\AppData\Local\Temp\ccVvKlsX.ltrans0.ltrans.o
                 0x00000546                . = ALIGN (0x2)
  *(.text.*)
- .text.startup  0x00000546      0x442 C:\Users\JMR_2\AppData\Local\Temp\ccrxfDTd.ltrans0.ltrans.o
+ .text.startup  0x00000546      0x442 C:\Users\JMR_2\AppData\Local\Temp\ccVvKlsX.ltrans0.ltrans.o
                 0x00000546                main
                 0x00000988                . = ALIGN (0x2)
  *(.fini9)
@@ -305,7 +305,7 @@ END GROUP
 .bss            0x00800100      0x1cc
                 0x00800100                PROVIDE (__bss_start = .)
  *(.bss)
- .bss           0x00800100      0x1cc C:\Users\JMR_2\AppData\Local\Temp\ccrxfDTd.ltrans0.ltrans.o
+ .bss           0x00800100      0x1cc C:\Users\JMR_2\AppData\Local\Temp\ccVvKlsX.ltrans0.ltrans.o
  *(.bss*)
  *(COMMON)
                 0x008002cc                PROVIDE (__bss_end = .)
@@ -355,7 +355,7 @@ END GROUP
 
 .comment        0x00000000       0x41
  *(.comment)
- .comment       0x00000000       0x41 C:\Users\JMR_2\AppData\Local\Temp\ccrxfDTd.ltrans0.ltrans.o
+ .comment       0x00000000       0x41 C:\Users\JMR_2\AppData\Local\Temp\ccVvKlsX.ltrans0.ltrans.o
                                  0x42 (size before relaxing)
 
 .note.gnu.avr.deviceinfo
