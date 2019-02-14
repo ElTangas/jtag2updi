@@ -5,10 +5,10 @@ It provides a bridge to program the new attiny817 family of MCUs, that use the U
 
 avrdude -> HW Serial interface -> Programmer MCU (e.g. Mega328P) -> SW Serial on PD6 -> Target MCU (e.g. tiny817)
 
-Currently, I have not tested this software with a level shifter, so the target MCU must run at the same voltage as the programmer.
+Currently, I have not tested this software with a level shifter, however, since the UPDI pin is high voltage tolerant, it's ok to have V_prog > V_target, but not the reverse. So, it's ok to program a 3.3V target with a 5V programmer.
 
 <pre>
-                                              Vcc                     Vcc
+                                            V_prog                 V_target
                                               +-+                     +-+
                                                |                       |
  +----------+          +---------------------+ |                       | +--------------------+
