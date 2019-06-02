@@ -10,7 +10,7 @@ BUILDPATH="$PWD/build"
 OPTFLAGS="-Os -fno-jump-tables -fno-gcse -flto -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax"
 CSTDFLAGS="-funsigned-char -funsigned-bitfields -std=gnu++14"
 
-# select atmega168 or atmega328p as target
+# select atmega168, atmega328p, atmega1280 or atmega2560 as target
 TARGETMCU=atmega328p
 
 # configuration macros
@@ -27,7 +27,7 @@ DEFINES="$DEFINES -DTEMP0=GPIOR0 -DTEMP1=GPIOR1 -DTEMP2=GPIOR2"
 ## select AVRJTAGICE v2.0 as target (override upper)
 ##
 #TARGETMCU=atmega16
-#DEFINES="-DNDEBUG -DUPDI_BAUD=120000U -DF_CPU=7372800 -DLED_PORT=B -DLED_PIN=3 -DUPDI_PORT=D -DUPDI_PIN=2"
+#DEFINES="-DNDEBUG -DUPDI_BAUD=120000U -DF_CPU=7372800 -DLED_PORT=B -DLED_PIN=3 -DUPDI_PORT=D -DUPDI_PIN=2 -DUPDI_IO_TYPE=2"
 
 echo Compiling for $TARGETMCU ...
 $BINPATH/avr-g++ $DEFINES -c -I$INCPATH $OPTFLAGS $CSTDFLAGS -Wall -mmcu=$TARGETMCU -o UPDI_lo_lvl.o $SOURCEPATH/UPDI_lo_lvl.cpp
