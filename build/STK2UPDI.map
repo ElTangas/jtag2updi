@@ -1,47 +1,49 @@
 Archive member included to satisfy reference by file (symbol)
 
-c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
-                              c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o (exit)
-c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
-                              C:\Users\JMR_2\AppData\Local\Temp\ccVvKlsX.ltrans0.ltrans.o (__do_clear_bss)
+c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
+                              c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5/crtatmega328p.o (exit)
+c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
+                              C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o (__do_clear_bss)
 
 Discarded input sections
 
- .data          0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
- .bss           0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
- .data          0x00000000        0x0 C:\Users\JMR_2\AppData\Local\Temp\ccVvKlsX.ltrans0.ltrans.o
- .text          0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
- .data          0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
- .bss           0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
+ .data          0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5/crtatmega328p.o
+ .bss           0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5/crtatmega328p.o
+ .text          0x00000000        0x0 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .data          0x00000000        0x0 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .bss           0x00000000        0x0 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text          0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
+ .data          0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
+ .bss           0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
  .text.libgcc.mul
-                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
+                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
  .text.libgcc.div
-                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
- .text.libgcc   0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
+                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
+ .text.libgcc   0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
  .text.libgcc.prologue
-                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
+                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
  .text.libgcc.builtins
-                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
+                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
  .text.libgcc.fmul
-                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
+                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
  .text.libgcc.fixed
-                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
- .text          0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
- .data          0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
- .bss           0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
+                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
+ .text          0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
+ .data          0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
+ .bss           0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
  .text.libgcc.mul
-                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
+                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
  .text.libgcc.div
-                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
- .text.libgcc   0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
+                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
+ .text.libgcc   0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
  .text.libgcc.prologue
-                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
+                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
  .text.libgcc.builtins
-                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
+                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
  .text.libgcc.fmul
-                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
+                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
  .text.libgcc.fixed
-                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
+                0x00000000        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
 
 Memory Configuration
 
@@ -49,7 +51,7 @@ Name             Origin             Length             Attributes
 text             0x00000000         0x00020000         xr
 data             0x00800060         0x0000ffa0         rw !x
 eeprom           0x00810000         0x00010000         rw !x
-fuse             0x00820000         0x00000003         rw !x
+fuse             0x00820000         0x00000400         rw !x
 lock             0x00830000         0x00000400         rw !x
 signature        0x00840000         0x00000400         rw !x
 user_signatures  0x00850000         0x00000400         rw !x
@@ -58,23 +60,23 @@ user_signatures  0x00850000         0x00000400         rw !x
 Linker script and memory map
 
 Address of section .data set to 0x800100
-LOAD c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
-LOAD C:\Users\JMR_2\AppData\Local\Temp\ccVvKlsX.ltrans0.ltrans.o
+LOAD c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5/crtatmega328p.o
+LOAD C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+LOAD c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5\libm.a
 START GROUP
-LOAD c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5\libm.a
 END GROUP
-LOAD c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a
-LOAD c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5\libm.a
+LOAD c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a
+LOAD c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5\libm.a
 START GROUP
-LOAD c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a
-LOAD c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5\libm.a
-LOAD c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5\libc.a
-LOAD c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5\libatmega328p.a
+LOAD c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a
+LOAD c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5\libm.a
+LOAD c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5\libc.a
+LOAD c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5\libatmega328p.a
 END GROUP
                 0x00020000                __TEXT_REGION_LENGTH__ = DEFINED (__TEXT_REGION_LENGTH__)?__TEXT_REGION_LENGTH__:0x20000
                 0x0000ffa0                __DATA_REGION_LENGTH__ = DEFINED (__DATA_REGION_LENGTH__)?__DATA_REGION_LENGTH__:0xffa0
                 0x00010000                __EEPROM_REGION_LENGTH__ = DEFINED (__EEPROM_REGION_LENGTH__)?__EEPROM_REGION_LENGTH__:0x10000
-                [0x00000003]                __FUSE_REGION_LENGTH__ = DEFINED (__FUSE_REGION_LENGTH__)?__FUSE_REGION_LENGTH__:0x400
+                0x00000400                __FUSE_REGION_LENGTH__ = DEFINED (__FUSE_REGION_LENGTH__)?__FUSE_REGION_LENGTH__:0x400
                 0x00000400                __LOCK_REGION_LENGTH__ = DEFINED (__LOCK_REGION_LENGTH__)?__LOCK_REGION_LENGTH__:0x400
                 0x00000400                __SIGNATURE_REGION_LENGTH__ = DEFINED (__SIGNATURE_REGION_LENGTH__)?__SIGNATURE_REGION_LENGTH__:0x400
                 0x00000400                __USER_SIGNATURE_REGION_LENGTH__ = DEFINED (__USER_SIGNATURE_REGION_LENGTH__)?__USER_SIGNATURE_REGION_LENGTH__:0x400
@@ -169,9 +171,9 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x98c
+.text           0x00000000      0x986
  *(.vectors)
- .vectors       0x00000000       0x68 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
+ .vectors       0x00000000       0x68 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5/crtatmega328p.o
                 0x00000000                __vector_default
                 0x00000000                __vectors
  *(.vectors)
@@ -185,7 +187,16 @@ END GROUP
  *libprintf_flt.a:*(.progmem.data)
  *libc.a:*(.progmem.data)
  *(.progmem.*)
- .progmem.data  0x00000068      0x23d C:\Users\JMR_2\AppData\Local\Temp\ccVvKlsX.ltrans0.ltrans.o
+ .progmem.data._ZN5JTAG28sgn_respE
+                0x00000068       0x1d C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .progmem.data._ZN4UPDI10Chip_EraseE
+                0x00000085        0x8 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .progmem.data._ZN12_GLOBAL__N_1L8baud_tblE
+                0x0000008d       0x10 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .progmem.data._ZN4UPDI8NVM_ProgE
+                0x0000009d        0x8 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .progmem.data._ZN12_GLOBAL__N_1L9crc_tableE
+                0x000000a5      0x200 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
                 0x000002a6                . = ALIGN (0x2)
  *fill*         0x000002a5        0x1 
  *(.lowtext)
@@ -199,18 +210,18 @@ END GROUP
  SORT_BY_NAME(*)(.ctors)
  SORT_BY_NAME(*)(.dtors)
  *(.init0)
- .init0         0x000002a6        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
+ .init0         0x000002a6        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5/crtatmega328p.o
                 0x000002a6                __init
  *(.init0)
  *(.init1)
  *(.init1)
  *(.init2)
- .init2         0x000002a6        0xc c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
+ .init2         0x000002a6        0xc c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5/crtatmega328p.o
  *(.init2)
  *(.init3)
  *(.init3)
  *(.init4)
- .init4         0x000002b2       0x10 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
+ .init4         0x000002b2       0x10 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
                 0x000002b2                __do_clear_bss
  *(.init4)
  *(.init5)
@@ -222,10 +233,10 @@ END GROUP
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x000002c2        0x4 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
+ .init9         0x000002c2        0x4 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5/crtatmega328p.o
  *(.init9)
  *(.text)
- .text          0x000002c6        0x2 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
+ .text          0x000002c6        0x2 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5/crtatmega328p.o
                 0x000002c6                __vector_22
                 0x000002c6                __vector_1
                 0x000002c6                __vector_24
@@ -252,16 +263,52 @@ END GROUP
                 0x000002c6                __vector_16
                 0x000002c6                __vector_18
                 0x000002c6                __vector_20
- .text          0x000002c8      0x27e C:\Users\JMR_2\AppData\Local\Temp\ccVvKlsX.ltrans0.ltrans.o
-                0x00000546                . = ALIGN (0x2)
+                0x000002c8                . = ALIGN (0x2)
  *(.text.*)
- .text.startup  0x00000546      0x442 C:\Users\JMR_2\AppData\Local\Temp\ccVvKlsX.ltrans0.ltrans.o
+ .text._ZN3CRC4nextEhj
+                0x000002c8       0x1a C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZZN7UPDI_io3putENS_4ctrlEENKUlvE_clEv.isra.0
+                0x000002e2       0x26 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZN7UPDI_io3getEv
+                0x00000308       0x4c C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZN7UPDI_io3putEc
+                0x00000354       0x66 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZN4UPDI5lds_bEj.constprop.2
+                0x000003ba       0x12 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZN4UPDI4lcdsENS_3regE.constprop.1
+                0x000003cc        0xa C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZN4UPDI9CPU_resetEv
+                0x000003d6       0x20 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZN4UPDI7stinc_bEh
+                0x000003f6       0x10 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZN4UPDI7stptr_wEj
+                0x00000406       0x16 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZN4UPDI7ldptr_wEv
+                0x0000041c       0x18 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZN4UPDI5sts_bEjh
+                0x00000434       0x1e C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZN4UPDI3repEh
+                0x00000452        0xe C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZN7JICE_io3getEv
+                0x00000460       0x10 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZN7JICE_io3putEc
+                0x00000470       0x10 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZZN12_GLOBAL__N_118NVM_buffered_writeEjjhhENKUlhhE_clEhh.isra.4
+                0x00000480       0x56 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZN4UPDI9write_keyIK5flashIhEEEvRA8_T_
+                0x000004d6       0x28 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZN5JTAG210set_statusEh
+                0x000004fe       0x10 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text._ZN5JTAG214enter_progmodeEv
+                0x0000050e       0x38 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .text.startup.main
+                0x00000546      0x43c C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
                 0x00000546                main
-                0x00000988                . = ALIGN (0x2)
+                0x00000982                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000988        0x0 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
-                0x00000988                _exit
-                0x00000988                exit
+ .fini9         0x00000982        0x0 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
+                0x00000982                _exit
+                0x00000982                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -280,17 +327,17 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000988        0x4 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
+ .fini0         0x00000982        0x4 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
  *(.hightext)
  *(.hightext*)
  *(.progmemx.*)
-                0x0000098c                . = ALIGN (0x2)
+                0x00000986                . = ALIGN (0x2)
  *(.jumptables)
  *(.jumptables*)
-                0x0000098c                _etext = .
+                0x00000986                _etext = .
 
-.data           0x00800100        0x0 load address 0x0000098c
+.data           0x00800100        0x0 load address 0x00000986
                 [!provide]                PROVIDE (__data_start = .)
  *(.data)
  *(.data*)
@@ -305,12 +352,21 @@ END GROUP
 .bss            0x00800100      0x1cc
                 0x00800100                PROVIDE (__bss_start = .)
  *(.bss)
- .bss           0x00800100      0x1cc C:\Users\JMR_2\AppData\Local\Temp\ccVvKlsX.ltrans0.ltrans.o
  *(.bss*)
+ .bss._ZN5JTAG218PARAM_EMU_MODE_VALE
+                0x00800100        0x1 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .bss._ZN12_GLOBAL__N_115eeprom_pagesizeE
+                0x00800101        0x1 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .bss._ZN12_GLOBAL__N_114flash_pagesizeE
+                0x00800102        0x1 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .bss._ZN5JTAG219PARAM_BAUD_RATE_VALE
+                0x00800103        0x1 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+ .bss._ZN5JTAG26packetE
+                0x00800104      0x1c8 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
  *(COMMON)
                 0x008002cc                PROVIDE (__bss_end = .)
-                0x0000098c                __data_load_start = LOADADDR (.data)
-                0x0000098c                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00000986                __data_load_start = LOADADDR (.data)
+                0x00000986                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x008002cc        0x0
                 [!provide]                PROVIDE (__noinit_start = .)
@@ -353,15 +409,15 @@ END GROUP
 .stab.indexstr
  *(.stab.indexstr)
 
-.comment        0x00000000       0x41
+.comment        0x00000000       0x11
  *(.comment)
- .comment       0x00000000       0x41 C:\Users\JMR_2\AppData\Local\Temp\ccVvKlsX.ltrans0.ltrans.o
-                                 0x42 (size before relaxing)
+ .comment       0x00000000       0x11 C:\Users\JMR_2\AppData\Local\Temp\ccz5RPQ0.ltrans0.ltrans.o
+                                 0x12 (size before relaxing)
 
 .note.gnu.avr.deviceinfo
                 0x00000000       0x40
  .note.gnu.avr.deviceinfo
-                0x00000000       0x40 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
+                0x00000000       0x40 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5/crtatmega328p.o
 
 .note.gnu.build-id
  *(.note.gnu.build-id)
@@ -381,39 +437,39 @@ END GROUP
 .debug_aranges  0x00000000       0x40
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x20 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
+                0x00000000       0x20 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
  .debug_aranges
-                0x00000020       0x20 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
+                0x00000020       0x20 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
 
 .debug_pubnames
  *(.debug_pubnames)
 
 .debug_info     0x00000000      0x640
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0x5f4 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
- .debug_info    0x000005f4       0x26 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
- .debug_info    0x0000061a       0x26 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
+ .debug_info    0x00000000      0x5f4 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5/crtatmega328p.o
+ .debug_info    0x000005f4       0x26 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
+ .debug_info    0x0000061a       0x26 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
 
 .debug_abbrev   0x00000000      0x5ca
  *(.debug_abbrev)
- .debug_abbrev  0x00000000      0x5a2 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
- .debug_abbrev  0x000005a2       0x14 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
- .debug_abbrev  0x000005b6       0x14 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
+ .debug_abbrev  0x00000000      0x5a2 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5/crtatmega328p.o
+ .debug_abbrev  0x000005a2       0x14 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
+ .debug_abbrev  0x000005b6       0x14 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
 
-.debug_line     0x00000000      0x12d
+.debug_line     0x00000000      0x103
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x00000000       0x1d c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
- .debug_line    0x0000001d       0x76 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
- .debug_line    0x00000093       0x9a c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
+ .debug_line    0x00000000       0x1d c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5/crtatmega328p.o
+ .debug_line    0x0000001d       0x61 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
+ .debug_line    0x0000007e       0x85 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
 
 .debug_frame
  *(.debug_frame)
 
-.debug_str      0x00000000      0x291
+.debug_str      0x00000000      0x266
  *(.debug_str)
- .debug_str     0x00000000      0x20b c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/../../../../avr/lib/avr5/crtatmega328p.o
- .debug_str     0x0000020b       0x86 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_exit.o)
- .debug_str     0x00000291       0x86 c:/avr-gcc/avr-gcc-8.0.1_2018-01-19_mingw32/bin/../lib/gcc/avr/8.0.1/avr5\libgcc.a(_clear_bss.o)
+ .debug_str     0x00000000      0x208 c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/../../../../avr/lib/avr5/crtatmega328p.o
+ .debug_str     0x00000208       0x5e c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_exit.o)
+ .debug_str     0x00000266       0x5e c:/avr-gcc/avr-gcc-8.1.0-x86-mingw/bin/../lib/gcc/avr/8.1.0/avr5\libgcc.a(_clear_bss.o)
 
 .debug_loc
  *(.debug_loc)
@@ -444,5 +500,5 @@ END GROUP
 
 .debug_addr
  *(.debug_addr)
-OUTPUT(.\build\JTAG2UPDI.elf elf32-avr)
+OUTPUT(./build/JTAG2UPDI.elf elf32-avr)
 LOAD linker stubs
