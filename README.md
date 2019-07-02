@@ -72,6 +72,9 @@ This allows the jtagice mk2 protocol to be used for programming UPDI chips, sinc
 
 However, this would require entirely new definitions for the UPDI chips inside the avrdude.conf file, while using jtagice2 requires only very slight changes to the definions provided by Atmel (now Microchip).
 
+<b>Note:</b>
+If you install the Arduino board "Nano Every" in your Arduino IDE, it will come with versions of avrdude and avrdude.conf files that support jtag2updi. You can use those files instead of the compatibility avrdude.conf supplied here which is meant for older avrdude versions.
+
 Jtagice mk2 is the most advanced of Atmel's programming protocols that still supports a UART serial connection instead of USB, making it easily compatible with any Arduino you choose to host this software, and any OS you run avrdude on.
 
 It's major limitation is speed; it can't go over 115200 Baud, because the protocol lacks definitions for higher speeds. It's actually inferior to the STK500v2 protocol in this respect, this older standard can run at any speed avrdude instructs it to.
