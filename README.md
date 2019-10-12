@@ -109,9 +109,14 @@ avrdude: jtagmkII_close(): bad response to sign-off command: RSP_ILLEGAL_MCU_STA
 avrdude done.  Thank you.
 </pre>
 
-To unlock the chip, you need to erase it. Currently, the "-e" option is not working with jtag2updi, let's call it a known bug, so you need to enter interactive mode, using "-t", and "-F" to override the error:
+To unlock the chip, you need to erase it, using the -e option on avrdude:
 <pre>
-avrdude -c jtag2updi -P com7 -p t1614 -U flash -t -F
+avrdude -c jtag2updi -P com7 -p t1614 -e
+</pre>
+
+Alternatively, you can erase the chip from interactive mode, enter it using "-t", and "-F" to override the error:
+<pre>
+avrdude -c jtag2updi -P com7 -p t1614 -t -F
 </pre>
 
 You will enter the avrdude prompt:
@@ -155,6 +160,8 @@ This can be changed with the avrdude "-b" option. Valid baud rates are 2400, 480
 If the trouble is on the UPDI link, a slower speed can be selected by changing UPDI_BAUD and recompiling.
 You can also try to use the alternate bit banging USART by setting UPDI_IO_TYPE to 2.
 You will find these and other configuration settings in the "sys.h" header file.
+
+Sometimes, the programmer can become irresponsive, in that case it should be reset.
 
 ## Contact the author
 
