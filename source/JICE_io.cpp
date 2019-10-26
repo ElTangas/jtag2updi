@@ -52,7 +52,7 @@ void JICE_io::init(void) {
 	/* Set double speed */
 	UCSR0A = (1<<U2X0);
 	/* Set initial baud rate */
-	UBRR0L = baud(19200);
+	UBRR0 = baud(19200);
 	/* Enable receiver and transmitter */
 	UCSR0B = (1<<RXEN0)|(1<<TXEN0);
 	/* Set frame format: 8data, 1stop bit */
