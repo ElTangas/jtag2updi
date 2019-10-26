@@ -7,13 +7,16 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <avr/power.h>
 
 #include "sys.h"
 
 void SYS::init(void) {
 
 #ifndef __AVR_ATmega16__
-
+#	if defined(ARDUINO_AVR_LARDU_328E)
+	clock_prescale_set ( (clock_div_t) __builtin_log2(32000000UL / F_CPU));
+#	endif
 	/* Disable digital input buffers on port C */
 	DIDR0 = 0x3F;
 	/* Enable all UPDI port pull-ups */
@@ -24,7 +27,6 @@ void SYS::init(void) {
 	ACSR = 1 << ACD;		// turn off comparator
 
 #else
-
         /* No interrupts */
         sei();
         /* Enable all UPDI port pull-ups */
@@ -33,6 +35,7 @@ void SYS::init(void) {
         PORT(LED_PORT) |= (1 << LED_PIN);
         /* Enable all LED port pull-ups, except for the LED pin */
         PORT(LED_PORT) = 0xFF - (1 << LED_PIN);
+
 
         /* Disable unused peripherals */
         SPCR &= ~(1<<SPE);
@@ -47,7 +50,6 @@ void SYS::init(void) {
         OCR1B  = 0x0000;
         TCCR1A = 0x0000;
         TCCR1B = 0x0000;
-
 #endif
 
 }

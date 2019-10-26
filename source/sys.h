@@ -37,7 +37,6 @@
 # endif
 #endif
 
-
 // Default configuration (suitable for ATmega 328P and similar devices @16MHz)
 #ifndef UPDI_PORT
 #define UPDI_PORT D
@@ -73,7 +72,7 @@
  *								Slightly slower upload speed for a given UPDI_BAUD value. Download speed is the same.
  */
 #ifndef UPDI_IO_TYPE
-#define UPDI_IO_TYPE 1		
+#define UPDI_IO_TYPE 2
 #endif
 
 // Flash constants class
@@ -99,10 +98,6 @@ class flash {
 		}
 	}
 };
-
-#ifndef F_CPU
-#define F_CPU 16000000U
-#endif
 
 constexpr unsigned int baud(unsigned long b) {
 	return F_CPU/(b*8.0) - 0.5;
