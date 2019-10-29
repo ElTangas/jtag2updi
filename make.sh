@@ -8,15 +8,15 @@ SOURCEPATH="$PWD/source/"
 BUILDPATH="$PWD/build"
 
 OPTFLAGS="-Os -fno-jump-tables -fno-gcse -flto -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax"
-CSTDFLAGS="-funsigned-char -funsigned-bitfields -std=gnu++14"
+CSTDFLAGS="-funsigned-char -funsigned-bitfields -std=gnu++11"
 
-# select atmega168, atmega328p, atmega1280 or atmega2560 as target
+# select atmega168, atmega328p, atmega1280 or atmega2560 as target (for LGT8F328P, use atmega328p)
 TARGETMCU=atmega328p
 
 # configuration macros
 # NDEBUG -> disable debug output
 # F_CPU=value -> declares at which speed the CPU is running (defaults to 16000000, 16MHz)
-# UPDI_BAUD=value -> sets UPDI baud rate. Maxumum is 225000 (225 kbaud, default value). Minimum is F_CPU/100
+# UPDI_BAUD=value -> sets UPDI baud rate. Maximum is 225000 (225 kbaud, default value). Minimum is F_CPU/200
 DEFINES="-DNDEBUG -DUPDI_BAUD=225000U -DF_CPU=16000000" #atmega328
 
 # Optional optimization settings
