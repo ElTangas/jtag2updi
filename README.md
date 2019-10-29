@@ -1,6 +1,6 @@
 # jtag2updi
 
-This is a firmware, that when uploaded on an atmega328p, or a similar AVR MCU (including experimental support for atmega1280/2560), enables it to interface with avrdude using the jtagice Mk2 protocol via a serial link. In particular, you can use an Arduino Uno/Nano to host this firmware (experimental support for Arduino Mega).
+This is a firmware, that when uploaded on an atmega328p, or a similar AVR MCU (including experimental support for atmega1280/2560, and for Logic Green LGT8F328P/D AVR clones with 32 pins or more), enables it to interface with avrdude using the jtagice Mk2 protocol via a serial link. In particular, you can use an Arduino Uno/Nano to host this firmware (experimental support for Arduino Mega and LGT based Arduino clones).
 It provides a bridge to program the new attiny817 family of MCUs, that use the UPDI interface:
 
 avrdude -> HW Serial interface -> Programmer MCU (e.g. Mega328P) -> SW Serial on PD6 -> Target MCU (e.g. tiny817)
@@ -49,6 +49,8 @@ https://sourceforge.net/projects/mobilechessboar/files/avr-gcc%20snapshots%20%28
 
 The pre-built hex file is for ATMega 328P@16MHz; to use a different MCU of the same family, like the mega168, or running at a frequency different from 16MHz, you will need to rebuild.
 
+When building for Logic Green AVR clones, select atmega328p as target. The chip speed will be set automatically at run time from F_CPU, recommended values are 32MHz or 16MHz, 8MHz also works but is less reliable.
+
 
 ## Building with Arduino IDE
 
@@ -57,6 +59,10 @@ If you prefer, the program can be built as if it was an Arduino sketch. Inside t
 Just copy all the files inside "source" to a new directory called "jtag2updi" inside your sketch main directory.
 
 The Arduino IDE will automatically set the correct MCU model and F_CPU, but if you want to change the speed of the UPDI link, you will have to edit UPDI_BAUD directly in the source code.
+
+When building for Logic Green AVR clones, I recommend that you install the board definitions from dbuezas (https://github.com/dbuezas/lgt8fx).
+
+This version allows selection of the MCU running speed, unlike the official release ([Larduino_HSP](https://github.com/LGTMCU/Larduino_HSP))
 
 
 ## Using with avrdude
