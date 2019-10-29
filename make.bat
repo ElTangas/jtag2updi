@@ -1,21 +1,21 @@
 @ echo off
 setlocal
-set BINPATH="C:\avr-gcc\avr-gcc-8.1.0-x86-mingw\bin"
-set INCPATH="C:\avr-gcc\avr-gcc-8.1.0-x86-mingw\avr\include"
+set BINPATH="C:\avr-gcc\avr-gcc-8.3.0-x86-mingw\bin"
+set INCPATH="C:\avr-gcc\avr-gcc-8.3.0-x86-mingw\avr\include"
 
 set SOURCEPATH=.\source
 set BUILDPATH=.\build
 
 set OPTFLAGS=-Os -fno-jump-tables -fno-gcse -flto -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax
-set CSTDFLAGS=-funsigned-char -funsigned-bitfields -std=gnu++14
+set CSTDFLAGS=-funsigned-char -funsigned-bitfields -std=gnu++11
 
-rem select atmega168, atmega328p, atmega1280 or atmega2560 as target
+rem select atmega168, atmega328p, atmega1280 or atmega2560 as target (for LGT8F328P, use atmega328p)
 set TARGETMCU=atmega328p
 
 rem configuration macros
 rem NDEBUG -> disable debug output
 rem F_CPU=value -> declares at which speed the CPU is running (defaults to 16000000, 16MHz)
-rem UPDI_BAUD=value -> sets UPDI baud rate. Maxumum is 225000 (225 kbaud, default value). Minimum is F_CPU/100
+rem UPDI_BAUD=value -> sets UPDI baud rate. Maximum is 225000 (225 kbaud, default value). Minimum is F_CPU/200
 set DEFINES=-DNDEBUG -DUPDI_BAUD=225000U -DF_CPU=16000000
 
 rem Optional optimization settings
