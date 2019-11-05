@@ -49,7 +49,7 @@ https://sourceforge.net/projects/mobilechessboar/files/avr-gcc%20snapshots%20%28
 
 The pre-built hex file is for ATMega 328P@16MHz; to use a different MCU of the same family, like the mega168, or running at a frequency different from 16MHz, you will need to rebuild.
 
-When building for Logic Green AVR clones, select atmega328p as target. The chip speed will be set automatically at run time from F_CPU, recommended values are 32MHz or 16MHz, 8MHz also works but is less reliable.
+When building for Logic Green AVR clones, select "atmega328p" as target. The macro ARDUINO_AVR_LARDU_328E must also be defined, either in the "sys.h" file (using #define) or in the gcc command line (by adding -DARDUINO_AVR_LARDU_328E). This allows the code to know the target is a LGT chip, and set the chip core speed at run time from F_CPU. Recommended values for F_CPU are 32MHz or 16MHz; 8MHz also works but is less reliable.
 
 
 ## Building with Arduino IDE
