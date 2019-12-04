@@ -8,58 +8,109 @@
 #ifndef SYS_H_
 #define SYS_H_
 
+#include<avr/io.h>
+
+// See if we are compiling for an UPDI chip (xmega3 core)
+#if __AVR_ARCH__ == 103
+# define XTINY
+#endif
+
 // Auxiliary Macros
 #define CONCAT(A,B) A##B
-#define PIN(x) CONCAT(PIN,x)
-#define PORT(x) CONCAT(PORT,x)
-#define DDR(x) CONCAT(DDR,x)
+#if defined XTINY
+#	define PIN(x) CONCAT(VPORT,x).IN
+#	define PORT(x) CONCAT(VPORT,x).OUT
+#	define DDR(x) CONCAT(VPORT,x).DIR
+#else
+#	define PIN(x) CONCAT(PIN,x)
+#	define PORT(x) CONCAT(PORT,x)
+#	define DDR(x) CONCAT(DDR,x)
+#endif
 
 // Configuration for Arduino Mega
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-# ifndef UPDI_PORT
-#  define UPDI_PORT D
-# endif
+#	ifndef UPDI_PORT
+#		define UPDI_PORT D
+#	endif
 
-# ifndef UPDI_PIN
-#  define UPDI_PIN 3
-# endif
+#	ifndef UPDI_PIN
+#		define UPDI_PIN 3
+#	endif
 
-# ifndef LED_PORT
-#  define LED_PORT B
-# endif
+#	ifndef LED_PORT
+#		define LED_PORT B
+#	endif
 
-# ifndef LED_PIN
-#  define LED_PIN 7
-# endif
+#	ifndef LED_PIN
+#		define LED_PIN 7
+#	endif
 
-# ifndef UPDI_IO_TYPE
-#  define UPDI_IO_TYPE 2
-# endif
-#endif
+#	ifndef UPDI_IO_TYPE
+#		define UPDI_IO_TYPE 2
+#	endif
+
+// Configuration for AVR-0/1
+#elif defined XTINY
+#	ifndef UPDI_PORT
+#		define UPDI_PORT B
+#	endif
+
+#	ifndef UPDI_PIN
+#		define UPDI_PIN 0
+#	endif
+
+#	ifndef LED_PORT
+#		define LED_PORT B
+#	endif
+
+#	ifndef LED_PIN
+#		define LED_PIN 1
+#	endif
+
+#	ifndef UPDI_IO_TYPE
+#		define UPDI_IO_TYPE 2
+#	endif
+//	These are currently used only for AVR-0/1 chips
+//	Select which USART peripheral is being used for host PC communication
+//	Also, indicate the port/pin of the HOST_USART Tx pin
+#	ifndef HOST_USART
+#		define HOST_USART USART0
+#	endif
+
+#	ifndef HOST_TX_PORT
+#		define HOST_TX_PORT B
+#	endif
+
+#	ifndef HOST_TX_PIN
+#		define HOST_TX_PIN 2
+#	endif
 
 // Default configuration (suitable for ATmega 328P and similar devices @16MHz)
-#ifndef UPDI_PORT
-#define UPDI_PORT D
+#else
+#	ifndef UPDI_PORT
+#		define UPDI_PORT D
+#	endif
+
+#	ifndef UPDI_PIN
+#		define UPDI_PIN 6
+#	endif
+
+#	ifndef LED_PORT
+#		define LED_PORT B
+#	endif
+
+#	ifndef LED_PIN
+#		define LED_PIN 5
+#	endif
 #endif
 
-#ifndef UPDI_PIN
-#define UPDI_PIN 6
-#endif
-
-#ifndef LED_PORT
-#define LED_PORT B
-#endif
-
-#ifndef LED_PIN
-#define LED_PIN 5
-#endif
 
 #ifndef F_CPU
-#define F_CPU 16000000U
+#	define F_CPU 16000000U
 #endif
 
 #ifndef UPDI_BAUD
-#define UPDI_BAUD 225000U	// (max 225000 min approx. F_CPU/100)
+#	define UPDI_BAUD 225000U	// (max 225000 min approx. F_CPU/100)
 #endif
 
 /*
@@ -72,36 +123,48 @@
  *								Slightly slower upload speed for a given UPDI_BAUD value. Download speed is the same.
  */
 #ifndef UPDI_IO_TYPE
-#define UPDI_IO_TYPE 2
+#	define UPDI_IO_TYPE 2
 #endif
 
 // Flash constants class
-#include <avr/pgmspace.h>
-#define FLASH const PROGMEM flash
+#if defined XTINY
+	template <typename T>
+	using FLASH = const T;
+#else
+#	include <avr/pgmspace.h>
+#	define FLASH const PROGMEM flash
 
-template <typename T>
-class flash {
-	private:
-	const T data;
+	template <typename T>
+	class flash {
+		private:
+		const T data;
 
-	public:
-	// normal constructor
-	constexpr flash (T _data) : data(_data) {}
-	// default constructor
-	constexpr flash () : data(0) {}
+		public:
+		// normal constructor
+		constexpr flash (T _data) : data(_data) {}
+		// default constructor
+		constexpr flash () : data(0) {}
 
-	operator T() const {
-		switch (sizeof(T)) {
-			case 1: return pgm_read_byte(&data);
-			case 2: return pgm_read_word(&data);
-			case 4: return pgm_read_dword(&data);
+		operator T() const {
+			switch (sizeof(T)) {
+				case 1: return pgm_read_byte(&data);
+				case 2: return pgm_read_word(&data);
+				case 4: return pgm_read_dword(&data);
+			}
 		}
-	}
-};
+	};
+#endif
 
-constexpr unsigned int baud(unsigned long b) {
-	return F_CPU/(b*8.0) - 0.5;
-}
+#if defined XTINY
+	// Note: adapted from MicroChip appnote TB3216 "Getting Started with USART"
+	constexpr unsigned int baud_reg_val(unsigned long baud) {
+		return  (F_CPU * 64.0) / (16.0 * baud) + 0.5;
+	}
+#else
+	constexpr unsigned int baud_reg_val(unsigned long baud) {
+		return F_CPU/(baud * 8.0) - 0.5;
+	}
+#endif
 
 namespace SYS {
 	void init(void);
