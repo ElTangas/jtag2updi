@@ -9,7 +9,6 @@
 #ifndef UPDI_LO_LVL_H_
 #define UPDI_LO_LVL_H_
 
-#include <stdint.h>
 #include "sys.h"
 #include "updi_io.h"
 

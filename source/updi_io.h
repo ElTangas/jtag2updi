@@ -9,6 +9,8 @@
 #ifndef UPDI_IO_H_
 #define UPDI_IO_H_
 
+#include <stdint.h>
+
 namespace UPDI_io {
 	// Enums
 	enum ctrl {single_break, double_break, enable};

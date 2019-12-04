@@ -9,7 +9,6 @@
 #ifndef JTAG2_H_
 #define JTAG2_H_
 
-#include <stdint.h>
 #include "sys.h"
 
 namespace JTAG2 {
