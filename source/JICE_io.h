@@ -12,6 +12,9 @@
 #include <stdint.h>
 #include "JTAG2.h"
 
+#warning "modify this to match your USB serial port name"
+#define SERIALCOM Serial
+
 namespace JICE_io {
 	// Function prototypes
 	uint8_t put(char c);

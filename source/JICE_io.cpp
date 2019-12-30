@@ -6,7 +6,8 @@
  */ 
 
 // Includes
-#include <avr/io.h>
+#include <Arduino.h>
+//#include <avr/io.h>
 #include "JICE_io.h"
 #include "sys.h"
 
@@ -21,6 +22,9 @@ uint8_t JICE_io::put(char c) {
 #ifdef __AVR_ATmega16__
 	loop_until_bit_is_set(UCSRA, UDRE);
 	return UDR = c;
+#elif __AVR_ATmega32U4__
+  SERIALCOM.write(c); //test 32U4
+  return c;           //test 32U4
 #else
 	loop_until_bit_is_set(UCSR0A, UDRE0);
 	return UDR0 = c;
@@ -31,6 +35,10 @@ uint8_t JICE_io::get(void) {
 #ifdef __AVR_ATmega16__
 	loop_until_bit_is_set(UCSRA, RXC); /* Wait until data exists. */
 	return UDR;
+#elif __AVR_ATmega32U4__
+  //while (!Serial.available()); //test 32U4
+  uint8_t c = SERIALCOM.read();     //test 32U4
+  return c;                      //test 32U4
 #else
 	loop_until_bit_is_set(UCSR0A, RXC0); /* Wait until data exists. */
 	return UDR0;
@@ -48,6 +56,9 @@ void JICE_io::init(void) {
 	UCSRB = (1<<RXEN)|(1<<TXEN);
 	/* Set frame format: 8data, 1stop bit */
 	UCSRC = (1<<URSEL)|(1<<UCSZ0)|(1<<UCSZ1);
+#elif __AVR_ATmega32U4__
+  //SERIALCOM.begin(115200);   //test 32U4 - baudrate irrelevant
+  SERIALCOM.begin(19200);   //test 32U4 - baudrate irrelevant
 #else
 	/* Set double speed */
 	UCSR0A = (1<<U2X0);
@@ -64,6 +75,8 @@ void JICE_io::flush(void) {
 #ifdef __AVR_ATmega16__
 	UCSRA |= 1 << TXC;
 	loop_until_bit_is_set(UCSRA, TXC);
+#elif __AVR_ATmega32U4__
+  SERIALCOM.flush();    //test 32U4
 #else
 	UCSR0A |= 1 << TXC0;
 	loop_until_bit_is_set(UCSR0A, TXC0);
@@ -74,6 +87,8 @@ void JICE_io::set_baud(JTAG2::baud_rate rate) {
 #ifdef __AVR_ATmega16__
 	UBRRH = 0;
 	UBRRL = baud_tbl[rate - 1];
+#elif __AVR_ATmega32U4__
+  true; //test 32U4
 #else
 	UBRR0 = baud_tbl[rate - 1];
 #endif

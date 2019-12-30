@@ -6,6 +6,9 @@
  */ 
 
 // Includes
+#include <Arduino.h>
+//#include "USBAPI.h"
+
 #include "sys.h"
 #include "updi_io.h"
 #include "JICE_io.h"
@@ -14,19 +17,37 @@
 /* Internal stuff */
 namespace {
 	// Prototypes
-	void setup();
-	void loop();
+	void setup2();
+	void loop2();
 }
+
+// Declared weak in Arduino.h to allow user redefinitions.
+int atexit(void (* /*func*/ )()) { return 0; }
+
+// Weak empty variant initialization function.
+// May be redefined by variant files.
+void initVariant() __attribute__((weak));
+void initVariant() { }
+
+void setupUSB() __attribute__((weak));
+void setupUSB() { }
 
 int main(void)
 {
-	setup();
-	loop();
+  init();
+
+  initVariant();
+
+  #if defined(USBCON)
+    USBDevice.attach();
+  #endif
+	setup2();
+	loop2();
 }
 
 /* Internal stuff */
 namespace {
-	inline void setup() {
+	inline void setup2() {
 		/* Initialize MCU */
 		SYS::init();
 	
@@ -36,7 +57,7 @@ namespace {
 	}
 
 
-	inline void loop() {
+	inline void loop2() {
 		while (1) {
 		
 			// Receive command
