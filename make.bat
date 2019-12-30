@@ -1,7 +1,7 @@
 @ echo off
 setlocal
-set BINPATH="C:\avr-gcc\avr-gcc-8.3.0-x86-mingw\bin"
-set INCPATH="C:\avr-gcc\avr-gcc-8.3.0-x86-mingw\avr\include"
+set BINPATH="C:\avr-gcc\avr-gcc-arduino\bin"
+set INCPATH="C:\avr-gcc\avr-gcc-arduino\avr\include"
 
 set SOURCEPATH=.\source
 set BUILDPATH=.\build
@@ -9,14 +9,38 @@ set BUILDPATH=.\build
 set OPTFLAGS=-Os -fno-jump-tables -fno-gcse -flto -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax
 set CSTDFLAGS=-funsigned-char -funsigned-bitfields -std=gnu++11
 
-rem select atmega168, atmega328p, atmega1280 or atmega2560 as target (for LGT8F328P/D, use atmega328p)
+rem Select host device
+rem
+rem Supported classic AVR: atmega16, atmega88/168/328p, atmega1280/2560, probably others
+rem Supported Logic Green devices: LGT8F328P/D, however, atmega328p must be set as target
+rem Supported AVR-0/1 devices (aka avrxmega3 architecture on gcc): all that have at least 512 KB RAM
+rem
 set TARGETMCU=atmega328p
 
 rem configuration macros
+rem
 rem NDEBUG -> if defined, disable debug output
-rem F_CPU=value -> declares at which speed the CPU is running (defaults to 16000000, 16MHz)
+rem
+rem F_CPU=value -> declares at which speed the host device is running (defaults to 16000000, 16MHz)
+rem
 rem UPDI_BAUD=value -> sets UPDI baud rate. Maximum is 225000 (225 kbaud, default value). Minimum is F_CPU/200
-rem ARDUINO_AVR_LARDU_328E -> if defined, target is a Logic Green LGT8F328P/D
+rem
+rem ARDUINO_AVR_LARDU_328E -> if defined, host device is a Logic Green LGT8F328P/D
+rem
+rem UPDI_IO_TYPE=value -> Selects bitbang UART for interfacing with the UPDI target device. Possible values are 1 and 2.
+rem Type 1 is deprecated, so use type 2 (default).
+rem
+rem UPDI_PORT=port_letter and UPDI_PIN=pin_number -> Select port and pin for UPDI interface to target.
+rem If using UPDI_IO_TYPE=1, these must be set to the OC0A timer output pin.
+rem If using UPDI_IO_TYPE=2, these can be any free I/O pin.
+rem If the target is the Mega328P, defaults to the OC0A pin (PD6). See "sys.h" file for more details.
+rem
+rem HOST_USART=USARTx -> Select USART to be used for serial communication with the host PC, for host devices that
+rem have more than one USART peripheral (tiny AVR-0/1 and mega AVR-0 only). Defaults to USART0.
+rem
+rem HOST_TX_PORT=port_letter and HOST_TX_PIN=pin_number -> Must correspond to port and pin where the Tx signal of HOST_USART
+rem is present (tiny AVR-0/1 and mega AVR-0 only). Defaults to PB2, which is the Tx pin for USART0 on many tiny AVR-0/1 chips.
+rem
 set DEFINES=-DNDEBUG -DUPDI_BAUD=225000U -DF_CPU=16000000
 
 rem Optional optimization settings
