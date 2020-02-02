@@ -14,18 +14,30 @@
 void SYS::init(void) {
 
 #ifndef __AVR_ATmega16__
-#	if defined(ARDUINO_AVR_LARDU_328E)
-	clock_prescale_set ( (clock_div_t) __builtin_log2(32000000UL / F_CPU));
+#	if defined HW_SERIAL
+// skip all init, UART used
+# 	elif defined XTINY
+		// Set clock speed to maximum (default 20MHz, or 16MHz set by fuse)
+		_PROTECTED_WRITE(CLKCTRL.MCLKCTRLB, 0);
+		/* Disable unused peripherals */
+		//ToDo
+#	else
+#		if defined(ARDUINO_AVR_LARDU_328E)
+		clock_prescale_set ( (clock_div_t) __builtin_log2(32000000UL / F_CPU));
+#		endif
+		/* Disable digital input buffers on port C */
+		DIDR0 = 0x3F;
+		/* Disable unused peripherals */
+		ACSR = 1 << ACD;		// turn off comparator
+#	endif	//HW_SERIAL, XTINY	
+#   ifndef HW_SERIAL
+		/* Enable all UPDI port pull-ups */
+		PORT(UPDI_PORT) = 0xFF;
 #	endif
-	/* Disable digital input buffers on port C */
-	DIDR0 = 0x3F;
-	/* Enable all UPDI port pull-ups */
-    PORT(UPDI_PORT) = 0xFF;
-	/* Enable all LED port pull-ups, except for the LED pin */
-	PORT(LED_PORT) = 0xFF - (1 << LED_PIN);
-	/* Disable unused peripherals */
-	ACSR = 1 << ACD;		// turn off comparator
-
+		/* Enable LED */
+		//PORT(LED_PORT) |= (1 << LED_PIN);
+		/* Enable all LED port pull-ups, except for the LED pin */
+		PORT(LED_PORT) = 0xFF - (1 << LED_PIN);
 #else
         /* No interrupts */
         sei();
@@ -50,7 +62,7 @@ void SYS::init(void) {
         OCR1B  = 0x0000;
         TCCR1A = 0x0000;
         TCCR1B = 0x0000;
-#endif
+#endif  //__AVR_ATmega16__
 
 }
 
@@ -60,4 +72,16 @@ void SYS::setLED(void){
 
 void SYS::clearLED(void){
 	PORT(LED_PORT) &= ~(1 << LED_PIN);	
+}
+
+const int LED[] = {3, 6, 9, 14, 10};
+//const int blinklength_ms = 1000;
+//unsigned long milli = 0UL;
+void SYS::LED_blink (int led_no, int led_blinks, int length_ms) {
+  for (int i=0; i <led_blinks; i++) {
+    digitalWrite(LED[led_no], HIGH);   // set the RX LED ON
+    delay(length_ms);
+    digitalWrite(LED[led_no], LOW);   // set the RX LED ON
+    delay(length_ms);
+  }
 }
