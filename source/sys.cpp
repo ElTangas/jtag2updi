@@ -74,7 +74,7 @@ void SYS::clearLED(void){
 	PORT(LED_PORT) &= ~(1 << LED_PIN);	
 }
 
-const int LED[] = {3, 6, 9, 14, 10};
+const int LED[] = {3, 6, 9, 14, 10, 5};
 //const int blinklength_ms = 1000;
 //unsigned long milli = 0UL;
 void SYS::LED_blink (int led_no, int led_blinks, int length_ms) {

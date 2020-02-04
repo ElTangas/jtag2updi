@@ -24,7 +24,11 @@
 #endif
 
 #include "sys.h"
-#include "updi_io.h"
+#if UPDI_IO_TYPE==3
+  #include "updi_io_uart.h"
+#else
+  #include "updi_io.h"
+#endif
 #include "JICE_io.h"
 #include "JTAG2.h"
 
