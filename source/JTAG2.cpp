@@ -18,14 +18,22 @@ JTAG2::baud_rate JTAG2::PARAM_BAUD_RATE_VAL;
 // *** STK500 packet ***
 JTAG2::packet_t JTAG2::packet;
 
+// Local objects
 namespace {
-	// *** Private variables ***
+	// *** Local variables ***
 	uint8_t flash_pagesize;
 	uint8_t eeprom_pagesize;
 
 	// *** Local functions declaration ***
 	void NVM_fuse_write (uint16_t address, uint8_t data);
 	void NVM_buffered_write(uint16_t address, uint16_t lenght, uint8_t buff_size, uint8_t write_type);
+	
+	// *** Signature response message ***
+	FLASH<uint8_t> sgn_resp[29] {	JTAG2::RSP_SIGN_ON, 1,
+		1, JTAG2::PARAM_FW_VER_M_MIN_VAL, JTAG2::PARAM_FW_VER_M_MAJ_VAL, JTAG2::PARAM_HW_VER_M_VAL,
+		1, JTAG2::PARAM_FW_VER_S_MIN_VAL, JTAG2::PARAM_FW_VER_S_MAJ_VAL, JTAG2::PARAM_HW_VER_S_VAL,
+		0, 0, 0, 0, 0, 0,
+		'J', 'T', 'A', 'G', 'I', 'C', 'E', ' ', 'm', 'k', 'I', 'I', 0};
 }
 
 // *** Packet functions *** 
@@ -72,12 +80,7 @@ namespace {
 	}
 
 // *** General command functions ***
-	// *** Signature response message ***
-	FLASH<uint8_t> JTAG2::sgn_resp[29] {	0x86, 1,
-											1, PARAM_FW_VER_M_MIN_VAL, PARAM_FW_VER_M_MAJ_VAL, PARAM_HW_VER_M_VAL,
-											1, PARAM_FW_VER_S_MIN_VAL, PARAM_FW_VER_S_MAJ_VAL, PARAM_HW_VER_S_VAL,
-											0, 0, 0, 0, 0, 0,
-											'J', 'T', 'A', 'G', 'I', 'C', 'E', ' ', 'm', 'k', 'I', 'I', 0};
+
 	void JTAG2::sign_on(){
 		// Initialize JTAGICE2 variables
 		JTAG2::PARAM_EMU_MODE_VAL = 0x02;
@@ -90,6 +93,13 @@ namespace {
 		for (uint8_t i = 0; i < sizeof(sgn_resp); i++) {
 			packet.body[i] = sgn_resp[i];
 		}
+		
+#		ifdef READ_SIB
+		// Append UPDI System Information Block (SIB) to sign-on response for debugging purposes 
+		packet.size_word[0] += READ_SIB;
+		uint8_t (& sib)[READ_SIB] = *(uint8_t (*)[READ_SIB]) (packet.body + sizeof(sgn_resp));
+		UPDI::read_sib(sib);
+#		endif
 	}
 
 	void JTAG2::get_parameter(){

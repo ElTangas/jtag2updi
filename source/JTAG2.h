@@ -67,6 +67,7 @@ namespace JTAG2 {
 		RSP_OK						= 0x80,
 		RSP_PARAMETER				= 0x81,
 		RSP_MEMORY					= 0x82,
+		RSP_SIGN_ON					= 0x86,
 		// Error
 		RSP_FAILED					= 0xA0,
 		RSP_ILLEGAL_PARAMETER		= 0xA1,
@@ -123,8 +124,6 @@ namespace JTAG2 {
 	} extern packet;
 	constexpr uint8_t TOKEN = 0x0E;
 	
-	//  *** Signature response ***
-	extern FLASH<uint8_t> sgn_resp[29];
 	// *** Parameter initialization ***
 	void init();
 

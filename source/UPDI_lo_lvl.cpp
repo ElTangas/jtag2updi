@@ -47,14 +47,6 @@ uint8_t UPDI::lcds(reg r) {
 	return UPDI_io::get();
 }
 
-void UPDI::read_sib(uint8_t (& buffer)[16]) {
-	UPDI_io::put(UPDI::SYNCH);
-	UPDI_io::put(0xE5);
-	for (uint8_t i = 0; i < 16; i++) {
-		buffer[i] = UPDI_io::get();
-	}
-}
-
 uint8_t UPDI::lds_b(uint16_t address){
 	UPDI_io::put(UPDI::SYNCH);
 	UPDI_io::put(0x04);
