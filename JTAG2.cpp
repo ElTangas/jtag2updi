@@ -85,6 +85,8 @@ namespace {
 		/* Initialize or enable UPDI */
 		UPDI_io::put(UPDI_io::double_break);
 #if UPDI_IO_TYPE == 3
+    // use timing from MEGA_AVR project, but worked with timing from bitbang as well
+    
     // Timing Type3 - UPDI UART
     // Bit 3 - Collision and Contention Detection Disable
     UPDI::stcs(UPDI::reg::Control_B, 8);
@@ -94,6 +96,7 @@ namespace {
     // Bit 3=0 RSD Response Signature Enable
     // Bit 2:0 0x0 UPDI Guard Time: 128 cycles (default)
     UPDI::stcs(UPDI::reg::Control_A, 0x80);
+    //UPDI::stcs(UPDI::reg::Control_A, 6);
 #else
     // Timing Type1 UPDI bitbang
     // UPDI Guard Time: 2 cycles
