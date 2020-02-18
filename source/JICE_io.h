@@ -9,8 +9,13 @@
 #ifndef JICE_IO_H_
 #define JICE_IO_H_
 
-#include <stdint.h>
+//#include <stdint.h>
 #include "JTAG2.h"
+
+#if defined __AVR_ATmega32U4__
+#warning "modify this to match your USB serial port name"
+#define SERIALCOM Serial
+#endif
 
 namespace JICE_io {
 	// Function prototypes

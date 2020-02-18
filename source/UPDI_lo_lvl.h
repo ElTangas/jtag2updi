@@ -10,7 +10,12 @@
 #define UPDI_LO_LVL_H_
 
 #include "sys.h"
-#include "updi_io.h"
+#if UPDI_IO_TYPE==3
+  #include "updi_io_uart.h"
+#else
+  #include "updi_io.h"
+#endif
+//#include "updi_io.h"
 
 namespace UPDI {
 	// UPDI registers

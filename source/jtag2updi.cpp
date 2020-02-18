@@ -6,27 +6,56 @@
  */ 
 
 // Includes
+#if defined __AVR_ATmega32U4__
+	#include <Arduino.h>
+	#include "USBAPI.h"
+  
+// Declared weak in Arduino.h to allow user redefinitions.
+	int atexit(void (* /*func*/ )()) { return 0; }
+
+// Weak empty variant initialization function.
+// May be redefined by variant files.
+	void initVariant() __attribute__((weak));
+	void initVariant() { }
+
+	void setupUSB() __attribute__((weak));
+	void setupUSB() { }
+
+#endif
+
 #include "sys.h"
-#include "updi_io.h"
+#if UPDI_IO_TYPE==3
+  #include "updi_io_uart.h"
+#else
+  #include "updi_io.h"
+#endif
 #include "JICE_io.h"
 #include "JTAG2.h"
 
 /* Internal stuff */
 namespace {
 	// Prototypes
-	void setup();
-	void loop();
+	void setup2();
+	void loop2();
 }
 
 int main(void)
 {
-	setup();
-	loop();
+	#if defined __AVR_ATmega32U4__
+		init();
+		initVariant();
+	#endif
+
+	#if defined(USBCON)
+		USBDevice.attach();
+	#endif
+	setup2();
+	loop2();
 }
 
 /* Internal stuff */
 namespace {
-	inline void setup() {
+	inline void setup2() {
 		/* Initialize MCU */
 		SYS::init();
 	
@@ -36,7 +65,7 @@ namespace {
 	}
 
 
-	inline void loop() {
+	inline void loop2() {
 		while (1) {
 		
 			// Receive command
@@ -83,6 +112,7 @@ namespace {
 					break;
 			}
 			// send response
+			//SYS::LED_blink(2, 5, 100);
 			JTAG2::answer();
 			// some commands need to be executed after sending the answer
 			JTAG2::delay_exec();

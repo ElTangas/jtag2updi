@@ -9,6 +9,27 @@
 #define SYS_H_
 
 #include<avr/io.h>
+#include<Arduino.h> //for recognizing HW_SERIAL
+
+//#warning "modify this to match your USB serial port name"
+#define SERIALCOM Serial
+
+// default UART is Serial (HAVE_SERIAL), look for additional ones
+// see if additional HW-SERIAL is available, take biggest for UDPI as default
+#if defined(HAVE_HWSERIAL3)
+#  define HW_SERIAL Serial3
+#elif defined(HAVE_HWSERIAL2)
+#  define HW_SERIAL Serial2
+#elif defined(HAVE_HWSERIAL1)
+#  define HW_SERIAL Serial1
+#endif
+
+//#define HW_SERIAL Serial1
+
+// if HW_SERIAL exists change UDPI mode
+#if defined(HW_SERIAL)
+#    define UPDI_IO_TYPE 3
+#endif
 
 // See if we are compiling for an UPDI chip (xmega3 core)
 #if __AVR_ARCH__ == 103
@@ -27,8 +48,18 @@
 #	define DDR(x) CONCAT(DDR,x)
 #endif
 
+// Configuration for AVR with additional UART - only LED pin needed, UDPI via UART
+#if defined(HW_SERIAL)
+// Leonardo / ProMicro PortB, Pin5 = D9
+#  ifndef LED_PORT
+#    define LED_PORT B
+#  endif
+
+# ifndef LED_PIN
+#   define LED_PIN 5
+# endif
 // Configuration for Arduino Mega
-#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+#elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 #	ifndef UPDI_PORT
 #		define UPDI_PORT D
 #	endif
@@ -170,6 +201,7 @@ namespace SYS {
 	void init(void);
 	void setLED(void);
 	void clearLED(void);
+  void LED_blink (int led_no, int led_blinks, int length_ms);
 }
 
 #endif /* SYS_H_ */

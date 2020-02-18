@@ -221,4 +221,4 @@ namespace {
 }
 
 
-#endif //__AVR_ATmega16__
+#endif //UPDI_IO_TYPE == 1

@@ -6,6 +6,7 @@
  */ 
 
 // Includes
+#include <Arduino.h>
 #include <avr/io.h>
 #include "JICE_io.h"
 #include "sys.h"
@@ -24,6 +25,12 @@ uint8_t JICE_io::put(char c) {
 #elif defined XTINY
 	loop_until_bit_is_set(HOST_USART.STATUS, USART_DREIF_bp);
 	return HOST_USART.TXDATAL = c;
+#elif defined __AVR_ATmega32U4__
+  // wait for Serial to be active
+  // while (!SERIALCOM);
+	// commented out: timeout/error communicating with programmer (status -1) 
+	SERIALCOM.write(c);
+	return c;
 #else
 	loop_until_bit_is_set(UCSR0A, UDRE0);
 	return UDR0 = c;
@@ -37,6 +44,9 @@ uint8_t JICE_io::get(void) {
 #elif defined XTINY
 	loop_until_bit_is_set(HOST_USART.STATUS, USART_RXCIF_bp); /* Wait until data exists. */
 	return HOST_USART.RXDATAL;
+#elif defined __AVR_ATmega32U4__
+	uint8_t c = SERIALCOM.read();
+	return c;
 #else
 	loop_until_bit_is_set(UCSR0A, RXC0); /* Wait until data exists. */
 	return UDR0;
@@ -62,6 +72,12 @@ void JICE_io::init(void) {
 	HOST_USART.BAUD = baud_reg_val(19200);
 	/* Enable receiver and transmitter */
 	HOST_USART.CTRLB = USART_TXEN_bm | USART_RXEN_bm | USART_RXMODE_NORMAL_gc;
+#elif defined __AVR_ATmega32U4__
+	SERIALCOM.begin(19200);   //32U4 uses USB - baudrate irrelevant
+	// wait for Serial to be active
+	while (!SERIALCOM){ SYS::LED_blink(5, 1, 100);};
+  //while (!SERIALCOM);
+
 #else
 	/* Set double speed */
 	UCSR0A = (1<<U2X0);
@@ -81,6 +97,8 @@ void JICE_io::flush(void) {
 #elif defined XTINY
 	HOST_USART.STATUS = 1 << USART_TXCIF_bp;
 	loop_until_bit_is_set(HOST_USART.STATUS, USART_TXCIF_bp);
+#elif defined __AVR_ATmega32U4__
+	SERIALCOM.flush();    //test 32U4
 #else
 	UCSR0A |= 1 << TXC0;
 	loop_until_bit_is_set(UCSR0A, TXC0);
@@ -93,6 +111,8 @@ void JICE_io::set_baud(JTAG2::baud_rate rate) {
 	UBRRL = baud_tbl[rate - 1];
 #elif defined XTINY
 	HOST_USART.BAUD = baud_tbl[rate - 1];
+#elif defined __AVR_ATmega32U4__
+	true; //test 32U4
 #else
 	UBRR0 = baud_tbl[rate - 1];
 #endif
