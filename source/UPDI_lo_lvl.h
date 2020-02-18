@@ -43,8 +43,6 @@ namespace UPDI {
 	void stcs(reg, uint8_t);
 	uint8_t lcds(reg);
 
-	void read_sib(uint8_t (&)[16]);
-
 	uint8_t lds_b(uint16_t);
 	uint16_t lds_w(uint16_t);
 
@@ -77,6 +75,16 @@ namespace UPDI {
 		for (uint8_t i = 8; i != 0; i--) {
 			UPDI_io::put(*key_ptr);
 			key_ptr++;
+		}
+	}
+	
+	template <uint16_t T>
+	void read_sib(uint8_t (& buffer)[T]) {
+		static_assert( (T == 8) || (T == 16), "read_sib(): argument must be a uint8_t[] with 8 or 16 elements" );
+		UPDI_io::put(UPDI::SYNCH);
+		UPDI_io::put(0xE4 + (T >> 4));
+		for (uint8_t i = 0; i < sizeof(buffer); i++) {
+			buffer[i] = UPDI_io::get();
 		}
 	}
 }
