@@ -84,8 +84,25 @@ namespace {
 		JTAG2::PARAM_BAUD_RATE_VAL = JTAG2::baud_19200;
 		/* Initialize or enable UPDI */
 		UPDI_io::put(UPDI_io::double_break);
-		UPDI::stcs(UPDI::reg::Control_A, 6);
-		// Send sign on message
+#if UPDI_IO_TYPE == 3
+    // use timing from MEGA_AVR project, but worked with timing from bitbang as well
+    
+    // Timing Type3 - UPDI UART
+    // Bit 3 - Collision and Contention Detection Disable
+    UPDI::stcs(UPDI::reg::Control_B, 8);
+    // Bit 7 – IBDLY Inter-Byte Delay Enable
+    // Bit 5=0 Parity enable
+    // Bit 4=0 Time-out detection enable
+    // Bit 3=0 RSD Response Signature Enable
+    // Bit 2:0 0x0 UPDI Guard Time: 128 cycles (default)
+    UPDI::stcs(UPDI::reg::Control_A, 0x80);
+    //UPDI::stcs(UPDI::reg::Control_A, 6);
+#else
+    // Timing Type1 UPDI bitbang
+    // UPDI Guard Time: 2 cycles
+    UPDI::stcs(UPDI::reg::Control_A, 6);
+#endif
+    // Send sign on message
 		packet.size_word[0] = sizeof(sgn_resp);
 		for (uint8_t i = 0; i < sizeof(sgn_resp); i++) {
 			packet.body[i] = sgn_resp[i];

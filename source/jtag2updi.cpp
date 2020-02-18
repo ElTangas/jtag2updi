@@ -112,6 +112,7 @@ namespace {
 					break;
 			}
 			// send response
+			//SYS::LED_blink(2, 5, 100);
 			JTAG2::answer();
 			// some commands need to be executed after sending the answer
 			JTAG2::delay_exec();

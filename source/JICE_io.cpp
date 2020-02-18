@@ -27,9 +27,10 @@ uint8_t JICE_io::put(char c) {
 	return HOST_USART.TXDATAL = c;
 #elif defined __AVR_ATmega32U4__
   // wait for Serial to be active
-  while (!SERIALCOM){ SYS::LED_blink(2, 1, 100);};
-	SERIALCOM.write(c); //test 32U4
-	return c;           //test 32U4
+  // while (!SERIALCOM);
+	// commented out: timeout/error communicating with programmer (status -1) 
+	SERIALCOM.write(c);
+	return c;
 #else
 	loop_until_bit_is_set(UCSR0A, UDRE0);
 	return UDR0 = c;
@@ -44,9 +45,8 @@ uint8_t JICE_io::get(void) {
 	loop_until_bit_is_set(HOST_USART.STATUS, USART_RXCIF_bp); /* Wait until data exists. */
 	return HOST_USART.RXDATAL;
 #elif defined __AVR_ATmega32U4__
-	//while (!Serial.available()); //test 32U4
-	uint8_t c = SERIALCOM.read();  //test 32U4
-	return c;                      //test 32U4
+	uint8_t c = SERIALCOM.read();
+	return c;
 #else
 	loop_until_bit_is_set(UCSR0A, RXC0); /* Wait until data exists. */
 	return UDR0;
@@ -73,9 +73,10 @@ void JICE_io::init(void) {
 	/* Enable receiver and transmitter */
 	HOST_USART.CTRLB = USART_TXEN_bm | USART_RXEN_bm | USART_RXMODE_NORMAL_gc;
 #elif defined __AVR_ATmega32U4__
-	SERIALCOM.begin(19200);   //test 32U4 - baudrate irrelevant
+	SERIALCOM.begin(19200);   //32U4 uses USB - baudrate irrelevant
 	// wait for Serial to be active
-	while (!SERIALCOM);
+	while (!SERIALCOM){ SYS::LED_blink(5, 1, 100);};
+  //while (!SERIALCOM);
 
 #else
 	/* Set double speed */

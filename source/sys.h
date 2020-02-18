@@ -9,9 +9,9 @@
 #define SYS_H_
 
 #include<avr/io.h>
-#include<arduino.h> //for recognizing HW_SERIAL
+#include<Arduino.h> //for recognizing HW_SERIAL
 
-#warning "modify this to match your USB serial port name"
+//#warning "modify this to match your USB serial port name"
 #define SERIALCOM Serial
 
 // default UART is Serial (HAVE_SERIAL), look for additional ones
