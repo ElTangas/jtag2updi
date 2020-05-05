@@ -25,6 +25,11 @@ namespace UPDI {
 		uint8_t mode = UPDI::lcds(UPDI::reg::ASI_System_Status);
 		return mode & mask;	
 	}
+	
+	// Disables the UPDI unit
+	inline void disable() {
+		UPDI::stcs(UPDI::reg::Control_B, 4);
+	}
 }
 
 #endif /* UPDI_HI_LVL_H_ */

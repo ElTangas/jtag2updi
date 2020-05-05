@@ -34,6 +34,17 @@ namespace JTAG2 {
 		baud_14400
 	};
 	
+	// *** valid values for PARAM_EMU_MODE_VAL
+	enum emul_mode {
+		EMULATOR_MODE_DEBUGWIRE,
+		EMULATOR_MODE_JTAG_MEGA,
+		EMULATOR_MODE_UNKNOWN,				// default according to JTAGICE MkII protocol
+		EMULATOR_MODE_SPI,
+		EMULATOR_MODE_JTAG_AVR32,
+		EMULATOR_MODE_JTAG_XMEGA,			// default for jtag2updi
+		EMULATOR_MODE_PDI
+	};
+	
 	// *** Parameter Values ***
 	constexpr uint8_t PARAM_HW_VER_M_VAL			= 0x01;
 	constexpr uint8_t PARAM_HW_VER_S_VAL			= 0x01;
@@ -41,7 +52,7 @@ namespace JTAG2 {
 	constexpr uint8_t PARAM_FW_VER_M_MAJ_VAL		= 0x06;
 	constexpr uint8_t PARAM_FW_VER_S_MIN_VAL		= 0x00;
 	constexpr uint8_t PARAM_FW_VER_S_MAJ_VAL		= 0x06;
-	extern uint8_t PARAM_EMU_MODE_VAL;
+	extern emul_mode PARAM_EMU_MODE_VAL;
 	extern baud_rate PARAM_BAUD_RATE_VAL;
 	constexpr uint16_t PARAM_VTARGET_VAL			= 5000;	
 

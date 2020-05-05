@@ -33,6 +33,10 @@ namespace {
 		/* Initialize serial links */
 		JICE_io::init();
 		UPDI_io::init();
+		
+		/* Initialize writeable parameters to default values */
+		JTAG2::init();
+		
 	}
 
 
@@ -59,6 +63,8 @@ namespace {
 				case JTAG2::CMND_SIGN_OFF:
 					// Restore default baud rate before exiting
 					JTAG2::PARAM_BAUD_RATE_VAL = JTAG2::baud_19200;
+					// Change emulator mode to signal that the UPDI unit must be turned off
+					JTAG2::PARAM_EMU_MODE_VAL = JTAG2::emul_mode::EMULATOR_MODE_UNKNOWN;
 				case JTAG2::CMND_LEAVE_PROGMODE:
 					JTAG2::leave_progmode();
 					break;

@@ -12,7 +12,7 @@
 #include "UPDI_hi_lvl.h"
 
 // *** Writeable Parameter Values ***
-uint8_t JTAG2::PARAM_EMU_MODE_VAL;
+JTAG2::emul_mode JTAG2::PARAM_EMU_MODE_VAL;
 JTAG2::baud_rate JTAG2::PARAM_BAUD_RATE_VAL;
 
 // *** STK500 packet ***
@@ -35,6 +35,13 @@ namespace {
 		0, 0, 0, 0, 0, 0,
 		'J', 'T', 'A', 'G', 'I', 'C', 'E', ' ', 'm', 'k', 'I', 'I', 0};
 }
+
+// *** Initialization functions ***
+	void JTAG2::init() {
+		// Initialize JTAGICE2 variables
+		JTAG2::PARAM_EMU_MODE_VAL = JTAG2::emul_mode::EMULATOR_MODE_PDI;
+		JTAG2::PARAM_BAUD_RATE_VAL = JTAG2::baud_rate::baud_19200;
+	}
 
 // *** Packet functions *** 
 	bool JTAG2::receive() {
@@ -71,6 +78,12 @@ namespace {
 		JICE_io::flush();
 		// set baud rate
 		JICE_io::set_baud(PARAM_BAUD_RATE_VAL);
+		
+		// disable UPDI unit if requested
+		if (JTAG2::PARAM_EMU_MODE_VAL != EMULATOR_MODE_PDI) {
+			UPDI::disable();
+			JTAG2::PARAM_EMU_MODE_VAL = EMULATOR_MODE_PDI;
+		}
 	}
 
 // *** Set status function ***
@@ -82,9 +95,6 @@ namespace {
 // *** General command functions ***
 
 	void JTAG2::sign_on(){
-		// Initialize JTAGICE2 variables
-		JTAG2::PARAM_EMU_MODE_VAL = 0x02;
-		JTAG2::PARAM_BAUD_RATE_VAL = JTAG2::baud_19200;
 		/* Initialize or enable UPDI */
 		UPDI_io::put(UPDI_io::double_break);
 		UPDI::stcs(UPDI::reg::Control_A, 6);
@@ -93,9 +103,8 @@ namespace {
 		for (uint8_t i = 0; i < sizeof(sgn_resp); i++) {
 			packet.body[i] = sgn_resp[i];
 		}
-		
+		// Append UPDI System Information Block (SIB) to sign-on response for debugging purposes 		
 #		ifdef READ_SIB
-		// Append UPDI System Information Block (SIB) to sign-on response for debugging purposes 
 		packet.size_word[0] += READ_SIB;
 		uint8_t (& sib)[READ_SIB] = *(uint8_t (*)[READ_SIB]) (packet.body + sizeof(sgn_resp));
 		UPDI::read_sib(sib);
@@ -143,10 +152,10 @@ namespace {
 		uint8_t & parameter = packet.body[1];
 		switch (parameter) {
 			case PARAM_EMU_MODE:
-				PARAM_EMU_MODE_VAL = packet.body[2];
+				PARAM_EMU_MODE_VAL = (emul_mode) packet.body[2];
 				break;
 			case PARAM_BAUD_RATE:
-				PARAM_BAUD_RATE_VAL = (baud_rate)packet.body[2];
+				PARAM_BAUD_RATE_VAL = (baud_rate) packet.body[2];
 				break;
 			default:
 				set_status(RSP_ILLEGAL_PARAMETER);
