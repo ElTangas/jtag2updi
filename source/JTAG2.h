@@ -3,7 +3,7 @@
  *
  * Created: 12-11-2017 11:10:31
  *  Author: JMR_2
- */ 
+ */
 
 
 #ifndef JTAG2_H_
@@ -12,7 +12,7 @@
 #include "sys.h"
 
 namespace JTAG2 {
-	
+
 	// *** Parameter IDs ***
 	enum parameter {
 		PARAM_HW_VER				= 0x01,
@@ -33,18 +33,7 @@ namespace JTAG2 {
 		baud_115200,
 		baud_14400
 	};
-	
-	// *** valid values for PARAM_EMU_MODE_VAL
-	enum emul_mode {
-		EMULATOR_MODE_DEBUGWIRE,
-		EMULATOR_MODE_JTAG_MEGA,
-		EMULATOR_MODE_UNKNOWN,				// default according to JTAGICE MkII protocol
-		EMULATOR_MODE_SPI,
-		EMULATOR_MODE_JTAG_AVR32,
-		EMULATOR_MODE_JTAG_XMEGA,			// default for jtag2updi
-		EMULATOR_MODE_PDI
-	};
-	
+
 	// *** Parameter Values ***
 	constexpr uint8_t PARAM_HW_VER_M_VAL			= 0x01;
 	constexpr uint8_t PARAM_HW_VER_S_VAL			= 0x01;
@@ -52,9 +41,10 @@ namespace JTAG2 {
 	constexpr uint8_t PARAM_FW_VER_M_MAJ_VAL		= 0x06;
 	constexpr uint8_t PARAM_FW_VER_S_MIN_VAL		= 0x00;
 	constexpr uint8_t PARAM_FW_VER_S_MAJ_VAL		= 0x06;
-	extern emul_mode PARAM_EMU_MODE_VAL;
+	extern uint8_t PARAM_EMU_MODE_VAL;
+	extern uint8_t ConnectedTo;
 	extern baud_rate PARAM_BAUD_RATE_VAL;
-	constexpr uint16_t PARAM_VTARGET_VAL			= 5000;	
+	constexpr uint16_t PARAM_VTARGET_VAL			= 5000;
 
 	// *** General command constants ***
 	enum cmnd {
@@ -93,7 +83,7 @@ namespace JTAG2 {
 		RSP_DEBUGWIRE_SYNC_FAILED	= 0xAC,
 		RSP_ILLEGAL_POWER_STATE		= 0xAD
 	};
-	
+
 	// *** memory types for CMND_{READ,WRITE}_MEMORY ***
 	enum mem_type {
 		MTYPE_IO_SHADOW				= 0x30,		// cached IO registers?
@@ -112,12 +102,12 @@ namespace JTAG2 {
 		MTYPE_BOOT_FLASH			= 0xc1,		// xmega boot flash
 		MTYPE_EEPROM_XMEGA			= 0xc4,		// xmega EEPROM in debug mode
 		MTYPE_USERSIG				= 0xc5,		// xmega user signature
-		MTYPE_PRODSIG				= 0xc6		// xmega production signature	
+		MTYPE_PRODSIG				= 0xc6		// xmega production signature
 	};
-	
-	// *** STK500 packet *** 
+
+	// *** STK500 packet ***
 	constexpr uint8_t MESSAGE_START = 0x1B;
-	constexpr int MAX_BODY_SIZE = 450;				// Note: should not be reduced to less than 300 bytes.
+	constexpr int MAX_BODY_SIZE = 700;				// Note: should not be reduced to less than 300 bytes.
 	union packet_t {
 		uint8_t raw[6 + MAX_BODY_SIZE];
 		struct {
@@ -134,11 +124,11 @@ namespace JTAG2 {
 		};
 	} extern packet;
 	constexpr uint8_t TOKEN = 0x0E;
-	
+
 	// *** Parameter initialization ***
 	void init();
 
-	// *** Packet functions *** 
+	// *** Packet functions ***
 	bool receive();
 	void answer();
 	void delay_exec();
@@ -155,6 +145,7 @@ namespace JTAG2 {
 	// *** ISP command functions ***
 	void enter_progmode();
 	void leave_progmode();
+	void go();
 	void read_signature();
 	void read_mem();
 	void write_mem();

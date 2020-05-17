@@ -3,7 +3,7 @@
  *
  * Created: 18-11-2017 10:36:54
  *  Author: JMR_2
- */ 
+ */
 
 
 
@@ -80,7 +80,7 @@ uint8_t UPDI_io::put(ctrl c)
 		wait_for_bit();
 		DDR(UPDI_PORT) &= ~(1 << UPDI_PIN);
 	};
-	
+
 	stop_timer();
 	/* Send falling edge */
 	OCR0A = BIT_TIME - 1;
@@ -96,10 +96,10 @@ uint8_t UPDI_io::put(ctrl c)
 			break_pulse();
 			setup_bit_low();
 			wait_for_bit();
-			DDR(UPDI_PORT) |= (1 << UPDI_PIN);	
+			DDR(UPDI_PORT) |= (1 << UPDI_PIN);
 		case single_break:
 			break_pulse();
-			wait_for_bit();	
+			wait_for_bit();
 			break;
 		case enable:
 		/*
@@ -128,7 +128,7 @@ uint8_t UPDI_io::get() {
 	TCNT0 = 12;		// overhead time; needs to be calibrated
 	/* Make sure overflow flag is reset */
 	TIFR0 = (1 << OCF0A);
-	
+
 	/* Must disable pull-up, because the UPDI UART just sends very short output pulses at the beginning of each bit time. */
 	/* If pull up is enabled, there will be a drift to high state that results in erroneous input sampling. */
 	/* As a side effect, random electrical fluctuations of the input prevent an infinite wait loop */
@@ -221,4 +221,4 @@ namespace {
 }
 
 
-#endif //__AVR_ATmega16__
+#endif
