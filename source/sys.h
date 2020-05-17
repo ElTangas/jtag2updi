@@ -58,7 +58,7 @@
 //	#define USE_SPIDEBUG
 
   //SPIPRESC sets prescaler of SPI clock - it can go *INSANELY* fast, such that very little could keep up with it.
-  
+
   #define SPIPRESC (SPI_CLK2X_bm|SPI_PRESC1_bm)
 
 
@@ -300,9 +300,18 @@
 
 
 // TIMEOUTS
-
+// HOST_TIMEOUT =~250ms
+// TARGET_TIMEOUT=~100ms
+#if (F_CPU==20000000U)
 #define HOST_TIMEOUT 19000
 #define TARGET_TIMEOUT 7800
+#elif (F_CPU==16000000U)
+#define HOST_TIMEOUT 15600
+#define TARGET_TIMEOUT 6250
+#else //8000000U
+#define HOST_TIMEOUT 7800
+#define TARGET_TIMEOUT 3125
+#endif
 
 #ifdef XAVR
 	#define TIMER_ON TCA_SINGLE_CLKSEL_DIV256_gc | TCA_SINGLE_ENABLE_bm
