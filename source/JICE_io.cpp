@@ -11,11 +11,15 @@
 #include "sys.h"
 #include "dbg.h"
 
+#ifndef DISABLE_HOST_TIMEOUT
 #define loop_until_bit_set_or_host_timeout(register,bitpos) ({ \
   SYS::startTimer(); \
   while(!((register&(1<<bitpos))||(SYS::checkTimeouts() & WAIT_FOR_HOST))); \
   SYS::stopTimer(); \
 })
+#else
+#define loop_until_bit_set_or_host_timeout(register,bitpos) loop_until_bit_is_set(register,bitpos)
+#endif
 
 namespace {
   // *** Baud rate lookup table for UBRR0 register ***

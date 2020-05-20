@@ -30,7 +30,9 @@ int main(void)
 
 /* Internal stuff */
 namespace {
+  #ifndef DISABLE_HOST_TIMEOUT
   uint8_t HostTimeoutCount=0;
+  #endif
   inline void setup() {
     /* Initialize MCU */
     //wdt_disable();
@@ -47,11 +49,16 @@ namespace {
     //wdt_enable(WDTO_500MS);
     while (1) {
       // Receive command
+      #ifndef DISABLE_HOST_TIMEOUT
       while(!(JTAG2::receive()||(SYS::checkTimeouts() & WAIT_FOR_HOST)));
-      // Process command
       if (!(SYS::checkTimeouts() & WAIT_FOR_HOST)) {
         HostTimeoutCount=0;
         SYS::clearTimeouts(); //clear the timeouts, because WAIT_FOR_TARGET may be set here because of how this is implemented...
+      #else
+      while(!(JTAG2::receive()));
+      #endif
+      // Process command
+
         #ifdef DEBUG_ON
         DBG::debug('c',JTAG2::packet.body[0]);
         #endif
@@ -105,6 +112,7 @@ namespace {
             JTAG2::set_status(JTAG2::RSP_FAILED);
             break;
         }
+        #ifndef DISABLE_TARGET_TIMEOUT
         if (SYS::checkTimeouts() & WAIT_FOR_TARGET) {
           #ifdef DEBUG_ON
           DBG::debug('t',SYS::checkTimeouts());
@@ -112,15 +120,17 @@ namespace {
           // If we got a timeout while waiting for the target during the preceeding command, then warn the host:
           JTAG2::set_status(JTAG2::RSP_NO_TARGET_POWER); //this error looks like the best fit
         }
+        #endif
         // send response
         JTAG2::answer();
         // some commands need to be executed after sending the answer
         JTAG2::delay_exec();
+      #ifndef DISABLE_HOST_TIMEOUT
       } else { // timed out waiting for host communication
         // We timed out waiting for the host to send something
         // if we thought we were talking with host, that would be a sign that something went wrong
         if (JTAG2::ConnectedTo&0x01) {
-          #ifdef DEBUG_ON
+          #if defined(DEBUG_ON)
           DBG::debug('t',SYS::checkTimeouts());
           DBG::debug('h',HostTimeoutCount);
           #endif
@@ -147,6 +157,7 @@ namespace {
         }
       }
       SYS::clearTimeouts();
+      #endif
     }
   }
 }

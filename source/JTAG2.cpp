@@ -206,18 +206,11 @@ void JTAG2::enter_progmode() {
         // For NVM version 1 parts, there's a page buffer.
         // It might have data in it if something else was writing to the flash when
         // we so rudely interrupted, so better clear the page buffer, just in case.
-        uint8_t NVM_Status = UPDI::lds_b(NVM::NVM_base + NVM::STATUS);
-        uint8_t NVM_Cmnd = UPDI::lds_b(NVM::NVM_base + NVM::CTRLA);
-        if (NVM_Status || NVM_Cmnd ) {
-          #if defined(DEBUG_ON)
-          DBG::debug('d', NVM_Status,NVM_Cmnd);
-          #endif
-          UPDI::sts_b(NVM::NVM_base + NVM::STATUS, 0);
-          UPDI::sts_b(NVM::NVM_base + NVM::CTRLA, 0);
-        }
         UPDI::sts_b(NVM::NVM_base | NVM::CTRLA, NVM::PBC);
-        // NVM version 2 parts don't have this, and trying to do this there annoys the NVM controller
       } else {
+        //NVM v2 devices can get into a state where the command and status registers both read as an invalid result (in my testing, I have only seen 0xFF).
+        // In this case, to restore functionality, both registers should be written 0.
+        // If debug is enabled, report this so that the circumstances that led to this condition can be investigated.
         uint8_t NVM_Status = UPDI::lds_b(NVM_v2::NVM_base + NVM_v2::STATUS);
         uint8_t NVM_Cmnd = UPDI::lds_b(NVM_v2::NVM_base + NVM_v2::CTRLA);
         if (NVM_Status || NVM_Cmnd ) {
@@ -232,33 +225,10 @@ void JTAG2::enter_progmode() {
         // Turn on LED to indicate program mode
         SYS::setLED();
         #if defined(DEBUG_ON)
+        // report the chip revision
         DBG::debug('R',UPDI::lds_b(0x0F01));
         #endif
-/*
-        UPDI::stptr_w(0x0F00);
-        UPDI::rep(31);
-        packet.body[1] = UPDI::ldinc_b();
-        for (uint16_t i = 2; i < 33; i++) {
-          packet.body[i] = UPDI_io::get();
-        }
-        UPDI::stptr_w(0x1100);
-        UPDI::rep(63);
-        packet.body[33] = UPDI::ldinc_b();
-        for (uint16_t i = 1; i < 63; i++) {
-          packet.body[33 + i] = UPDI_io::get();
-        }
-        DBG::debug("SYS", 1);
 
-        for (uint8_t i = 1; i < 33; i++) {
-          DBG::debugWriteByte(' ');
-          DBG::debugWriteHex(packet.body[i]);
-        }
-        DBG::debug("ID", 1);
-        for (uint8_t i = 33; i < 97; i++) {
-          DBG::debugWriteByte(' ');
-          DBG::debugWriteHex(packet.body[i]);
-        }
-*/
         set_status(RSP_OK);
         break;
       // in other modes fail and inform host of wrong mode
@@ -522,8 +492,8 @@ void JTAG2::enter_progmode() {
     //now the data has been written, so reset the command...
     uint8_t stat = UPDI::lds_b(NVM_v2::NVM_base + NVM_v2::STATUS);
     if (stat > 3) {
-      uint8_t cmd=UPDI::lds_b(NVM_v2::NVM_base + NVM_v2::CTRLA);
       #if defined(DEBUG_ON)
+      uint8_t cmd=UPDI::lds_b(NVM_v2::NVM_base + NVM_v2::CTRLA);
       DBG::debug('f',stat,cmd,0);
       #endif
       UPDI::sts_b(NVM_v2::NVM_base + NVM_v2::STATUS, 0);

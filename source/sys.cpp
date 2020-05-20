@@ -25,8 +25,24 @@ void SYS::init(void) {
   #endif
 
   #ifdef XAVR
-    _PROTECTED_WRITE(CLKCTRL.MCLKCTRLB, 0);
-    //PULLUP_ON(UPDI_PORT,UPDI_PIN)
+    #ifdef __AVR_DA__
+      #if (F_CPU == 24000000)
+        /* No division on clock */
+        _PROTECTED_WRITE(CLKCTRL_OSCHFCTRLA, (CLKCTRL_OSCHFCTRLA & ~CLKCTRL_FREQSEL_gm ) | (0x09<< CLKCTRL_FREQSEL_gp ));
+
+      #elif (F_CPU == 20000000)
+        /* No division on clock */
+        _PROTECTED_WRITE(CLKCTRL_OSCHFCTRLA, (CLKCTRL_OSCHFCTRLA & ~CLKCTRL_FREQSEL_gm ) | (0x08<< CLKCTRL_FREQSEL_gp ));
+
+      #elif (F_CPU == 16000000)
+        /* No division on clock */
+        _PROTECTED_WRITE(CLKCTRL_OSCHFCTRLA, (CLKCTRL_OSCHFCTRLA & ~CLKCTRL_FREQSEL_gm ) | (0x07<< CLKCTRL_FREQSEL_gp ));
+      #else
+        #error "F_CPU defined as an unsupported value"
+      #endif
+    #else //0-series or 1-series
+      _PROTECTED_WRITE(CLKCTRL.MCLKCTRLB, 0);
+    #endif
   #else
     #if defined(ARDUINO_AVR_LARDU_328E)
       clock_prescale_set ( (clock_div_t) __builtin_log2(32000000UL / F_CPU));
