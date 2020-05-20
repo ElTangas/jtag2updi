@@ -16,14 +16,15 @@
 #define NO_ACK_WRITE
 
 
-//#define USE_WDT_RESET
+//#define DISABLE_HOST_TIMEOUT
+//#define DISABLE_TARGET_TIMEOUT
 
 
 // Auxiliary Macros
 #define CONCAT(A,B) A##B
 //#define CONCAT3(A,B,C) A##B##C
-#if __AVR_ARCH__ == 103
-//We'll call these ones XAVR for purposes of defines, instead of XTINY, so someone could do this with a x08-series part
+#if (__AVR_ARCH__ == 103) || (__AVR_ARCH__ == 104)
+//We'll call these ones XAVR for purposes of defines, instead of XTINY. This encompases megaAVR 0-series and DA-series parts
 
 	#define XAVR
 	#	define PIN(x) CONCAT(VPORT,x).IN
@@ -95,7 +96,7 @@
 	// Can even change the host USART if you want
 
 
-#elif defined (__AVR_ATmega_Zero__)
+#elif defined (__AVR_ATmega_Zero__ || __AVR_DA__)
 // 4808, 4809. and the rest of the megaAVR 0-series
 // Same as above, pretty much
 // big difference here is your specify the name of the peripheral instead of the number, and the target baud rate, because we grab the OSCCAL value per datasheet./
@@ -229,7 +230,7 @@
 	#	endif
 
 
-#elif defined (__AVR_ATmega_Zero__)
+#elif defined (__AVR_ATmega_Zero__ || __AVR_DA__)
 // 4808, 4809. and the rest of the megaAVR 0-series
 
 
@@ -299,19 +300,7 @@
 
 
 
-// TIMEOUTS
-// HOST_TIMEOUT =~250ms
-// TARGET_TIMEOUT=~100ms
-#if (F_CPU==20000000U)
-#define HOST_TIMEOUT 19000
-#define TARGET_TIMEOUT 7800
-#elif (F_CPU==16000000U)
-#define HOST_TIMEOUT 15600
-#define TARGET_TIMEOUT 6250
-#else //8000000U
-#define HOST_TIMEOUT 7800
-#define TARGET_TIMEOUT 3125
-#endif
+
 
 #ifdef XAVR
 	#define TIMER_ON TCA_SINGLE_CLKSEL_DIV256_gc | TCA_SINGLE_ENABLE_bm
@@ -343,6 +332,23 @@
 #ifndef F_CPU
 	# warning "F_CPU not defined, assuming 16MHz"
 	#	define F_CPU 16000000U
+#endif
+
+// TIMEOUTS
+// HOST_TIMEOUT =~250ms
+// TARGET_TIMEOUT=~100ms
+#if (F_CPU==20000000U)
+	#define HOST_TIMEOUT 19000
+	#define TARGET_TIMEOUT 7800
+#elif (F_CPU==24000000U)
+	#define HOST_TIMEOUT 23400
+	#define TARGET_TIMEOUT 9375
+#elif (F_CPU==16000000U)
+	#define HOST_TIMEOUT 15600
+	#define TARGET_TIMEOUT 6250
+#else //8000000U
+	#define HOST_TIMEOUT 7800
+	#define TARGET_TIMEOUT 3125
 #endif
 
 #ifndef UPDI_BAUD

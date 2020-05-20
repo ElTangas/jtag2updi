@@ -66,7 +66,7 @@ namespace NVM_v2 {
     /* preserve UPDI pointer if requested */
     if (preserve_ptr) temp = UPDI::ldptr_l();
     /* Execute NVM command */
-    UPDI::sts_b(NVM_v2::NVM_base + NVM_v2::CTRLA, cmd);
+    UPDI::sts_b_l(NVM_v2::NVM_base + NVM_v2::CTRLA, cmd);
     /* restore UPDI pointer if requested */
     if (preserve_ptr) UPDI::stptr_l(temp);
   }
@@ -77,7 +77,7 @@ namespace NVM_v2 {
     /* preserve UPDI pointer if requested */
     if (preserve_ptr) temp = UPDI::ldptr_l();
     /* Wait while NVM is busy from previous operations */
-    while (UPDI::lds_b(NVM_v2::NVM_base + NVM_v2::STATUS) & 0x03);
+    while (UPDI::lds_b_l(NVM_v2::NVM_base + NVM_v2::STATUS) & 0x03);
     /* restore UPDI pointer if requested */
     if (preserve_ptr) UPDI::stptr_l(temp);
   }

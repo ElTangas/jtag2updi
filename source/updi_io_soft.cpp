@@ -9,7 +9,6 @@
 // Includes (note: sys.h defines F_CPU, so it should be included before util/delay.h)
 #include "sys.h"
 #include "updi_io.h"
-#include "dbg.h"
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -48,6 +47,7 @@
 
 // Functions
 /* Sends regular characters through the UPDI link */
+#ifndef DISABLE_TARGET_TIMEOUT
 uint8_t UPDI_io::get() {
 
         // rx input
@@ -111,6 +111,66 @@ uint8_t UPDI_io::get() {
         SYS::stopTimer();
         return c;
 }
+#else
+//version without target timeout
+uint8_t UPDI_io::get() {
+
+        // rx input
+        DDR(UPDI_PORT)  &= ~(1 << UPDI_PIN);
+        // no pullup
+        PORT(UPDI_PORT) &= ~(1 << UPDI_PIN);
+        uint8_t c;
+        __asm volatile
+        (
+            " ldi  %0, 128 \n\t"        // init
+
+            // wait for start edge
+            "WaitStart: \n\t"
+            " sbic %[uart_port], %[uart_pin] \n\t"
+            " rjmp WaitStart \n\t"
+            // all that stuff with the timer will add 4 cycles on a classic AVR and 3 on a XAVR.
+            // so thhe "scatter" introduced by this will be in the range 0~6 or 0~5 ias opposed to
+            // 0~2 like it was before.
+
+            // skew into middle of bit
+            " ldi r18, %[rxdelay] /2 + 6/3  \n\t"  // 0.5 bit cycle delay -
+            "HBitDelay: \n\t"
+            " dec r18 \n\t"
+            " brne HBitDelay \n\t"
+
+            // 8 bits
+            "RxBLoop: \n\t"
+            " ldi r18, %[rxdelay] - 6/3 \n\t"  // 1 bit cycle delay
+            "RxBDelay: \n\t"
+            " subi r18, 1 \n\t"
+            " brne RxBDelay \n\t"
+      " sbic %[uart_port], %[uart_pin] \n\t"
+      " sec \n\t"
+      " ror %0 \n\t"
+            " brcc RxBLoop \n\t"
+
+            // Wait approx. 2 bit times: skip to centre of 1st stop bit (ignore parity).
+        // The function returns approx 1.5 bit times before the 2nd stop bit completes
+      // to allow burst reads at high UPDI speeds on 8MHz chips.
+      // This time needs to be compensated in the Tx function.
+            " ldi r18, 2 * %[rxdelay] \n\t"  // delay counter
+            "StopDelay: \n\t"
+            " dec r18 \n\t"
+            " brne StopDelay \n\t"
+
+            : "=r" (c)
+            : [uart_port] "i" (_SFR_IO_ADDR(PIN(UPDI_PORT))),
+              [uart_pin]  "i" (UPDI_PIN),
+              [rxdelay]   "i" (BITTIME)
+            : "r18"
+        );
+        // re-enable pull up
+        PORT(UPDI_PORT) |= (1 << UPDI_PIN);
+        return c;
+}
+
+#endif
+
 
 uint8_t UPDI_io::put(char c) {
 
