@@ -256,10 +256,10 @@ void DBG::initDebug(void) {
     DDR(SPIPORT)|=1<<SSPIN;
     PORT(SPIPORT)|=1<<SSPIN;
   #endif
-  #if defined XAVR
+  #if defined(XAVR)
     // Set clock speed to maximum (default 20MHz, or 16MHz set by fuse)
     #if defined(USE_USARTDEBUG)
-      #if !defined(USE_EXTERNAL_OSCILLATOR)
+      #if !defined(USE_EXTERNAL_OSCILLATOR) && !defined(__AVR_DA__)
         #if (F_CPU==20000000UL) //this means we are on the 20MHz oscillator
           #ifdef UARTBAUD3V
             int8_t sigrow_val = SIGROW.OSC20ERR3V;
@@ -370,7 +370,7 @@ void DBG::debugWriteBytes(const uint8_t *data, size_t datalen) {
     while (datalen--) {
       DBG::debugWriteByte(*data++);
     }
-    
+
 }
 void DBG::debugWriteHex(uint8_t databyte) {
   uint8_t b1=(databyte>>4)|'0';
