@@ -65,7 +65,7 @@ When building for Logic Green AVR clones, I recommend that you install the board
 This version allows selection of the MCU running speed, unlike the official release ([Larduino_HSP](https://github.com/LGTMCU/Larduino_HSP))
 
 <b>Note:</b>
-The following pins are used for UPDI communication on common Arduino boards:
+By default, the following pins are used for UPDI communication on common Arduino boards:
 - Arduino Mega (1280/2560): PD3 -> Digital Pin 18
 - Arduino (328P): PD6 -> Digital Pin 6
 
