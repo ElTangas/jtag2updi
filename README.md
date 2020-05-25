@@ -5,9 +5,10 @@ It provides a bridge to program the new attiny817 family of MCUs, that use the U
 
 avrdude -> HW Serial interface -> Programmer MCU (e.g. Mega328P) -> SW Serial on PD6 -> Target MCU (e.g. tiny817)
 
-Currently, I have not tested this software with a level shifter, however, since the UPDI pin is high voltage tolerant, it's ok to have V_prog > V_target, but not the reverse. <strong>Warning: only the UPDI pins of devices that support high voltage programming should be assumed to be high voltage tolerant. This is not the case for the Mega AVR-0 series!</strong>
+Currently, I have not tested this software with a level shifter, however, since the UPDI pin is high voltage tolerant, it's ok to have V_prog > V_target, but not the reverse. <strong>Warning: only the UPDI pins of devices that support high voltage programming should be assumed to be high voltage tolerant. This is not the case for the MegaAVR 0-series or AVR-DA series! </strong>
 
 Notice, however, that the logic levels need to be compatible for successful programming: V_target cannot be lower than about 60% of V_prog (60% will likelly work, 70% is guaranteed to work). Therefore, it will not be possible to program a 2.5V target with a 5.0V programmer, because communication errors will surely occur (but no electrical damage), but if V_target is 3.3V (66% of 5.0V) chances are good.
+
 
 <pre>
                                             V_prog                 V_target
@@ -36,7 +37,7 @@ Alternatively, you can use an Arduino without integrated USB/serial adapter, lik
 
 ## Building with avr-gcc
 
-To build, run the make.bat file, after editing it with the following options: 
+To build, run the make.bat file, after editing it with the following options:
 1) path of AVR-GCC on your system
 2) correct target MCU
 3) Frequency at which your MCU is running (F_CPU, defaults to 16MHz)
@@ -125,6 +126,7 @@ avrdude -c jtag2updi -P com7 -p t1614 -e
 </pre>
 
 Alternatively, you can erase the chip from interactive mode, enter it using "-t", and "-F" to override the error:
+Note: You must build with DISABLE_HOST_TIMEOUT defined for terminal mode to work. See below for more information on the timeouts.
 <pre>
 avrdude -c jtag2updi -P com7 -p t1614 -t -F
 </pre>
@@ -153,6 +155,23 @@ avrdude> quit
 avrdude done.  Thank you.
 </pre>
 
+
+## Extra information
+If you call avrdude with -v -v -v -v (maximum verbosity) so you see all the data sent back, it will add
+
+
+## Debug channel
+Regardless of what AVR you are running it on, you can enable SPI debugging in sys.h (see commented out examples) - this outputs data on SPI that is meant to be converted to serial on another board - this debug channel allows you to get something approxiomating a serial port to print debug info to on parts without a second USART
+On parts with multiple USARTS, you can just use that for debugging (similarly, there are commented out examples). Both print the same data.
+In dbg.h, you can enable extended information for most UPDI calls.
+
+## Timeouts
+Previous versions of jtag2updi could get hung up waiting for a target that wasn't working (for example, because it was connected incorrectly) or the host (for example, if you entered a slow command, like reading a 128k flash memory when you didn't intend to, and ctrl-c hoping to "save time"), requiring a reset to reconnect to it. This version has timeouts on communication with both the host (250ms - it gives up and assumes the host isn't going to sat anything after three timeouts, and awaits a fresh session from avrdude), and when talking to the target (100ms - which is far more time than the target should ever take to respond). In the event of a timeout communicating with the target, it will return RSP_NO_TARGET_POWER response. The host timeout of course prevents terminal mode from working (target timeout should just prevent hangs without downside)
+Both can be disabled by uncommenting #define DISABLE_TARGET_TIMEOUT and/or #define DISABLE_HOST_TIMEOUT in sys.h - the latter should uncommented if terminal mode is to be used, and should remain commented out if terminal mode will not be used.
+
+## Supported parts
+jtag2updi was tested on tinyAVR 0-series and 1-series and ATmega 328p/168p.
+It is expected to work on classic megaAVR x8, x4, x1, and x0 parts, as well as megaAVR 0-series and AVR-DA parts.
 
 ## Using with AVR JTAG ICE usb stick
 
