@@ -13,11 +13,24 @@
 #include <stdio.h> // for size_t
 #include "parts.h"
 
+//Disable the response signature during burst writes to permit faster writes
 #define NO_ACK_WRITE
 
-
+// Disable the host timeout - this is required for use with avrdude in terminal mode (-t)
+// but with this disabled, can get "stuck" if communication with host is interrupted at 115200 baud
+// as avrdude on next start will try to communicate at 19200 baud. Reset is required to fix this.
+// Potential enhancement - if this is set, while waiting for message from host, ALSO count transitions on the RX pin
+// If we see a bunch of transitions, but no received characters, we know the host is using the wrong baud rate, and
+// so, switch back to 19200 baud.
 //#define DISABLE_HOST_TIMEOUT
+
+// Disable the timeout waiting for response from target. Probablty not necessary to set. With this disabled, if the target is expected to respond
+// but does not, jtag2updi will get stuck waiting for it.
+
 //#define DISABLE_TARGET_TIMEOUT
+
+// this will include the SIB, deduced NVM version, and silicon revision in early responses to SET_DEVICE_DESCRIPTPOR (for SIB and NVM version) and ENTER_PROGMODE (for silicon rev)
+#define INCLUDE_EXTRA_INFO_JTAG
 
 
 // Auxiliary Macros
@@ -83,8 +96,8 @@
 	// On PB parts can also use second USART. Using the second SPI is not supported.
 
 
-//	#define USE_SPIDEBUG
-//	#define SPIPRESC (0x05)
+	//#define USE_SPIDEBUG
+	//#define SPIPRESC (0x05)
 
 
 

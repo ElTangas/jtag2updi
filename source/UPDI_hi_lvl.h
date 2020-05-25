@@ -17,7 +17,9 @@ namespace UPDI {
 	constexpr uint8_t RESET_OFF = 0x00;
 
 	// Function prototypes
-	void CPU_reset();
+	bool CPU_reset();
+  void CPU_reset_on();
+  bool CPU_reset_off();
 
 	// returns the current CPU mode, optionally a mask can be applied to ignore "don't care" status bits
 	template <uint8_t mask = 0xFF>

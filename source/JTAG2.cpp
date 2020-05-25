@@ -97,7 +97,7 @@ void JTAG2::sign_on() {
   for (uint8_t i = 0; i < sizeof(sgn_resp); i++) {
     packet.body[i] = sgn_resp[i];
   }
-  JTAG2::ConnectedTo |= 0x01; //now connected to host
+  JTAG2::ConnectedTo |= 0x02; //now connected to host
 }
 
 void JTAG2::get_parameter() {
@@ -163,95 +163,153 @@ void JTAG2::set_device_descriptor() {
   uint8_t sib[16];
   UPDI::read_sib(sib);
   #if defined(DEBUG_ON)
-  DBG::debug(sib, 16, 1);
+    DBG::debug(sib, 16, 1);
   #endif
-
+  JTAG2::ConnectedTo |= 0x01; // connected to target
   if (sib[10] == '2') {
     nvm_version = 2;
   } else {
     nvm_version = 1;
   }
-  packet.size_word[0] = 20;
-  packet.body[1] = 'S';
-  packet.body[2] = 'I';
-  packet.body[3] = 'B';
-  for (uint8_t i = 0; i < 16; i++) {
-    packet.body[i + 4] = sib[i];
-  }
-  JTAG2::ConnectedTo |= 0x01; //now connected to target
   set_status(RSP_OK);
+  #ifdef INCLUDE_EXTRA_INFO_JTAG
+    packet.size_word[0] = 24;
+    packet.body[1] = 'S';
+    packet.body[2] = 'I';
+    packet.body[3] = 'B';
+    for (uint8_t i = 0; i < 16; i++) {
+      packet.body[i + 4] = sib[i];
+    }
+    packet.body[20]= 'N';
+    packet.body[21]= 'V';
+    packet.body[22]= 'M';
+    packet.body[23]= (nvm_version==2?'2':'1');    
+  #endif
 }
 
 // *** Target mode set functions ***
 // *** Sets MCU in program mode, if possibe ***
 void JTAG2::enter_progmode() {
-  //SYS::setVerLED();
-  // Reset the MCU now, to prevent the WDT (if active) to reset it at an unpredictable moment
-  UPDI::CPU_reset();
-  // Now we have time to enter program mode (this mode also disables the WDT)
-  const uint8_t system_status = UPDI::CPU_mode<0xEF>();
-  switch (system_status) {
-    // in normal operation mode
-    case 0x82:
-      // Write NVN unlock key (allows read access to all addressing space)
-      UPDI::write_key(UPDI::NVM_Prog);
-      // Request reset
-      UPDI::CPU_reset();
-    // Wait for NVM unlock state
-    //while (UPDI::CPU_mode() != 0x08);
-    // already in program mode
-    /* fall-thru */
-    case 0x08:
-      if (nvm_version == 1) {
-        // For NVM version 1 parts, there's a page buffer.
-        // It might have data in it if something else was writing to the flash when
-        // we so rudely interrupted, so better clear the page buffer, just in case.
-        UPDI::sts_b(NVM::NVM_base | NVM::CTRLA, NVM::PBC);
-      } else {
-        //NVM v2 devices can get into a state where the command and status registers both read as an invalid result (in my testing, I have only seen 0xFF).
-        // In this case, to restore functionality, both registers should be written 0.
-        // If debug is enabled, report this so that the circumstances that led to this condition can be investigated.
-        uint8_t NVM_Status = UPDI::lds_b(NVM_v2::NVM_base + NVM_v2::STATUS);
-        uint8_t NVM_Cmnd = UPDI::lds_b(NVM_v2::NVM_base + NVM_v2::CTRLA);
-        if (NVM_Status || NVM_Cmnd ) {
-          #if defined(DEBUG_ON)
-          DBG::debug('d', NVM_Status,NVM_Cmnd);
-          #endif
-          UPDI::sts_b(NVM_v2::NVM_base + NVM_v2::STATUS, 0);
-          UPDI::sts_b(NVM_v2::NVM_base + NVM_v2::CTRLA, 0);
-
+  const uint8_t initial_status = UPDI::CPU_mode<0xEF>();
+  // reset the MCU now, to prevent the WDT (if active) to reset it at an unpredictable moment
+  // but just enter reset state - don't let it out of reset state, because then it will run 
+  // the first few instructions of the previous sketch...
+  if (initial_status!=0x08){
+    UPDI::CPU_reset_on();
+    // Now we have time to enter program mode (this mode also disables the WDT)
+    // Previously a reset was done here WHICH WOULD GUARANTEE THAT IT WAS 
+    // IN NORMAL MODE!! But then we checked anyway, and went into a meaningless
+    // switch case statement... because we already KNOW that it would be in 
+    // normal mode, because we just reset it into normal mode.... 
+    // So, since we know we'd be in normal mode, and we want to be in programming mode
+    // Write NVM unlock key (allows read access to all addressing space)
+    UPDI::write_key(UPDI::NVM_Prog);
+    // Request reset
+    const bool reset_ok=UPDI::CPU_reset_off();
+    if (reset_ok){
+      const uint8_t system_status = UPDI::CPU_mode<0xEF>();
+      if (system_status==0x08) { //make sure we're really in programming mode
+        if (nvm_version == 1) {
+          // For NVM version 1 parts, there's a page buffer.
+          // It might have data in it if something else was writing to the flash when
+          // we so rudely interrupted, so better clear the page buffer, just in case.
+          UPDI::sts_b(NVM::NVM_base | NVM::CTRLA, NVM::PBC);
+        } else {
+          // NVM v2 devices can have error codes in NVMCTRL.STATUS
+          // They also require that NVMCTRLA be set to NOOP/NOCMD before use
+          // So we should do this here!
+          uint8_t NVM_Status = UPDI::lds_b_l(NVM_v2::NVM_base + NVM_v2::STATUS);
+          uint8_t NVM_Cmnd = UPDI::lds_b_l(NVM_v2::NVM_base + NVM_v2::CTRLA);
+          if (NVM_Status || NVM_Cmnd ) {
+            #if defined(DEBUG_ON)
+            DBG::debug('N', NVM_Status,NVM_Cmnd);
+            #endif
+            UPDI::sts_b_l(NVM_v2::NVM_base + NVM_v2::STATUS, 0);
+            UPDI::sts_b_l(NVM_v2::NVM_base + NVM_v2::CTRLA, 0);
+          }
         }
+          // Turn on LED to indicate program mode
+          SYS::setLED();
+          #if defined(DEBUG_ON)
+          // report the chip revision
+          DBG::debug('R',UPDI::lds_b_l(0x0F01));
+          #endif
+          set_status(RSP_OK);
+          #if defined(INCLUDE_EXTRA_INFO_JTAG)
+            // get the REV ID - I belive (will be confirming with Microchip support) that this is the silicon revision ID
+            // this is particularly important with some of these chips - the tinyAVR and megaAVR parts do have differences
+            // between silicon revisions, and AVR-DA-series initial rev is a basket case and will almost certainly be respun
+            // before volume availability (take a look at the errata if you haven't already. There are fewer entries than on
+            // tinyAVR 1-series, but they're BIG... like "digital input disabled after using analog input" "you know that 
+            // flashmap we said could be used with ld and st? We lied, you can only use it with ld, and even then, there are
+            // cases where it won't work" "we didn't do even basic testing of 64-pin version, so stuff on those those pins is
+            // hosed" (well, they didn't say they didn't test it, but it's bloody obvious that's how it happened))
+            const uint8_t sernumlen=nvm_version==2?15:9; 
+            packet.size_word[0]=9+sernumlen;
+            packet.body[1]='R';
+            packet.body[2]='E';
+            packet.body[3]='V';
+            packet.body[4]=UPDI::lds_b_l(0x0F01);
+            //hell, might as well get the chip serial number too!
+            packet.body[5]= 'S';
+            packet.body[6]= 'E';
+            packet.body[7]= 'R';
+            if(nvm_version==2){
+              UPDI::stptr_l(0x1110);
+            } else {
+              UPDI::stptr_w(0x1103);
+            }
+            UPDI::rep(sernumlen);
+            packet.body[8]=UPDI::ldinc_b();
+            for(uint8_t i=9;i<(9+sernumlen);i++){
+              packet.body[i]=UPDI_io::get();
+            }
+            #ifdef DEBUG_ON
+              DBG::debug("Serial Number: ");
+              uint8_t *ptr=(uint8_t*)(&packet.body[8]);
+              DBG::debug(ptr,sernumlen+1,0,1);
+            #endif
+          #elif defined(DEBUG_ON) //if we're not adding extended info in JTAG, but debug is on, I guess we shoud still report this...
+            uint8_t sernumber[10];
+            if(nvm_version==2){
+              UPDI::stptr_l(0x1100);
+            } else {
+              UPDI::stptr(0x1100);
+            }
+            UPDI::rep(9);
+            sernumber[0]=UPDI::ldinc_b();
+            for(uint8_t i=1;i<10;i++){
+              sernumber[i]=UPDI_io::get();
+            }
+          #endif
+        } else {
+          // If we're somehow NOT in programming mode now, that's no good - inform host of this unfortunate state of affairs
+          packet.body[0] = RSP_ILLEGAL_MCU_STATE;
+          packet.body[1] = system_status; // 0x01;
+        }
+      } else {
+        set_status(RSP_NO_TARGET_POWER); //if it didn't come back from reset, inform the host. 
       }
-        // Turn on LED to indicate program mode
-        SYS::setLED();
-        #if defined(DEBUG_ON)
-        // report the chip revision
-        DBG::debug('R',UPDI::lds_b(0x0F01));
-        #endif
-
-        set_status(RSP_OK);
-        break;
-      // in other modes fail and inform host of wrong mode
-      default:
-        packet.body[0] = RSP_ILLEGAL_MCU_STATE;
-        packet.body[1] = system_status; // 0x01;
-      }
+    } else {
+      set_status(RSP_OK);
+    }
   }
 
   // *** Sets MCU in normal runnning mode, if possibe ***
   void JTAG2::leave_progmode() {
     const uint8_t system_status = UPDI::CPU_mode<0xEF>();
+    bool reset_ok=0;
     switch (system_status) {
       // in program mode
       case 0x08:
       //clear NVMCTRL.CTRLA
       if (nvm_version==2) {
-        UPDI::sts_b(NVM_v2::NVM_base + NVM_v2::CTRLA, 0);
+        UPDI::sts_b_l(NVM_v2::NVM_base + NVM_v2::CTRLA, 0);
       } else {
         UPDI::sts_b(NVM::NVM_base | NVM::CTRLA, 0);
       }
       // Request reset
-        UPDI::CPU_reset();
+        reset_ok=UPDI::CPU_reset();
       // Wait for normal mode
       // while (UPDI::CPU_mode<0xEF>() != 0x82);
       // already in normal mode
@@ -259,7 +317,11 @@ void JTAG2::enter_progmode() {
       case 0x82:
         // Turn off LED to indicate normal mode
         SYS::clearLED();
-        set_status(RSP_OK);
+        if (reset_ok) {
+          set_status(RSP_OK);
+        } else {
+          set_status(RSP_NO_TARGET_POWER); //this is a strange situation indeed, but tell the host anyway!
+        }
         break;
       // in other modes fail and inform host of wrong mode
       default:
@@ -272,7 +334,7 @@ void JTAG2::enter_progmode() {
   // The final command to make the chip go back into normal mode, shudown UPDI, and start running normally
   void JTAG2::go() {
     UPDI::stcs(UPDI::reg::Control_B, 0x04); //set UPDISIS to tell it that we're done and it can stop running the UPDI peripheral.
-    JTAG2::ConnectedTo &= ~(0x02); //record that we're no longer talking to the target
+    JTAG2::ConnectedTo &= ~(0x01); //record that we're no longer talking to the target
     set_status(RSP_OK);
   }
 
@@ -287,10 +349,9 @@ void JTAG2::enter_progmode() {
       packet.body[1] = 0x01;
     }
     else {
-      const bool is_flash = ((packet.body[1] == MTYPE_FLASH) || (packet.body[1] == MTYPE_BOOT_FLASH));
-      if (nvm_version == 1 || !is_flash) {
+      const uint16_t NumBytes = (packet.body[3] << 8) | packet.body[2];
+      if (nvm_version == 1) {
         // in program mode
-        const uint16_t NumBytes = (packet.body[3] << 8) | packet.body[2];
         // Get physical address for reading
         const uint16_t address = (packet.body[7] << 8) | packet.body[6];
         // Set UPDI pointer to address
@@ -308,24 +369,39 @@ void JTAG2::enter_progmode() {
         packet.size_word[0] = NumBytes + 1;
         packet.body[0] = RSP_MEMORY;
       } else { //nvm version 2, reading flash
-        const uint16_t NumBytes = (packet.body[3] << 8) | packet.body[2];
         // Get physical address for reading
         uint32_t address = (((uint32_t)packet.body[8]) << 16) + (((uint16_t)packet.body[7]) << 8) + packet.body[6];
-        // Set UPDI pointer to address
-        UPDI::stptr_l(address);
-        // Read block
-        uint16_t temp;
-        UPDI::rep((NumBytes >> 1) - 1);
-        temp = UPDI::ldinc_w();
-        packet.body[1] = temp & 0xFF;
-        packet.body[2] = temp >> 8;
-        for (uint16_t i = 3; i <= NumBytes; i++) {
-          packet.body[i] = UPDI_io::get();
+        if ((packet.body[1] == MTYPE_FLASH) || (packet.body[1] == MTYPE_BOOT_FLASH)) {
+          // Set UPDI pointer to address
+          UPDI::stptr_l(address);
+          // Read block
+          uint16_t temp;
+          UPDI::rep((NumBytes >> 1) - 1);
+          temp = UPDI::ldinc_w();
+          packet.body[1] = temp & 0xFF;
+          packet.body[2] = temp >> 8;
+          for (uint16_t i = 3; i <= NumBytes; i++) {
+            packet.body[i] = UPDI_io::get();
+          }
+          packet.size_word[0] = NumBytes + 1;
+          packet.body[0] = RSP_MEMORY;
+        } else { //NVM v2 non-flash
+          // Set UPDI pointer to address
+          if (NumBytes>1) {
+            UPDI::stptr_l(address);
+            // Read block
+            UPDI::rep(NumBytes - 1);
+            packet.body[1] = UPDI::ldinc_b();
+            for (uint16_t i = 2; i <= NumBytes; i++) {
+              packet.body[i] = UPDI_io::get();
+            }
+          } else {
+            packet.body[1]=UPDI::lds_b_l(address);
+          }
+          packet.size_word[0] = NumBytes + 1;
+          packet.body[0] = RSP_MEMORY;
         }
-        packet.size_word[0] = NumBytes + 1;
-        packet.body[0] = RSP_MEMORY;
       }
-
     }
   }
 
@@ -386,12 +462,17 @@ void JTAG2::enter_progmode() {
 
   void JTAG2::erase() {
     const uint8_t erase_type = packet.body[1];
+    bool reset_ok=0;
     switch (erase_type) {
       case 0:
         // Write Chip Erase key
         UPDI::write_key(UPDI::Chip_Erase);
         // Request reset
-        UPDI::CPU_reset();
+        reset_ok=UPDI::CPU_reset();
+        if (!reset_ok){
+          set_status(RSP_NO_TARGET_POWER); //if the reset failed, inform host, break out becuase the rest ain't gonna work
+          break;
+        }
         // Erase chip process exits program mode, reenter...
         enter_progmode();
         break;
@@ -490,13 +571,13 @@ void JTAG2::enter_progmode() {
       }
     }
     //now the data has been written, so reset the command...
-    uint8_t stat = UPDI::lds_b(NVM_v2::NVM_base + NVM_v2::STATUS);
+    uint8_t stat = UPDI::lds_b_l(NVM_v2::NVM_base + NVM_v2::STATUS);
     if (stat > 3) {
       #if defined(DEBUG_ON)
-      uint8_t cmd=UPDI::lds_b(NVM_v2::NVM_base + NVM_v2::CTRLA);
+      uint8_t cmd=UPDI::lds_b_l(NVM_v2::NVM_base + NVM_v2::CTRLA);
       DBG::debug('f',stat,cmd,0);
       #endif
-      UPDI::sts_b(NVM_v2::NVM_base + NVM_v2::STATUS, 0);
+      UPDI::sts_b_l(NVM_v2::NVM_base + NVM_v2::STATUS, 0);
     }
     //wait until operation completed
     NVM_v2::wait<false>();

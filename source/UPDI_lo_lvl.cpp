@@ -67,9 +67,6 @@ REP - Repeat Command
 
 
 void UPDI::rep(uint8_t repeats) {
-#if (defined(DEBUG_UPDI) && (defined(DEBUG_LD)||defined(DEBUG_ST)))
-  UPDI::burst_next=1;
-#endif
 #ifdef DEBUG_REP
   DBG::updi_rep(repeats);
 #endif
