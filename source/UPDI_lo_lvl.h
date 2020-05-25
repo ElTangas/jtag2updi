@@ -14,15 +14,6 @@
 #include "updi_io.h"
 #include "dbg.h"
 
-#if defined(DEBUG_ON)
-//#define DEBUG_STCS
-//#define DEBUG_LDCS
-//#define DEBUG_REP
-//#define DEBUG_STS
-//#define DEBUG_STPTR
-//#define DEBUG_LDS
-//#define DEBUG_KEY
-#endif
 
 namespace UPDI {
 	// UPDI registers
@@ -43,9 +34,6 @@ namespace UPDI {
 	extern FLASH<uint8_t> NVM_Prog[8];
 	extern FLASH<uint8_t> UserRow_Write[8];
 
-  #ifdef DEBUG_UPDI
-	uint8_t burst_next=0;
-  #endif
 
 	// Function prototypes
 	void rep(uint8_t);

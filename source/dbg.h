@@ -16,6 +16,20 @@
 /* User Configuration goes up here - the rest down below is defaults that you can override
    or stuff that is hardware specific   */
 
+// Uncomment these to enable debug output recording every time one of these UPDI commands is sent and (for load commands) the response.
+// note that this will have NO EFFECT if you have not defined either USE_SPIDEBUG or USE_USARTDEBUG and any required parameters!
+
+//#define DEBUG_STCS
+//#define DEBUG_LDCS
+//#define DEBUG_REP
+//#define DEBUG_STS
+//#define DEBUG_STPTR
+//#define DEBUG_LDS
+//#define DEBUG_KEY
+//#define DEBUG_RESET
+
+
+
 #if defined(__AVR_ATtiny_Zero_One__)
   // tinyAVR 0-series and 1-series parts
   // 3216, 1604, that kind of thing
@@ -295,6 +309,7 @@
 #endif
 
 #if defined(DEBUG_ON)
+
 namespace DBG {
   void initDebug(void);
   void updi_st_ptr_l(uint32_t address);
@@ -312,23 +327,64 @@ namespace DBG {
   void updi_res(uint32_t data, uint8_t isaddr=1);
   void updi_res(uint16_t data, uint8_t isaddr=0);
   void updi_res(uint8_t data);
-  void debug_updi(uint8_t command, uint32_t address, uint16_t data);
-  void debug_updi_ptr(uint8_t command, uint32_t address);
-  void debug_updi(uint8_t command, uint16_t data);
-  void debug_updi(uint8_t command, uint8_t data);
-  void debug_updi_rep(uint8_t data);
-  void debug_updi_rep_w(uint16_t data);
-  void debug_updi(uint8_t command);
+  void updi_reset();
+  void updi_reset_off();
+  void updi_reset_on();
+  void updi_post_reset(uint8_t mode);
   void debug(const char *str, uint8_t newline=1);
-  void debug(const uint8_t *data, size_t length, uint8_t newline=0);
+  void debug(const uint8_t *data, size_t length, uint8_t newline=0, uint8_t ashex=0);
   void debugWriteStr(const char *str);
-  void debugWriteBytes(const uint8_t *data, size_t length);
+  void debugWriteBytes(const uint8_t *data, size_t length, uint8_t ashex=0);
   void debugWriteByte(uint8_t databyte);
   void debugWriteHex(uint8_t databyte);
   void debug(char prefix, uint8_t data0);
   void debug(char prefix, uint8_t data0, uint8_t data1);
   void debug(char prefix, uint8_t data0, uint8_t data1, uint8_t data2);
 }
+#else
+// if debug is not on, we need to deal with the specific DEBUG_(subsystem) defines. Rather than make a mess of everywhere that checks for them by adding another check for DEBUG_ON
+// we'll just undefine them....
+#ifdef DEBUG_STCS
+  #warning "No debug output method is configured, so DEBUG_STCS being undefined"
+  #undef DEBUG_STCS
+#endif
+
+#ifdef DEBUG_LDCS
+  #warning "No debug output method is configured, so DEBUG_LDCS being undefined"
+  #undef DEBUG_LDCS
+#endif
+
+#ifdef DEBUG_STS
+  #warning "No debug output method is configured, so DEBUG_STS being undefined"
+  #undef DEBUG_STS
+#endif
+
+#ifdef DEBUG_LDS
+  #warning "No debug output method is configured, so DEBUG_LDS being undefined"
+  #undef DEBUG_LDS
+#endif
+
+#ifdef DEBUG_STPTR
+  #warning "No debug output method is configured, so DEBUG_STPTR being undefined"
+  #undef DEBUG_STPTR
+#endif
+
+#ifdef DEBUG_KEY
+  #warning "No debug output method is configured, so DEBUG_KEY being undefined"
+  #undef DEBUG_KEY
+#endif
+
+#ifdef DEBUG_REP
+  #warning "No debug output method is configured, so DEBUG_REP being undefined"
+  #undef DEBUG_REP
+#endif
+
+#ifdef DEBUG_RESET
+  #warning "No debug output method is configured, so DEBUG_RESET being undefined"
+  #undef DEBUG_RESET
+#endif
+
+
 #endif
 
 #endif /* DBG_H_ */
