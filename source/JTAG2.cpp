@@ -183,32 +183,36 @@ void JTAG2::set_device_descriptor() {
     packet.body[20]= 'N';
     packet.body[21]= 'V';
     packet.body[22]= 'M';
-    packet.body[23]= (nvm_version==2?'2':'1');    
+    packet.body[23]= (nvm_version==2?'2':'1');
   #endif
 }
 
 // *** Target mode set functions ***
 // *** Sets MCU in program mode, if possibe ***
 void JTAG2::enter_progmode() {
-  const uint8_t initial_status = UPDI::CPU_mode<0xEF>();
-  // reset the MCU now, to prevent the WDT (if active) to reset it at an unpredictable moment
-  // but just enter reset state - don't let it out of reset state, because then it will run 
-  // the first few instructions of the previous sketch...
-  if (initial_status!=0x08){
-    UPDI::CPU_reset_on();
-    // Now we have time to enter program mode (this mode also disables the WDT)
-    // Previously a reset was done here WHICH WOULD GUARANTEE THAT IT WAS 
-    // IN NORMAL MODE!! But then we checked anyway, and went into a meaningless
-    // switch case statement... because we already KNOW that it would be in 
-    // normal mode, because we just reset it into normal mode.... 
-    // So, since we know we'd be in normal mode, and we want to be in programming mode
-    // Write NVM unlock key (allows read access to all addressing space)
-    UPDI::write_key(UPDI::NVM_Prog);
-    // Request reset
-    const bool reset_ok=UPDI::CPU_reset_off();
-    if (reset_ok){
-      const uint8_t system_status = UPDI::CPU_mode<0xEF>();
-      if (system_status==0x08) { //make sure we're really in programming mode
+  // Reset the MCU now, to prevent the WDT (if active) to reset it at an unpredictable moment
+  if (!UPDI::CPU_reset()){ //if we timeout while trying to reset, we are not communicating with chip, probably wiring error.
+    set_status(RSP_NO_TARGET_POWER);
+    return;
+  }
+  // Now we have time to enter program mode (this mode also disables the WDT)
+  const uint8_t system_status = UPDI::CPU_mode<0xEF>();
+  const uint8_t sernumlen=nvm_version==2?15:9; //has to be outside the switch statement
+  switch (system_status) {
+    // in normal operation mode
+    case 0x82:
+      // Write NVM unlock key (allows read access to all addressing space)
+      UPDI::write_key(UPDI::NVM_Prog);
+      // Request reset
+      if (!UPDI::CPU_reset()){ //if we timeout while trying to reset, we are not communicating with chip, probably wiring error.
+        set_status(RSP_NO_TARGET_POWER);
+        return;
+      }
+      // Wait for NVM unlock state
+      //while (UPDI::CPU_mode() != 0x08);
+      // already in program mode
+      /* fall-thru */
+      case 0x08: //make sure we're really in programming mode
         if (nvm_version == 1) {
           // For NVM version 1 parts, there's a page buffer.
           // It might have data in it if something else was writing to the flash when
@@ -228,72 +232,68 @@ void JTAG2::enter_progmode() {
             UPDI::sts_b_l(NVM_v2::NVM_base + NVM_v2::CTRLA, 0);
           }
         }
-          // Turn on LED to indicate program mode
-          SYS::setLED();
-          #if defined(DEBUG_ON)
+        // Turn on LED to indicate program mode
+        SYS::setLED();
+        #if defined(DEBUG_ON)
           // report the chip revision
           DBG::debug('R',UPDI::lds_b_l(0x0F01));
+        #endif
+        set_status(RSP_OK);
+        #if defined(INCLUDE_EXTRA_INFO_JTAG)
+          // get the REV ID - I belive (will be confirming with Microchip support) that this is the silicon revision ID
+          // this is particularly important with some of these chips - the tinyAVR and megaAVR parts do have differences
+          // between silicon revisions, and AVR-DA-series initial rev is a basket case and will almost certainly be respun
+          // before volume availability (take a look at the errata if you haven't already. There are fewer entries than on
+          // tinyAVR 1-series, but they're BIG... like "digital input disabled after using analog input" "you know that
+          // flashmap we said could be used with ld and st? We lied, you can only use it with ld, and even then, there are
+          // cases where it won't work" "we didn't do even basic testing of 64-pin version, so stuff on those those pins is
+          // hosed" (well, they didn't say they didn't test it, but it's bloody obvious that's how it happened))
+          packet.size_word[0]=9+sernumlen;
+          packet.body[1]='R';
+          packet.body[2]='E';
+          packet.body[3]='V';
+          packet.body[4]=UPDI::lds_b_l(0x0F01);
+          //hell, might as well get the chip serial number too!
+          packet.body[5]= 'S';
+          packet.body[6]= 'E';
+          packet.body[7]= 'R';
+          if(nvm_version==2){
+            UPDI::stptr_l(0x1110);
+          } else {
+            UPDI::stptr_w(0x1103);
+          }
+          UPDI::rep(sernumlen);
+          packet.body[8]=UPDI::ldinc_b();
+          for(uint8_t i=9;i<(9+sernumlen);i++){
+            packet.body[i]=UPDI_io::get();
+          }
+          #ifdef DEBUG_ON
+            DBG::debug("Serial Number: ");
+            uint8_t *ptr=(uint8_t*)(&packet.body[8]);
+            DBG::debug(ptr,sernumlen+1,0,1);
           #endif
-          set_status(RSP_OK);
-          #if defined(INCLUDE_EXTRA_INFO_JTAG)
-            // get the REV ID - I belive (will be confirming with Microchip support) that this is the silicon revision ID
-            // this is particularly important with some of these chips - the tinyAVR and megaAVR parts do have differences
-            // between silicon revisions, and AVR-DA-series initial rev is a basket case and will almost certainly be respun
-            // before volume availability (take a look at the errata if you haven't already. There are fewer entries than on
-            // tinyAVR 1-series, but they're BIG... like "digital input disabled after using analog input" "you know that 
-            // flashmap we said could be used with ld and st? We lied, you can only use it with ld, and even then, there are
-            // cases where it won't work" "we didn't do even basic testing of 64-pin version, so stuff on those those pins is
-            // hosed" (well, they didn't say they didn't test it, but it's bloody obvious that's how it happened))
-            const uint8_t sernumlen=nvm_version==2?15:9; 
-            packet.size_word[0]=9+sernumlen;
-            packet.body[1]='R';
-            packet.body[2]='E';
-            packet.body[3]='V';
-            packet.body[4]=UPDI::lds_b_l(0x0F01);
-            //hell, might as well get the chip serial number too!
-            packet.body[5]= 'S';
-            packet.body[6]= 'E';
-            packet.body[7]= 'R';
-            if(nvm_version==2){
-              UPDI::stptr_l(0x1110);
-            } else {
-              UPDI::stptr_w(0x1103);
-            }
-            UPDI::rep(sernumlen);
-            packet.body[8]=UPDI::ldinc_b();
-            for(uint8_t i=9;i<(9+sernumlen);i++){
-              packet.body[i]=UPDI_io::get();
-            }
-            #ifdef DEBUG_ON
-              DBG::debug("Serial Number: ");
-              uint8_t *ptr=(uint8_t*)(&packet.body[8]);
-              DBG::debug(ptr,sernumlen+1,0,1);
-            #endif
-          #elif defined(DEBUG_ON) //if we're not adding extended info in JTAG, but debug is on, I guess we shoud still report this...
-            uint8_t sernumber[10];
-            if(nvm_version==2){
-              UPDI::stptr_l(0x1100);
-            } else {
-              UPDI::stptr(0x1100);
-            }
-            UPDI::rep(9);
-            sernumber[0]=UPDI::ldinc_b();
-            for(uint8_t i=1;i<10;i++){
-              sernumber[i]=UPDI_io::get();
-            }
-          #endif
-        } else {
+        #elif defined(DEBUG_ON) //if we're not adding extended info in JTAG, but debug is on, I guess we shoud still report this...
+          uint8_t sernumber[10];
+          if(nvm_version==2){
+            UPDI::stptr_l(0x1100);
+          } else {
+            UPDI::stptr(0x1100);
+          }
+          UPDI::rep(9);
+          sernumber[0]=UPDI::ldinc_b();
+          for(uint8_t i=1;i<10;i++){
+            sernumber[i]=UPDI_io::get();
+          }
+        #endif
+        break;
+      default:
           // If we're somehow NOT in programming mode now, that's no good - inform host of this unfortunate state of affairs
           packet.body[0] = RSP_ILLEGAL_MCU_STATE;
           packet.body[1] = system_status; // 0x01;
-        }
-      } else {
-        set_status(RSP_NO_TARGET_POWER); //if it didn't come back from reset, inform the host. 
-      }
-    } else {
-      set_status(RSP_OK);
     }
   }
+
+
 
   // *** Sets MCU in normal runnning mode, if possibe ***
   void JTAG2::leave_progmode() {
@@ -541,33 +541,33 @@ void JTAG2::enter_progmode() {
       } else { //word write
         int8_t words_remaining= (length >> 1)-1;
         UPDI::stptr_l(address);
-#ifndef NO_ACK_WRITE
-        uint16_t firstword=JTAG2::packet.body[current_byte_index]|(JTAG2::packet.body[current_byte_index+1] << 8);
-        current_byte_index+=2;
-        UPDI::rep(words_remaining);
-        UPDI::stinc_w(firstword);
-        for (uint8_t i = words_remaining;i;i--) {
-          UPDI_io::put(JTAG2::packet.body[current_byte_index++]);
-          UPDI_io::put(JTAG2::packet.body[current_byte_index++]);
-          UPDI_io::get();
-        }
-        if (length & 0x01) { //in case they send us odd-legnth write command...
-          UPDI::stinc_b(JTAG2::packet.body[current_byte_index++]);
-        }
-#else //writing without ACK
-        UPDI::stcs(UPDI::reg::Control_A, 0x0E);
-        UPDI::rep(words_remaining);
-        UPDI::stinc_b_b_noget(JTAG2::packet.body[current_byte_index],JTAG2::packet.body[current_byte_index+1]);
-        current_byte_index+=2;
-        for (uint8_t i = words_remaining;i;i--) {
-          UPDI_io::put(JTAG2::packet.body[current_byte_index++]);
-          UPDI_io::put(JTAG2::packet.body[current_byte_index++]);
-        }
-        if (length & 0x01) { //in case they send us odd-legnth write command...
-          UPDI::stinc_b_noget(JTAG2::packet.body[current_byte_index++]);
-        }
-        UPDI::stcs(UPDI::reg::Control_A, 0x06);
-#endif
+        #ifndef NO_ACK_WRITE
+          uint16_t firstword=JTAG2::packet.body[current_byte_index]|(JTAG2::packet.body[current_byte_index+1] << 8);
+          current_byte_index+=2;
+          UPDI::rep(words_remaining);
+          UPDI::stinc_w(firstword);
+          for (uint8_t i = words_remaining;i;i--) {
+            UPDI_io::put(JTAG2::packet.body[current_byte_index++]);
+            UPDI_io::put(JTAG2::packet.body[current_byte_index++]);
+            UPDI_io::get();
+          }
+          if (length & 0x01) { //in case they send us odd-legnth write command...
+            UPDI::stinc_b(JTAG2::packet.body[current_byte_index++]);
+          }
+        #else //writing without ACK
+          UPDI::stcs(UPDI::reg::Control_A, 0x0E);
+          UPDI::rep(words_remaining);
+          UPDI::stinc_b_b_noget(JTAG2::packet.body[current_byte_index],JTAG2::packet.body[current_byte_index+1]);
+          current_byte_index+=2;
+          for (uint8_t i = words_remaining;i;i--) {
+            UPDI_io::put(JTAG2::packet.body[current_byte_index++]);
+            UPDI_io::put(JTAG2::packet.body[current_byte_index++]);
+          }
+          if (length & 0x01) { //in case they send us odd-legnth write command...
+            UPDI::stinc_b_noget(JTAG2::packet.body[current_byte_index++]);
+          }
+          UPDI::stcs(UPDI::reg::Control_A, 0x06);
+        #endif
       }
     }
     //now the data has been written, so reset the command...
@@ -585,47 +585,7 @@ void JTAG2::enter_progmode() {
     NVM_v2::command<false>(NVM_v2::NOOP);
   }
 
-  /*
-    void NVM_v2_word_write_flash(uint32_t address, uint16_t length){
-    uint16_t current_byte_index = 10;
-    if (length == 2){
-      NVM_v2::wait<false>();
-      NVM_v2::command<false>(NVM_v2::FLWR);
-      // write to flash
-      UPDI::sts_w_l(address,JTAG2::packet.body[current_byte_index]|(((uint16_t)JTAG2::packet.body[current_byte_index+1])<<8));
-      NVM_v2::command<false>(NVM_v2::NOOP);
-    } else {
-      uint8_t words_remaining = (length-2)>>1;
-      startDebug();
-      putDebug(0x6A);
-      putDebug(address & 0xFF);
-      putDebug((address >> 8) & 0xFF);
-      putDebug((address >> 16) & 0xFF);
-      putDebug(0xA0);
-      putDebug(words_remaining);
-      //wait until previous operation completed, if any
-      NVM_v2::wait<false>();
-      //set the write enable command
-      NVM_v2::command<false>(NVM_v2::FLWR);
-          // Set UPDI pointer to address
-
-      UPDI::stptr_l(address);
-      UPDI::rep(words_remaining);
-      uint16_t wordtowrite=JTAG2::packet.body[current_byte_index++];
-      wordtowrite+=JTAG2::packet.body[current_byte_index++]<<8;
-      UPDI::stinc_w(wordtowrite);
-      for (uint8_t i = words_remaining; i; i--) {
-        UPDI_io::put(JTAG2::packet.body[current_byte_index++]);
-        UPDI_io::put(JTAG2::packet.body[current_byte_index++]);
-        UPDI_io::get();
-      }
-      putDebug(current_byte_index & 0xFF);
-      putDebug((current_byte_index >> 8));
-      endDebug();
-      NVM_v2::command<false>(NVM_v2::NOOP);
-    }
-    }
-  */
+  
   void NVM_buffered_write(const uint16_t address, const uint16_t length, const uint8_t buff_size, const uint8_t write_cmnd) {
     uint8_t current_byte_index = 10;          /* Index of the first byte to send inside the JTAG2 command body */
     uint16_t bytes_remaining = length;          /* number of bytes to write */
@@ -637,22 +597,22 @@ void JTAG2::enter_progmode() {
     auto updi_send_block = [] (uint8_t count, uint8_t index) {
       count--;
       NVM::wait<true>();
-#ifndef NO_ACK_WRITE
-      UPDI::rep(count);
-      UPDI::stinc_b(JTAG2::packet.body[index]);
-      for (uint8_t i = count; i; i--) {
-        UPDI_io::put(JTAG2::packet.body[++index]);
-        UPDI_io::get();
-      }
-#else
-      UPDI::stcs(UPDI::reg::Control_A, 0x0E);
-      UPDI::rep(count);
-      UPDI::stinc_b_noget(JTAG2::packet.body[index]);
-      for (uint8_t i = count; i; i--) {
-        UPDI_io::put(JTAG2::packet.body[++index]);
-      }
-      UPDI::stcs(UPDI::reg::Control_A, 0x06);
-#endif
+      #ifndef NO_ACK_WRITE
+        UPDI::rep(count);
+        UPDI::stinc_b(JTAG2::packet.body[index]);
+        for (uint8_t i = count; i; i--) {
+          UPDI_io::put(JTAG2::packet.body[++index]);
+          UPDI_io::get();
+        }
+      #else
+        UPDI::stcs(UPDI::reg::Control_A, 0x0E);
+        UPDI::rep(count);
+        UPDI::stinc_b_noget(JTAG2::packet.body[index]);
+        for (uint8_t i = count; i; i--) {
+          UPDI_io::put(JTAG2::packet.body[++index]);
+        }
+        UPDI::stcs(UPDI::reg::Control_A, 0x06);
+      #endif
       return ++index;
     };
 
