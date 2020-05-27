@@ -109,13 +109,13 @@
 	// Can even change the host USART if you want
 
 
-#elif defined (__AVR_ATmega_Zero__ || __AVR_DA__)
+#elif defined (__AVR_ATmega_Zero__ ) || defined( __AVR_DA__)
 // 4808, 4809. and the rest of the megaAVR 0-series
 // Same as above, pretty much
 // big difference here is your specify the name of the peripheral instead of the number, and the target baud rate, because we grab the OSCCAL value per datasheet./
-	#define USE_USARTDEBUG
-	#define DEBUG_USART USART1
-	#define DEBUG_BAUDRATE 2000000UL
+//	#define USE_USARTDEBUG
+//	#define DEBUG_USART USART1
+//	#define DEBUG_BAUDRATE 2000000UL
 
 #endif
 
@@ -243,7 +243,7 @@
 	#	endif
 
 
-#elif defined (__AVR_ATmega_Zero__ || __AVR_DA__)
+#elif defined (__AVR_ATmega_Zero__ ) || defined( __AVR_DA__)
 // 4808, 4809. and the rest of the megaAVR 0-series
 
 
