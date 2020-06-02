@@ -105,6 +105,18 @@ namespace JTAG2 {
 		MTYPE_PRODSIG				= 0xc6		// xmega production signature
 	};
 
+	// *** erase modes for CMND_XMEGA_ERASE ***
+	enum erase_mode {
+		XMEGA_ERASE_CHIP,
+		XMEGA_ERASE_APP,
+		XMEGA_ERASE_BOOT,
+		XMEGA_ERASE_EEPROM,
+		XMEGA_ERASE_APP_PAGE,
+		XMEGA_ERASE_BOOT_PAGE,
+		XMEGA_ERASE_EEPROM_PAGE,
+		XMEGA_ERASE_USERSIG
+	};	
+
 	// *** STK500 packet ***
 	constexpr uint8_t MESSAGE_START = 0x1B;
 	constexpr int MAX_BODY_SIZE = 700;				// Note: should not be reduced to less than 300 bytes.

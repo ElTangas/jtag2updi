@@ -1,11 +1,15 @@
 #!/bin/sh
 
 # avr-gcc++ path
+# Replace by location of your avr-gcc compiler if different
 BINPATH="/usr/bin"
 INCPATH="./source"
 
-SOURCEPATH="$PWD/source"
-BUILDPATH="$PWD/build"
+SOURCEPATH="./source"
+BUILDPATH="./build"
+
+# If you have file not found errors, try replacing '.' by '$PWD' in the previous paths, e.g.
+# SOURCEPATH="$PWD/source"
 
 OPTFLAGS="-Os -fno-jump-tables -fno-gcse -flto -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax"
 CSTDFLAGS="-funsigned-char -funsigned-bitfields -std=gnu++11"
@@ -42,17 +46,18 @@ TARGETMCU=atmega328p
 # HOST_TX_PORT=port_letter and HOST_TX_PIN=pin_number -> Must correspond to port and pin where the Tx signal of HOST_USART
 # is present (tiny AVR-0/1 and mega AVR-0 only). Defaults to PB2, which is the Tx pin for USART0 on many tiny AVR-0/1 chips.
 #
-DEFINES="-DNDEBUG -DUPDI_BAUD=225000U -DF_CPU=16000000" #atmega328
-
-# Optional optimization settings
-# Otherwise unused r/w I/O registers residing in I/O addresses 0-63 can be used here
-DEFINES="$DEFINES -DTEMP0=GPIOR0 -DTEMP1=GPIOR1 -DTEMP2=GPIOR2"
+# DISABLE_HOST_TIMEOUT and DISABLE_TARGET_TIMEOUT -> disable timeout counter on host and/or target links
+# IMPORTANT NOTE: To use terminal mode, DISABLE_HOST_TIMEOUT must be defined (default for this makefile)
+#
+# default:
+# DEFINES="-DNDEBUG -DUPDI_BAUD=225000U -DF_CPU=16000000 -DUPDI_IO_TYPE=2 -DDISABLE_HOST_TIMEOUT"
+DEFINES="-DNDEBUG -DUPDI_BAUD=225000U -DF_CPU=16000000 -DUPDI_IO_TYPE=2 -DDISABLE_HOST_TIMEOUT"
 
 ##
 ## select AVRJTAGICE v2.0 as target (override upper)
 ##
 #TARGETMCU=atmega16
-#DEFINES="-DNDEBUG -DUPDI_BAUD=120000U -DF_CPU=7372800 -DLED_PORT=B -DLED_PIN=3 -DUPDI_PORT=D -DUPDI_PIN=2 -DUPDI_IO_TYPE=2"
+#DEFINES="-DNDEBUG -DUPDI_BAUD=120000U -DF_CPU=7372800 -DLED_PORT=B -DLED_PIN=3 -DUPDI_PORT=D -DUPDI_PIN=2 -DUPDI_IO_TYPE=2 -DDISABLE_HOST_TIMEOUT"
 
 echo Compiling for $TARGETMCU ...
 $BINPATH/avr-g++ $DEFINES -c -I$INCPATH $OPTFLAGS $CSTDFLAGS -Wall -mmcu=$TARGETMCU -o UPDI_lo_lvl.o $SOURCEPATH/UPDI_lo_lvl.cpp

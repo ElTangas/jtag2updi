@@ -1,7 +1,8 @@
 @ echo off
 setlocal
-set BINPATH="C:\avr-gcc\avr-gcc-arduino\bin"
-set INCPATH="C:\avr-gcc\avr-gcc-arduino\avr\include"
+rem Replace by location of your avr-gcc compiler if different
+set BINPATH="%LOCALAPPDATA%\Arduino15\packages\arduino\tools\avr-gcc\7.3.0-atmel3.6.1-arduino5\bin"
+set INCPATH=.\source
 
 set SOURCEPATH=.\source
 set BUILDPATH=.\build
@@ -41,17 +42,18 @@ rem
 rem HOST_TX_PORT=port_letter and HOST_TX_PIN=pin_number -> Must correspond to port and pin where the Tx signal of HOST_USART
 rem is present (tiny AVR-0/1 and mega AVR-0 only). Defaults to PB2, which is the Tx pin for USART0 on many tiny AVR-0/1 chips.
 rem
-set DEFINES=-DNDEBUG -DUPDI_BAUD=225000U -DF_CPU=16000000
+rem DISABLE_HOST_TIMEOUT and DISABLE_TARGET_TIMEOUT -> disable timeout counter on host and/or target links
+rem IMPORTANT NOTE: To use terminal mode, DISABLE_HOST_TIMEOUT must be defined (default for this makefile)
+rem
+rem default:
+rem set DEFINES=-DNDEBUG -DUPDI_BAUD=225000U -DF_CPU=16000000 -DUPDI_IO_TYPE=2 -DDISABLE_HOST_TIMEOUT
 
-rem Optional optimization settings
-rem Otherwise unused r/w I/O registers residing in I/O addresses 0-63 can be used here
-set DEFINES=%DEFINES% -DTEMP0=GPIOR0 -DTEMP1=GPIOR1 -DTEMP2=GPIOR2
-
-rem 
+set DEFINES=-DNDEBUG -DUPDI_BAUD=225000U -DF_CPU=16000000 -DUPDI_IO_TYPE=2 -DDISABLE_HOST_TIMEOUT
+ 
 rem select AVRJTAGICE v2.0 as target (override upper)
 rem 
 rem set TARGETMCU=atmega16
-rem set DEFINES=-DNDEBUG -DUPDI_BAUD=120000U -DF_CPU=7372800 -DLED_PORT=B -DLED_PIN=3 -DUPDI_PORT=D -DUPDI_PIN=2 -DUPDI_IO_TYPE=2
+rem set DEFINES=-DNDEBUG -DUPDI_BAUD=120000U -DF_CPU=7372800 -DLED_PORT=B -DLED_PIN=3 -DUPDI_PORT=D -DUPDI_PIN=2 -DUPDI_IO_TYPE=2 -DDISABLE_HOST_TIMEOUT
 
 
 echo Compiling for %TARGETMCU%...
