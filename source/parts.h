@@ -30,8 +30,10 @@
       #define __AVR_ATmega_Mega__
 
 
-#elif (defined(__AVR_ATmega328__)   || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168A__)  || defined(__AVR_ATmega168PA__) || \
-       defined(__AVR_ATmega168__)   || defined(__AVR_ATmega168P__) || defined(__AVR_ATmega328PB__) || defined(__AVR_ATmega168PB__) )
+#elif (defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega328PB__) || \
+       defined(__AVR_ATmega168__) || defined(__AVR_ATmega168P__) || defined(__AVR_ATmega168PB__) || defined(__AVR_ATmega168A__)  || defined(__AVR_ATmega168PA__) || \
+       defined(__AVR_ATmega88__)  || defined(__AVR_ATmega88P__)  || defined(__AVR_ATmega88PB__)  || \
+       defined(__AVR_ATmega8__) )
 
       #define __AVR_ATmega_Mini__
 
