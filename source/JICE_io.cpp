@@ -34,9 +34,9 @@ uint8_t JICE_io::put(char c) {
   HOST_USART.STATUS=1<<USART_TXCIF_bp;
   return HOST_USART.TXDATAL = c;
 #else
-  loop_until_bit_is_set(UCSR0A, UDRE0);
-  UCSR0A|=1<<TXC0;
-  return UDR0 = c;
+  loop_until_bit_is_set(HOST_UCSRA, UDRE);
+  HOST_UCSRA|=1<<TXC;
+  return HOST_UDR = c;
 #endif
 }
 
@@ -47,8 +47,8 @@ uint8_t JICE_io::get(void) {
   return HOST_USART.RXDATAL;
 #else
   //loop_(until_bit_is_set(UCSR0A, RXC0); /* Wait until data exists. */
-  loop_until_bit_set_or_host_timeout(UCSR0A, RXC0);
-  return UDR0;
+  loop_until_bit_set_or_host_timeout(HOST_UCSRA, RXC);
+  return HOST_UDR;
 #endif
 }
 
@@ -63,11 +63,11 @@ void JICE_io::init(void) {
   HOST_USART.CTRLB = USART_TXEN_bm | USART_RXEN_bm | USART_RXMODE_NORMAL_gc;
 #else
   /* Set double speed */
-  UCSR0A = (1<<U2X0);
+  HOST_UCSRA = (1<<U2X);
   /* Set initial baud rate */
-  UBRR0 = baud_reg_val(19200);
+  HOST_UBRR = baud_reg_val(19200);
   /* Enable receiver and transmitter */
-  UCSR0B = (1<<RXEN0)|(1<<TXEN0);
+  HOST_UCSRB = (1<<RXEN)|(1<<TXEN);
   /* Set frame format: 8data, 1stop bit */
   /* this is default configuration, so leave it */
   //#ifdef URSEL //the one case where we can't handle the weird UART on atmega16 with #defines to rename registers...
@@ -83,7 +83,7 @@ void JICE_io::flush(void) {
 #if defined(XAVR)
   loop_until_bit_set_or_host_timeout(HOST_USART.STATUS, USART_TXCIF_bp);
 #else
-  loop_until_bit_set_or_host_timeout(UCSR0A, TXC0);
+  loop_until_bit_set_or_host_timeout(HOST_UCSRA, TXC);
 #endif
 }
 
@@ -91,6 +91,6 @@ void JICE_io::set_baud(JTAG2::baud_rate rate) {
 #if defined XAVR
   HOST_USART.BAUD = baud_tbl[rate - 1];
 #else
-  UBRR0 = baud_tbl[rate - 1];
+  HOST_UBRR = baud_tbl[rate - 1];
 #endif
 }

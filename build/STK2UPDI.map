@@ -3,9 +3,9 @@ Archive member included to satisfy reference by file (symbol)
 c:/users/jr/appdata/local/arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/../lib/gcc/avr/7.3.0/avr5\libgcc.a(_exit.o)
                               c:/users/jr/appdata/local/arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avr5/crtatmega328p.o (exit)
 c:/users/jr/appdata/local/arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/../lib/gcc/avr/7.3.0/avr5\libgcc.a(_copy_data.o)
-                              C:\Users\JR\AppData\Local\Temp\ccRqKV35.ltrans0.ltrans.o (__do_copy_data)
+                              C:\Users\JR\AppData\Local\Temp\ccL0ixHG.ltrans0.ltrans.o (__do_copy_data)
 c:/users/jr/appdata/local/arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/../lib/gcc/avr/7.3.0/avr5\libgcc.a(_clear_bss.o)
-                              C:\Users\JR\AppData\Local\Temp\ccRqKV35.ltrans0.ltrans.o (__do_clear_bss)
+                              C:\Users\JR\AppData\Local\Temp\ccL0ixHG.ltrans0.ltrans.o (__do_clear_bss)
 
 Discarded input sections
 
@@ -110,7 +110,7 @@ Linker script and memory map
 Address of section .data set to 0x800100
 LOAD c:/users/jr/appdata/local/arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avr5/crtatmega328p.o
 LOAD jtag2updi.o
-LOAD C:\Users\JR\AppData\Local\Temp\ccRqKV35.ltrans0.ltrans.o
+LOAD C:\Users\JR\AppData\Local\Temp\ccL0ixHG.ltrans0.ltrans.o
 LOAD JTAG2.o
 LOAD jice_io.o
 LOAD UPDI_lo_lvl.o
@@ -244,7 +244,7 @@ END GROUP
  *libprintf_flt.a:*(.progmem.data)
  *libc.a:*(.progmem.data)
  *(.progmem*)
- .progmem.data  0x00000068      0x23d C:\Users\JR\AppData\Local\Temp\ccRqKV35.ltrans0.ltrans.o
+ .progmem.data  0x00000068      0x23d C:\Users\JR\AppData\Local\Temp\ccL0ixHG.ltrans0.ltrans.o
                 0x000002a6                . = ALIGN (0x2)
  *fill*         0x000002a5        0x1 
  *(.jumptables)
@@ -315,10 +315,10 @@ END GROUP
                 0x000002dc                __vector_16
                 0x000002dc                __vector_18
                 0x000002dc                __vector_20
- .text          0x000002de      0x4c6 C:\Users\JR\AppData\Local\Temp\ccRqKV35.ltrans0.ltrans.o
+ .text          0x000002de      0x4c6 C:\Users\JR\AppData\Local\Temp\ccL0ixHG.ltrans0.ltrans.o
                 0x000007a4                . = ALIGN (0x2)
  *(.text.*)
- .text.startup  0x000007a4      0x78c C:\Users\JR\AppData\Local\Temp\ccRqKV35.ltrans0.ltrans.o
+ .text.startup  0x000007a4      0x78c C:\Users\JR\AppData\Local\Temp\ccL0ixHG.ltrans0.ltrans.o
                 0x000007a4                main
                 0x00000f30                . = ALIGN (0x2)
  *(.fini9)
@@ -350,7 +350,7 @@ END GROUP
 .data           0x00800100        0x2 load address 0x00000f34
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
- .data          0x00800100        0x1 C:\Users\JR\AppData\Local\Temp\ccRqKV35.ltrans0.ltrans.o
+ .data          0x00800100        0x1 C:\Users\JR\AppData\Local\Temp\ccL0ixHG.ltrans0.ltrans.o
  *(.data*)
  *(.gnu.linkonce.d*)
  *(.rodata)
@@ -364,7 +364,7 @@ END GROUP
 .bss            0x00800102      0x2c8
                 0x00800102                PROVIDE (__bss_start, .)
  *(.bss)
- .bss           0x00800102      0x2c8 C:\Users\JR\AppData\Local\Temp\ccRqKV35.ltrans0.ltrans.o
+ .bss           0x00800102      0x2c8 C:\Users\JR\AppData\Local\Temp\ccL0ixHG.ltrans0.ltrans.o
  *(.bss*)
  *(COMMON)
                 0x008003ca                PROVIDE (__bss_end, .)
@@ -417,7 +417,7 @@ END GROUP
 
 .comment        0x00000000       0x11
  *(.comment)
- .comment       0x00000000       0x11 C:\Users\JR\AppData\Local\Temp\ccRqKV35.ltrans0.ltrans.o
+ .comment       0x00000000       0x11 C:\Users\JR\AppData\Local\Temp\ccL0ixHG.ltrans0.ltrans.o
                                  0x12 (size before relaxing)
 
 .note.gnu.avr.deviceinfo

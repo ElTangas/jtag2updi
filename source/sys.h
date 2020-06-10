@@ -24,7 +24,7 @@
 // so, switch back to 19200 baud.
 //#define DISABLE_HOST_TIMEOUT
 
-// Disable the timeout waiting for response from target. Probablty not necessary to set. With this disabled, if the target is expected to respond
+// Disable the timeout waiting for response from target. Probably not necessary to set. With this disabled, if the target is expected to respond
 // but does not, jtag2updi will get stuck waiting for it.
 
 //#define DISABLE_TARGET_TIMEOUT
@@ -34,10 +34,11 @@
 
 
 // Auxiliary Macros
-#define CONCAT(A,B) A##B
+#define CONCAT(A,B) A##B				// concatenate
+#define XCONCAT(A,B) CONCAT(A,B)		// expand and concatenate
 //#define CONCAT3(A,B,C) A##B##C
 #if (__AVR_ARCH__ == 103) || (__AVR_ARCH__ == 104)
-//We'll call these ones XAVR for purposes of defines, instead of XTINY. This encompases megaAVR 0-series and DA-series parts
+//We'll call these ones XAVR for purposes of defines, instead of XTINY. This encompasses megaAVR 0-series and DA-series parts
 
 	#define XAVR
 	#	define PIN(x) CONCAT(VPORT,x).IN
@@ -77,7 +78,7 @@
 
 
 #elif defined( __AVR_ATmega_Mighty__ )
-	// For ATmega16, ATmega32, and the later x4 parts (up to the 1284P).
+	// For ATmega16, 32, ... 128 and the later x4 parts (up to the 1284P).
 	// On the ones with two USARTS, you can use USART debugging.
 	//
 	// Here USART debug output is an option too
@@ -120,8 +121,8 @@
 #endif
 
 
-/* Defaults and hardware-specific stuff 								*/
-/* Shouldn't need to change anything here 							*/
+/* Defaults and hardware-specific stuff 				*/
+/* Shouldn't need to change anything here				*/
 /* IF you want to override, copy it to the blocks above */
 
 
@@ -161,12 +162,7 @@
 	#	endif
 
 #elif defined( __AVR_ATmega_Mighty__ )
-// For ATmega16, ATmega32, and the later x4 parts (up to the 1284P).
-
-
-	#	ifndef HOST_USART
-	#		define HOST_USART 0
-	#	endif
+// For ATmega16, 32, ... 128 and the later x4 parts (up to the 1284P).
 
 	#	ifndef HOST_USART
 	#		define HOST_USART 0
@@ -190,8 +186,11 @@
 
 
 #elif defined (__AVR_ATmega_Mini__) || defined(ARDUINO_AVR_LARDU_328E)
-	// For ATmega8/88/168/328 (P, PB) parts
+// For ATmega8/88/168/328 (P, PB) parts
 
+	#	ifndef HOST_USART
+	#		define HOST_USART 0
+	#	endif
 
 	#	ifndef UPDI_PORT
 	#		define UPDI_PORT D
@@ -225,6 +224,10 @@
 
 #elif defined (__AVR_ATmega_Mega__)
 // 2560 and that family, like the ones used on the Arduino Mega
+
+	#	ifndef HOST_USART
+	#		define HOST_USART 0
+	#	endif
 
 	#	ifndef UPDI_PORT
 	#		define UPDI_PORT D
@@ -283,45 +286,47 @@
 	#warning "Part not supported - if you didn't provide all the needed pin definitions, that's why it's not compiling"
 #endif //End of the defaults!
 
-// The ATmega8/16/32 don't have a 0 after the UART register names
+// Define USART registers and bits based on the selected HOST_USART for non-XAVR parts
 #ifndef XAVR
-	#ifndef UDRE0
-		#define UDRE0 UDRE
+	// Define generic USART flags if not defined already
+	#ifndef UDRE
+		#define UDRE XCONCAT(UDRE, HOST_USART)
+		#define U2X XCONCAT(U2X, HOST_USART)
+		#define TXEN XCONCAT(TXEN, HOST_USART)
+		#define RXEN XCONCAT(RXEN, HOST_USART)
+		#define RXC XCONCAT(RXC, HOST_USART)
+		#define TXC XCONCAT(TXC, HOST_USART)
 	#endif
-	#ifndef U2X0
-		#define U2X0 U2X
+	// USART registers
+	#ifdef UCSRA
+		#define HOST_UCSRA UCSRA
+		#define HOST_UCSRB UCSRB
+		#define HOST_UDR UDR
+	#else
+		#define HOST_UCSRA XCONCAT(UCSR, XCONCAT(HOST_USART, A))
+		#define HOST_UCSRB XCONCAT(UCSR, XCONCAT(HOST_USART, B))
+		#define HOST_UDR XCONCAT(UDR, HOST_USART)
 	#endif
-	#ifndef TXEN0
-		#define TXEN0 TXEN
-	#endif
-	#ifndef RXEN0
-		#define RXEN0 RXEN
-	#endif
+	// UBRR is more complex and needs a special case
 	#ifndef UBRR0
-		#define UBRR0 UBRRL
+		// For older AVRs use only low 8 bits of UBRR because low and high parts are not adjacent
+		#ifdef UBRRL
+			#define HOST_UBRR UBRRL
+		#else
+			#define HOST_UBRR XCONCAT(UBRR, XCONCAT(HOST_USART, L))
+		#endif
+	#else
+		// This is a more modern part; we can use 16 bit UBRR
+		#define HOST_UBRR XCONCAT(UBRR, HOST_USART)		
 	#endif
-	#ifndef UCSR0A
-		#define UCSR0A UCSRA
-	#endif
-	#ifndef UCSR0B
-		#define UCSR0B UCSRB
-	#endif
-	#ifndef TXC0
-		#define TXC0 TXC
-	#endif
-	#ifndef RXC0
-		#define RXC0 RXC
-	#endif
-	#ifndef UDR0
-		#define UDR0 UDR
-	#endif
+#endif
+	
+// Some classic AVRs have a single flags register for timers 0 and 1 (TIFR0 and TIFR1 are merged in a single register TIFR)
+#ifndef XAVR
 	#ifndef TIFR1
 		#define TIFR1 TIFR
 	#endif
 #endif
-
-
-
 
 
 #ifdef XAVR
@@ -347,8 +352,6 @@
 	#define WAIT_FOR_HOST (1<<OCF1A)
 	#define WAIT_FOR_TARGET (1<<OCF1B)
 #endif
-
-
 
 
 #ifndef F_CPU

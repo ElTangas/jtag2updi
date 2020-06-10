@@ -346,8 +346,8 @@ void DBG::initDebug(void) {
       SPSR=(SPIPRESC&1); //set SPI2X if wanted
       SPCR=(1<<MSTR) |(1<<SPE)| ((SPIPRESC>>1)&0x03);
     #elif defined(USE_USARTDEBUG)
-      DEBUG_UCSRB=(1<<TXEN0);
-      DEBUGFLAGS=(1<<U2X0);
+      DEBUG_UCSRB=(1<<TXEN);
+      DEBUGFLAGS=(1<<U2X);
     #endif
   #endif
 }

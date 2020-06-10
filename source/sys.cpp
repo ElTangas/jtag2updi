@@ -7,7 +7,6 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <avr/power.h>
 #include "sys.h"
 #include "dbg.h"
 #include <stdio.h>
@@ -45,6 +44,7 @@ void SYS::init(void) {
     #endif
   #else
     #if defined(ARDUINO_AVR_LARDU_328E)
+	  #include <avr/power.h>
       clock_prescale_set ( (clock_div_t) __builtin_log2(32000000UL / F_CPU));
     #endif
 	  PORT(UPDI_PORT) = 1<<UPDI_PIN;
