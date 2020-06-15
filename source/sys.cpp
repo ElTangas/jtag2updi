@@ -82,16 +82,4 @@ void SYS::clearVerLED(void){
         #endif
 }
 
-/*
-inline void SYS::startTimer()
-inline void SYS::stopTimer()
 
-Timeout mechanisms, 5/2020, Spence Konde
-*/
-
-uint8_t SYS::checkTimeouts() {
-return TIMEOUT_REG;
-}
-void SYS::clearTimeouts() {
-  TIMEOUT_REG=WAIT_FOR_HOST|WAIT_FOR_TARGET;
-}

@@ -26,11 +26,13 @@
 
 // Disable the timeout waiting for response from target. Probably not necessary to set. With this disabled, if the target is expected to respond
 // but does not, jtag2updi will get stuck waiting for it.
-
 //#define DISABLE_TARGET_TIMEOUT
 
+// Deduces the NVM version from reading the SIB string. Otherwise, the NVM version is deduced from the size of flash pages.
+//#define DEDUCE_NVM_VERSION_FROM_SIB
+
 // this will include the SIB, deduced NVM version, and silicon revision in early responses to SET_DEVICE_DESCRIPTPOR (for SIB and NVM version) and ENTER_PROGMODE (for silicon rev)
-#define INCLUDE_EXTRA_INFO_JTAG
+//#define INCLUDE_EXTRA_INFO_JTAG
 
 
 // Auxiliary Macros
@@ -434,16 +436,23 @@
 #endif
 
 namespace SYS {
-	uint8_t checkTimeouts(void);
-	void clearTimeouts(void);
+	/*
+	Timeout mechanisms, 5/2020, Spence Konde
+	*/
+	inline uint8_t checkTimeouts() {
+		return TIMEOUT_REG;
+	}
+	inline void clearTimeouts() {
+		TIMEOUT_REG=WAIT_FOR_HOST|WAIT_FOR_TARGET;
+	}
 	inline void startTimer(void) __attribute__((always_inline));
 	inline void startTimer(void) {
-  #ifdef TIMER_RESET_REG //some timers have a reset register.
-  TIMER_RESET_REG=TIMER_RESET_CMD;
-  #else
-  TIMER_COUNT_REG=0;
-  #endif
-  TIMER_CONTROL_REG=TIMER_ON;
+      #ifdef TIMER_RESET_REG //some timers have a reset register.
+      TIMER_RESET_REG=TIMER_RESET_CMD;
+      #else
+      TIMER_COUNT_REG=0;
+      #endif
+      TIMER_CONTROL_REG=TIMER_ON;
 	}
 	inline void stopTimer(void) __attribute__((always_inline));
 	inline void stopTimer(void){ TIMER_CONTROL_REG=TIMER_OFF; }

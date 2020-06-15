@@ -262,6 +262,17 @@ void UPDI::stptr_l(uint32_t address) {
   UPDI_io::get();
 }
 
+void UPDI::stptr_p(uint8_t* addr_p, uint8_t n) {
+	UPDI_io::put(UPDI::SYNCH);
+	UPDI_io::put(0x68 + --n);
+	UPDI_io::put(*(addr_p++));
+	if (n >= 1)
+	UPDI_io::put(*(addr_p++));
+	if (n >= 2)
+	UPDI_io::put(*addr_p);
+	UPDI_io::get();
+}
+
 /*
 
 LDPTR - Load pointer for indirect addressing

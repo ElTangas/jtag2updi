@@ -62,6 +62,7 @@ namespace UPDI {
 	void stptr_b(uint8_t);
 	void stptr_w(uint16_t);
 	void stptr_l(uint32_t);
+	void stptr_p(uint8_t*, uint8_t);	// set address from selectable size address (1-3 bytes) via pointer to address
 
 	void st_b(uint8_t);
 	void st_w(uint16_t);
