@@ -142,14 +142,19 @@ void JTAG2::get_parameter() {
 }
 
 void JTAG2::set_parameter() {
-  uint8_t & parameter = packet.body[1];
-  switch (parameter) {
+  uint8_t param_type = packet.body[1];
+  uint8_t param_val = packet.body[2];
+  switch (param_type) {
     case PARAM_EMU_MODE:
-      PARAM_EMU_MODE_VAL = packet.body[2];
+      PARAM_EMU_MODE_VAL = param_val;
       break;
     case PARAM_BAUD_RATE:
-      PARAM_BAUD_RATE_VAL = (baud_rate)packet.body[2];
-      break;
+      // check if baud rate parameter is valid
+      if ((param_val >= baud_2400) && (param_val <= baud_14400)) {
+        PARAM_BAUD_RATE_VAL = (baud_rate)param_val;
+        break;
+      }
+      // else fall through (invalid baud rate)      
     default:
       set_status(RSP_ILLEGAL_PARAMETER);
       return;
