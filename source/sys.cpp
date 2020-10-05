@@ -55,8 +55,12 @@ void SYS::init(void) {
   #ifdef LED2_PORT
   DDR(LED2_PORT) |= (1 << LED2_PIN);
   #endif
+  #ifndef DISABLE_HOST_TIMEOUT
   TIMER_HOST_MAX=HOST_TIMEOUT;
+  #endif
+  #ifndef DISABLE_TARGET_TIMEOUT
   TIMER_TARGET_MAX=TARGET_TIMEOUT;
+  #endif
   #if defined(DEBUG_ON)
   DBG::debug(0x18,0xC0,0xFF, 0xEE);
   #endif

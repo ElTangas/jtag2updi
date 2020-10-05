@@ -364,19 +364,9 @@
 // TIMEOUTS
 // HOST_TIMEOUT =~250ms
 // TARGET_TIMEOUT=~100ms
-#if (F_CPU==20000000U)
-	#define HOST_TIMEOUT 19000
-	#define TARGET_TIMEOUT 7800
-#elif (F_CPU==24000000U)
-	#define HOST_TIMEOUT 23400
-	#define TARGET_TIMEOUT 9375
-#elif (F_CPU==16000000U)
-	#define HOST_TIMEOUT 15600
-	#define TARGET_TIMEOUT 6250
-#else //8000000U
-	#define HOST_TIMEOUT 7800
-	#define TARGET_TIMEOUT 3125
-#endif
+// Timeout timer is initialized to use /256 divisor
+#define HOST_TIMEOUT (F_CPU / 256.0 * 0.25)
+#define TARGET_TIMEOUT (F_CPU / 256.0 * 0.1)
 
 #ifndef UPDI_BAUD
 	#	define UPDI_BAUD 225000U	// (max 225000 min approx. F_CPU/100)
