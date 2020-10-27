@@ -44,10 +44,10 @@ void SYS::init(void) {
     #endif
   #else
     #if defined(ARDUINO_AVR_LARDU_328E)
-	  #include <avr/power.h>
-      clock_prescale_set ( (clock_div_t) __builtin_log2(32000000UL / F_CPU));
+    #include <avr/power.h>
+    clock_prescale_set ( (clock_div_t) __builtin_log2(32000000UL / F_CPU));
     #endif
-	  PORT(UPDI_PORT) = 1<<UPDI_PIN;
+    PORT(UPDI_PORT) = 1<<UPDI_PIN;
   #endif
 
 
@@ -67,23 +67,23 @@ void SYS::init(void) {
 }
 
 void SYS::setLED(void){
-	PORT(LED_PORT) |= 1 << LED_PIN;
+  PORT(LED_PORT) |= 1 << LED_PIN;
 }
 
 void SYS::clearLED(void){
-	PORT(LED_PORT) &= ~(1 << LED_PIN);
+  PORT(LED_PORT) &= ~(1 << LED_PIN);
 }
 
 void SYS::setVerLED(void){
-        #ifdef LED2_PORT
-        PORT(LED2_PORT) |= 1 << LED2_PIN;
-        #endif
+  #ifdef LED2_PORT
+  PORT(LED2_PORT) |= 1 << LED2_PIN;
+  #endif
 }
 
 void SYS::clearVerLED(void){
-        #ifdef LED2_PORT
-        PORT(LED2_PORT) &= ~(1 << LED2_PIN);
-        #endif
+  #ifdef LED2_PORT
+  PORT(LED2_PORT) &= ~(1 << LED2_PIN);
+  #endif
 }
 
 

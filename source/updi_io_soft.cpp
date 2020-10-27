@@ -83,15 +83,15 @@ uint8_t UPDI_io::get() {
             "RxBDelay: \n\t"
             " subi r18, 1 \n\t"
             " brne RxBDelay \n\t"
-      " sbic %[uart_port], %[uart_pin] \n\t"
-      " sec \n\t"
-      " ror %0 \n\t"
+            " sbic %[uart_port], %[uart_pin] \n\t"
+            " sec \n\t"
+            " ror %0 \n\t"
             " brcc RxBLoop \n\t"
 
             // Wait approx. 2 bit times: skip to centre of 1st stop bit (ignore parity).
-        // The function returns approx 1.5 bit times before the 2nd stop bit completes
-      // to allow burst reads at high UPDI speeds on 8MHz chips.
-      // This time needs to be compensated in the Tx function.
+            // The function returns approx 1.5 bit times before the 2nd stop bit completes
+            // to allow burst reads at high UPDI speeds on 8MHz chips.
+            // This time needs to be compensated in the Tx function.
             " ldi r18, 2 * %[rxdelay] \n\t"  // delay counter
             "StopDelay: \n\t"
             " dec r18 \n\t"
@@ -144,15 +144,15 @@ uint8_t UPDI_io::get() {
             "RxBDelay: \n\t"
             " subi r18, 1 \n\t"
             " brne RxBDelay \n\t"
-      " sbic %[uart_port], %[uart_pin] \n\t"
-      " sec \n\t"
-      " ror %0 \n\t"
+            " sbic %[uart_port], %[uart_pin] \n\t"
+            " sec \n\t"
+            " ror %0 \n\t"
             " brcc RxBLoop \n\t"
 
             // Wait approx. 2 bit times: skip to centre of 1st stop bit (ignore parity).
-        // The function returns approx 1.5 bit times before the 2nd stop bit completes
-      // to allow burst reads at high UPDI speeds on 8MHz chips.
-      // This time needs to be compensated in the Tx function.
+            // The function returns approx 1.5 bit times before the 2nd stop bit completes
+            // to allow burst reads at high UPDI speeds on 8MHz chips.
+            // This time needs to be compensated in the Tx function.
             " ldi r18, 2 * %[rxdelay] \n\t"  // delay counter
             "StopDelay: \n\t"
             " dec r18 \n\t"

@@ -14,13 +14,13 @@ bool UPDI::CPU_reset(){
   #endif
 
   // Request reset
-	UPDI::stcs(UPDI::reg::ASI_Reset_Request, UPDI::RESET_ON);
-	// Release reset (System remains in reset state until released)
-	UPDI::stcs(UPDI::reg::ASI_Reset_Request, UPDI::RESET_OFF);
+  UPDI::stcs(UPDI::reg::ASI_Reset_Request, UPDI::RESET_ON);
+  // Release reset (System remains in reset state until released)
+  UPDI::stcs(UPDI::reg::ASI_Reset_Request, UPDI::RESET_OFF);
 
-	// Wait for the reset process to end.
-	// Either NVMPROG, UROWPROG or BOOTDONE bit will be set in the ASI_SYS_STATUS UPDI register.
-	// This indicates reset is complete.
+  // Wait for the reset process to end.
+  // Either NVMPROG, UROWPROG or BOOTDONE bit will be set in the ASI_SYS_STATUS UPDI register.
+  // This indicates reset is complete.
   #ifndef DISABLE_TARGET_TIMEOUT
     uint8_t timeoutcount=0;
     while ( UPDI::CPU_mode<0x0E>() == 0 && timeoutcount<2) //if it takes 200ms to come back after we release reset... it's never going to!

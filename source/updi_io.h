@@ -12,14 +12,14 @@
 #include <stdint.h>
 
 namespace UPDI_io {
-	// Enums
-	enum ctrl {single_break, double_break, enable};
+  // Enums
+  enum ctrl {single_break, double_break, enable};
 
-	// Function prototypes
-	uint8_t put(char) __attribute__((optimize("no-tree-loop-optimize")));
-	uint8_t put(ctrl);	
-	uint8_t get() __attribute__((optimize("no-tree-loop-optimize")));
-	void init(void);
+  // Function prototypes
+  uint8_t put(char) __attribute__((optimize("no-tree-loop-optimize")));
+  uint8_t put(ctrl);	
+  uint8_t get() __attribute__((optimize("no-tree-loop-optimize")));
+  void init(void);
 }
 
 #endif /* UPDI_IO_H_ */

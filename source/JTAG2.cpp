@@ -22,25 +22,26 @@ JTAG2::packet_t JTAG2::packet;
 
 // Local objects
 namespace {
-// *** Local variables ***
-uint16_t flash_pagesize;
-uint8_t eeprom_pagesize;
-uint8_t nvm_version = 1;
+  // *** Local variables ***
+  uint16_t flash_pagesize;
+  uint8_t eeprom_pagesize;
+  uint8_t nvm_version = 1;
 
-// *** Local functions declaration ***
-void NVM_fuse_write (uint16_t address, uint8_t data);
-void NVM_v2_write (uint32_t address, uint16_t length, uint8_t flash_cmd);
-void NVM_buffered_write(uint16_t address, uint16_t length, uint8_t buff_size, uint8_t write_type);
-void include_extra_info (const uint8_t sernumlen);
-void set_nvm_version();
+  // *** Local functions declaration ***
+  void NVM_fuse_write (uint16_t address, uint8_t data);
+  void NVM_v2_write (uint32_t address, uint16_t length, uint8_t flash_cmd);
+  void NVM_buffered_write(uint16_t address, uint16_t length, uint8_t buff_size, uint8_t write_type);
+  void include_extra_info (const uint8_t sernumlen);
+  void set_nvm_version();
 
-// *** Signature response message ***
-FLASH<uint8_t> sgn_resp[29] { JTAG2::RSP_SIGN_ON, 1,
-                              1, JTAG2::PARAM_FW_VER_M_MIN_VAL, JTAG2::PARAM_FW_VER_M_MAJ_VAL, JTAG2::PARAM_HW_VER_M_VAL,
-                              1, JTAG2::PARAM_FW_VER_S_MIN_VAL, JTAG2::PARAM_FW_VER_S_MAJ_VAL, JTAG2::PARAM_HW_VER_S_VAL,
-                              0, 0, 0, 0, 0, 0,
-                              'J', 'T', 'A', 'G', 'I', 'C', 'E', ' ', 'm', 'k', 'I', 'I', 0
-                            };
+  // *** Signature response message ***
+  FLASH<uint8_t> sgn_resp[29] {
+    JTAG2::RSP_SIGN_ON, 1,
+    1, JTAG2::PARAM_FW_VER_M_MIN_VAL, JTAG2::PARAM_FW_VER_M_MAJ_VAL, JTAG2::PARAM_HW_VER_M_VAL,
+    1, JTAG2::PARAM_FW_VER_S_MIN_VAL, JTAG2::PARAM_FW_VER_S_MAJ_VAL, JTAG2::PARAM_HW_VER_S_VAL,
+    0, 0, 0, 0, 0, 0,
+    'J', 'T', 'A', 'G', 'I', 'C', 'E', ' ', 'm', 'k', 'I', 'I', 0
+  };
 }
 
 // *** Packet functions ***
