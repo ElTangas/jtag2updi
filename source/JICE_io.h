@@ -3,7 +3,7 @@
  *
  * Created: 18-11-2017 14:55:53
  *  Author: JMR_2
- */ 
+ */
 
 
 #ifndef JICE_IO_H_

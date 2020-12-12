@@ -3,7 +3,7 @@
  *
  * Created: 16-01-2018 23:06:40
  *  Author: JMR_2
- */ 
+ */
 
 #include "crc16.h"
 #include "sys.h"

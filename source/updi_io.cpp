@@ -43,7 +43,7 @@ uint8_t UPDI_io::put(char c) {
   /* Enable TX output */
   DDR(UPDI_PORT) |= (1 << UPDI_PIN);
   /* Calculate parity */
-  uint8_t parity;		//get_parity(c);
+  uint8_t parity;       //get_parity(c);
   parity = 0;
   /* If we can be sure an overflow has happened by now due to instruction latency, */
   /* no more wait is needed and we only need to clear overflow flag */
@@ -61,7 +61,7 @@ uint8_t UPDI_io::put(char c) {
   /* Send stop bits */
   setup_bit_high();
   wait_for_bit();
-  OCR0A = 2 * BIT_TIME - 1;		// 2 bits
+  OCR0A = 2 * BIT_TIME - 1;     // 2 bits
   /* Ready for RX input, but high due to pull-up */
   DDR(UPDI_PORT) &= ~(1 << UPDI_PIN);
   return c;
@@ -73,9 +73,9 @@ uint8_t UPDI_io::put(ctrl c)
   /* This nested function expects the timer output to just have gone low */
   /* It waits for 12 minimum baud bit times (break character) then goes high */
   auto break_pulse = [] {
-    TCCR0B = 4;											// timer tick = 256/F_CPU seconds
-    OCR0A = F_CPU/125000;								// bit time = F_CPU/125000 ticks ~ 2.048 ms
-    for (uint8_t i = 0; i < 11; i++) wait_for_bit();	// 12 bits ~ 24.6 ms, as recommended on the datasheet
+    TCCR0B = 4;                                         // timer tick = 256/F_CPU seconds
+    OCR0A = F_CPU/125000;                               // bit time = F_CPU/125000 ticks ~ 2.048 ms
+    for (uint8_t i = 0; i < 11; i++) wait_for_bit();    // 12 bits ~ 24.6 ms, as recommended on the datasheet
     setup_bit_high();
     wait_for_bit();
     DDR(UPDI_PORT) &= ~(1 << UPDI_PIN);
@@ -125,7 +125,7 @@ uint8_t UPDI_io::get() {
   stop_timer();
   /* Wait for middle of start bit */
   OCR0A = BIT_TIME / 2 - 1;
-  TCNT0 = 12;		// overhead time; needs to be calibrated
+  TCNT0 = 12;       // overhead time; needs to be calibrated
   /* Make sure overflow flag is reset */
   TIFR0 = (1 << OCF0A);
 
@@ -141,11 +141,11 @@ uint8_t UPDI_io::get() {
   wait_for_bit();
   /* Setup sampling time */
   OCR0A = BIT_TIME - 1;
-#	ifdef _DEBUG
+#   ifdef _DEBUG
   /* Timing pulse */
   PIND |= (1 << PIND7);
   PIND |= (1 << PIND7);
-#	endif // _DEBUG
+#   endif // _DEBUG
   /* Sample bits */
   uint8_t c = 0;
   //for (uint8_t i = 0; i < 8; i++) {
@@ -157,20 +157,20 @@ uint8_t UPDI_io::get() {
       //c |=  0x80;
       c |= mask;
     }
-#		ifdef _DEBUG
+#       ifdef _DEBUG
     /* Timing pulse */
     PIND |= (1 << PIND7);
     PIND |= (1 << PIND7);
-#		endif // _DEBUG
+#       endif // _DEBUG
   }
   /* To Do Sample Parity */
   wait_for_bit();
-#	ifdef _DEBUG
+#   ifdef _DEBUG
   /* Timing pulse */
   PIND |= (1 << PIND7);
   PIND |= (1 << PIND7);
-#	endif // _DEBUG
-  OCR0A = 2 * BIT_TIME + BIT_TIME / 2 - 1;		// 2.5 bits
+#   endif // _DEBUG
+  OCR0A = 2 * BIT_TIME + BIT_TIME / 2 - 1;      // 2.5 bits
   /* Return as soon as high parity or stop bits start */
   loop_until_bit_is_set(PIN(UPDI_PORT), UPDI_PIN);
   /* Re-enable pull up */
@@ -180,10 +180,10 @@ uint8_t UPDI_io::get() {
 
 void UPDI_io::init(void)
 {
-#	ifdef _DEBUG
+#   ifdef _DEBUG
   /* For RX timing measurement and debugging, make PD7 output */
   DDRD |= (1 << DDD7);
-#	endif // _DEBUG
+#   endif // _DEBUG
   setup_bit_high();
   /* initialize counter to near terminal count */
   TCNT0 = BIT_TIME - 2;

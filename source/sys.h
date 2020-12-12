@@ -36,24 +36,24 @@
 
 
 // Auxiliary Macros
-#define CONCAT(A,B) A##B				// concatenate
-#define XCONCAT(A,B) CONCAT(A,B)		// expand and concatenate
+#define CONCAT(A,B) A##B                // concatenate
+#define XCONCAT(A,B) CONCAT(A,B)        // expand and concatenate
 //#define CONCAT3(A,B,C) A##B##C
 #if (__AVR_ARCH__ == 103) || (__AVR_ARCH__ == 104)
 //We'll call these ones XAVR for purposes of defines, instead of XTINY. This encompasses megaAVR 0-series and DA-series parts
 
   #define XAVR
-  #	define PIN(x) CONCAT(VPORT,x).IN
-  #	define PORT(x) CONCAT(VPORT,x).OUT
-  #	define DDR(x) CONCAT(VPORT,x).DIR
-//	# define PULLUP_ON(x,y) CONCAT(PORT,x).CONCAT3(PIN,y,CTRL)=0x04
-//	# define PULLUP_OFF(x,y) CONCAT(PORT,x).CONCAT3(PIN,y,CTRL)=0x04
+  # define PIN(x) CONCAT(VPORT,x).IN
+  # define PORT(x) CONCAT(VPORT,x).OUT
+  # define DDR(x) CONCAT(VPORT,x).DIR
+//  # define PULLUP_ON(x,y) CONCAT(PORT,x).CONCAT3(PIN,y,CTRL)=0x04
+//  # define PULLUP_OFF(x,y) CONCAT(PORT,x).CONCAT3(PIN,y,CTRL)=0x04
 
 #else
 
-  #	define PIN(x) CONCAT(PIN,x)
-  #	define PORT(x) CONCAT(PORT,x)
-  #	define DDR(x) CONCAT(DDR,x)
+  # define PIN(x) CONCAT(PIN,x)
+  # define PORT(x) CONCAT(PORT,x)
+  # define DDR(x) CONCAT(DDR,x)
 
 #endif
 
@@ -72,7 +72,7 @@
   #define LED2_PIN 6
 
   //USARTDEBUG not practical here because only one UART.
-//	#define USE_SPIDEBUG
+  //    #define USE_SPIDEBUG
 
   //SPIPRESC sets prescaler of SPI clock - it can go *INSANELY* fast, such that very little could keep up with it.
 
@@ -116,173 +116,173 @@
 // 4808, 4809. and the rest of the megaAVR 0-series
 // Same as above, pretty much
 // big difference here is your specify the name of the peripheral instead of the number, and the target baud rate, because we grab the OSCCAL value per datasheet./
-//	#define USE_USARTDEBUG
-//	#define DEBUG_USART USART1
-//	#define DEBUG_BAUDRATE 2000000UL
+//  #define USE_USARTDEBUG
+//  #define DEBUG_USART USART1
+//  #define DEBUG_BAUDRATE 2000000UL
 
 #endif
 
 
-/* Defaults and hardware-specific stuff 				*/
-/* Shouldn't need to change anything here				*/
+/* Defaults and hardware-specific stuff                 */
+/* Shouldn't need to change anything here               */
 /* IF you want to override, copy it to the blocks above */
 
 
 #if defined(__AVR_ATtiny_Zero_One__)
 // tinyAVR 0-series and 1-series parts
 
-  #	ifndef UPDI_PORT
-  #		define UPDI_PORT B
-  #	endif
+  # ifndef UPDI_PORT
+  #   define UPDI_PORT B
+  # endif
 
-  #	ifndef UPDI_PIN
-  #		define UPDI_PIN 0
-  #	endif
+  # ifndef UPDI_PIN
+  #   define UPDI_PIN 0
+  # endif
 
-  #	ifndef LED_PORT
-  #		define LED_PORT B
-  #	endif
+  # ifndef LED_PORT
+  #   define LED_PORT B
+  # endif
 
-  #	ifndef LED_PIN
-  #		define LED_PIN 1
-  #	endif
+  # ifndef LED_PIN
+  #   define LED_PIN 1
+  # endif
 
-  #	ifndef HOST_USART
-  #		define HOST_USART USART0
-  #	endif
+  # ifndef HOST_USART
+  #   define HOST_USART USART0
+  # endif
 
-  #	ifndef HOST_TX_PORT
-  #		define HOST_TX_PORT B
-  #	endif
+  # ifndef HOST_TX_PORT
+  #   define HOST_TX_PORT B
+  # endif
 
-  #	ifndef HOST_TX_PIN
-  #		define HOST_TX_PIN 2
-  #	endif
+  # ifndef HOST_TX_PIN
+  #   define HOST_TX_PIN 2
+  # endif
 
-  #	ifndef HOST_RX_PIN
-  #		define HOST_RX_PIN 3
-  #	endif
+  # ifndef HOST_RX_PIN
+  #   define HOST_RX_PIN 3
+  # endif
 
 #elif defined( __AVR_ATmega_Mighty__ )
 // For ATmega16, 32, ... 128 and the later x4 parts (up to the 1284P).
 
-  #	ifndef HOST_USART
-  #		define HOST_USART 0
-  #	endif
+  # ifndef HOST_USART
+  #   define HOST_USART 0
+  # endif
 
-  #	ifndef UPDI_PORT
-  #		define UPDI_PORT C
-  #	endif
+  # ifndef UPDI_PORT
+  #   define UPDI_PORT C
+  # endif
 
-  #	ifndef UPDI_PIN
-  #		define UPDI_PIN 7
-  #	endif
+  # ifndef UPDI_PIN
+  #   define UPDI_PIN 7
+  # endif
 
-  #	ifndef LED_PORT
-  #		define LED_PORT B
-  #	endif
+  # ifndef LED_PORT
+  #   define LED_PORT B
+  # endif
 
-  #	ifndef LED_PIN
-  #		define LED_PIN 7
-  #	endif
+  # ifndef LED_PIN
+  #   define LED_PIN 7
+  # endif
 
 
 #elif defined (__AVR_ATmega_Mini__) || defined(ARDUINO_AVR_LARDU_328E)
 // For ATmega8/88/168/328 (P, PB) parts
 
-  #	ifndef HOST_USART
-  #		define HOST_USART 0
-  #	endif
+  # ifndef HOST_USART
+  #   define HOST_USART 0
+  # endif
 
-  #	ifndef UPDI_PORT
-  #		define UPDI_PORT D
-  #	endif
+  # ifndef UPDI_PORT
+  #   define UPDI_PORT D
+  # endif
 
-  #	ifndef UPDI_PIN
-  #		define UPDI_PIN 6
-  #	endif
+  # ifndef UPDI_PIN
+  #   define UPDI_PIN 6
+  # endif
 
   #ifdef USE_SPIDEBUG
 
-    #	ifndef LED_PORT
-    #		define LED_PORT C
-    #	endif
+    # ifndef LED_PORT
+    #   define LED_PORT C
+    # endif
 
-    #	ifndef LED_PIN
-    #		define LED_PIN 5
-    #	endif
+    # ifndef LED_PIN
+    #   define LED_PIN 5
+    # endif
 
   #else
 
-    #	ifndef LED_PORT
-    #		define LED_PORT B
-    #	endif
+    # ifndef LED_PORT
+    #   define LED_PORT B
+    # endif
 
-    #	ifndef LED_PIN
-    #		define LED_PIN 5
-    #	endif
+    # ifndef LED_PIN
+    #   define LED_PIN 5
+    # endif
 
   #endif
 
 #elif defined (__AVR_ATmega_Mega__)
 // 2560 and that family, like the ones used on the Arduino Mega
 
-  #	ifndef HOST_USART
-  #		define HOST_USART 0
-  #	endif
+  # ifndef HOST_USART
+  #   define HOST_USART 0
+  # endif
 
-  #	ifndef UPDI_PORT
-  #		define UPDI_PORT D
-  #	endif
+  # ifndef UPDI_PORT
+  #   define UPDI_PORT D
+  # endif
 
-  #	ifndef UPDI_PIN
-  #		define UPDI_PIN 3
-  #	endif
+  # ifndef UPDI_PIN
+  #   define UPDI_PIN 3
+  # endif
 
-  #	ifndef LED_PORT
-  #		define LED_PORT B
-  #	endif
+  # ifndef LED_PORT
+  #   define LED_PORT B
+  # endif
 
-  #	ifndef LED_PIN
-  #		define LED_PIN 7
-  #	endif
+  # ifndef LED_PIN
+  #   define LED_PIN 7
+  # endif
 
 
 #elif defined (__AVR_ATmega_Zero__ ) || defined( __AVR_DA__)
 // 4808, 4809. and the rest of the megaAVR 0-series
 
 
-  #	ifndef UPDI_PORT
-  #		define UPDI_PORT B
-  #	endif
+  # ifndef UPDI_PORT
+  #   define UPDI_PORT B
+  # endif
 
-  #	ifndef UPDI_PIN
-  #		define UPDI_PIN 0
-  #	endif
+  # ifndef UPDI_PIN
+  #   define UPDI_PIN 0
+  # endif
 
-  #	ifndef LED_PORT
-  #		define LED_PORT B
-  #	endif
+  # ifndef LED_PORT
+  #   define LED_PORT B
+  # endif
 
-  #	ifndef LED_PIN
-  #		define LED_PIN 1
-  #	endif
+  # ifndef LED_PIN
+  #   define LED_PIN 1
+  # endif
 
-  #	ifndef HOST_USART
-  #		define HOST_USART USART0
-  #	endif
+  # ifndef HOST_USART
+  #   define HOST_USART USART0
+  # endif
 
-  #	ifndef HOST_TX_PORT
-  #		define HOST_TX_PORT A
-  #	endif
+  # ifndef HOST_TX_PORT
+  #   define HOST_TX_PORT A
+  # endif
 
-  #	ifndef HOST_TX_PIN
-  #		define HOST_TX_PIN 0
-  #	endif
+  # ifndef HOST_TX_PIN
+  #   define HOST_TX_PIN 0
+  # endif
 
-  #	ifndef HOST_RX_PIN
-  #		define HOST_RX_PIN 1
-  #	endif
+  # ifndef HOST_RX_PIN
+  #   define HOST_RX_PIN 1
+  # endif
 
 #else
   #warning "Part not supported - if you didn't provide all the needed pin definitions, that's why it's not compiling"
@@ -319,10 +319,10 @@
     #endif
   #else
     // This is a more modern part; we can use 16 bit UBRR
-    #define HOST_UBRR XCONCAT(UBRR, HOST_USART)		
+    #define HOST_UBRR XCONCAT(UBRR, HOST_USART)
   #endif
 #endif
-  
+
 // Some classic AVRs have a single flags register for timers 0 and 1 (TIFR0 and TIFR1 are merged in a single register TIFR)
 #ifndef XAVR
   #ifndef TIFR1
@@ -357,8 +357,8 @@
 
 
 #ifndef F_CPU
-  # warning "F_CPU not defined, assuming 16MHz"
-  #	define F_CPU 16000000U
+  #warning "F_CPU not defined, assuming 16MHz"
+  #define F_CPU 16000000U
 #endif
 
 // TIMEOUTS
@@ -369,20 +369,20 @@
 #define TARGET_TIMEOUT (F_CPU / 256.0 * 0.1)
 
 #ifndef UPDI_BAUD
-  #	define UPDI_BAUD 225000U	// (max 225000 min approx. F_CPU/100)
+  #define UPDI_BAUD 225000U    // (max 225000 min approx. F_CPU/100)
 #endif
 
 /*
  * Available UPDI I/O types are:
  *
- * 1 - timer sofware UART:		Compatible only with Mega328P and other AVRs with identical 8 bit timer 0.
- *								Only the OC0A pin can be used for UPDI I/O. Slightly faster upload speed for a given UPDI_BAUD value.
+ * 1 - timer sofware UART:      Compatible only with Mega328P and other AVRs with identical 8 bit timer 0.
+ *                              Only the OC0A pin can be used for UPDI I/O. Slightly faster upload speed for a given UPDI_BAUD value.
  *
- * 2 - bitbang software UART:	Compatible with many chips and broad choice of UPDI pins are selectable.
- *								Slightly slower upload speed for a given UPDI_BAUD value. Download speed is the same.
+ * 2 - bitbang software UART:   Compatible with many chips and broad choice of UPDI pins are selectable.
+ *                              Slightly slower upload speed for a given UPDI_BAUD value. Download speed is the same.
  */
 #ifndef UPDI_IO_TYPE
-  #	define UPDI_IO_TYPE 2
+  #define UPDI_IO_TYPE 2
 #endif
 
 // Flash constants class
@@ -390,8 +390,8 @@
   template <typename T>
   using FLASH = const T;
 #else
-#	include <avr/pgmspace.h>
-#	define FLASH const PROGMEM flash
+# include <avr/pgmspace.h>
+# define FLASH const PROGMEM flash
 
   template <typename T>
   class flash {
@@ -437,12 +437,12 @@ namespace SYS {
   }
   inline void startTimer(void) __attribute__((always_inline));
   inline void startTimer(void) {
-      #ifdef TIMER_RESET_REG //some timers have a reset register.
-      TIMER_RESET_REG=TIMER_RESET_CMD;
-      #else
-      TIMER_COUNT_REG=0;
-      #endif
-      TIMER_CONTROL_REG=TIMER_ON;
+    #ifdef TIMER_RESET_REG //some timers have a reset register.
+    TIMER_RESET_REG=TIMER_RESET_CMD;
+    #else
+    TIMER_COUNT_REG=0;
+    #endif
+    TIMER_CONTROL_REG=TIMER_ON;
   }
   inline void stopTimer(void) __attribute__((always_inline));
   inline void stopTimer(void){ TIMER_CONTROL_REG=TIMER_OFF; }

@@ -155,7 +155,7 @@ void JTAG2::set_parameter() {
         PARAM_BAUD_RATE_VAL = (baud_rate)param_val;
         break;
       }
-      // else fall through (invalid baud rate)      
+      // else fall through (invalid baud rate)
     default:
       set_status(RSP_ILLEGAL_PARAMETER);
       return;
@@ -226,7 +226,7 @@ void JTAG2::enter_progmode() {
             DBG::debug('N', NVM_Status,NVM_Cmnd);
           }
         #endif
-        // Wait for completion of any previous NVM command then clear it with NOOP 
+        // Wait for completion of any previous NVM command then clear it with NOOP
         NVM_v2::wait<false>();
         UPDI::sts_b_l(NVM_v2::NVM_base + NVM_v2::STATUS, 0);
         NVM_v2::command<false>(NVM_v2::NOOP);
@@ -401,7 +401,7 @@ void JTAG2::erase() {
           NVM::command<false>(NVM::ER);
         }
       } else {
-        // Wait for completion of any previous NVM command then clear it with NOOP 
+        // Wait for completion of any previous NVM command then clear it with NOOP
         NVM_v2::wait<false>();
         NVM_v2::command<false>(NVM_v2::NOOP);
         // erase flash page
@@ -439,7 +439,7 @@ namespace {
 
   void NVM_v2_write (uint32_t address, uint16_t length, uint8_t write_cmd) {
     uint16_t current_byte_index = 10;         /* Index of the first byte to send inside the JTAG2 command body */
-    // Wait for completion of any previous NVM command then clear it with NOOP 
+    // Wait for completion of any previous NVM command then clear it with NOOP
     NVM_v2::wait<false>();
     NVM_v2::command<false>(NVM_v2::NOOP);
     // Send the write command
@@ -504,10 +504,10 @@ namespace {
     #endif
   }
 
-  
+
   void NVM_buffered_write(const uint16_t address, const uint16_t length, const uint8_t buff_size, const uint8_t write_cmnd) {
     uint8_t current_byte_index = 10;          /* Index of the first byte to send inside the JTAG2 command body */
-    uint16_t bytes_remaining = length;          /* number of bytes to write */
+    uint16_t bytes_remaining = length;        /* number of bytes to write */
 
     // Sends a block of bytes from the command body to memory, using the UPDI interface
     // On entry, the UPDI pointer must already point to the desired address

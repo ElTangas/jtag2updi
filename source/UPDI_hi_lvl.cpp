@@ -33,7 +33,7 @@ bool UPDI::CPU_reset(){
   #else
     while ( UPDI::CPU_mode<0x0E>() == 0 );
   #endif
-  
+
   #if defined(DEBUG_RESET) && !defined(DEBUG_LDCS)
   //if LDCS is defined, it will pick this up
   #ifndef DISABLE_TARGET_TIMEOUT
@@ -83,7 +83,7 @@ bool UPDI::CPU_reset_off(){
   #else
     while ( UPDI::CPU_mode<0x0E>() == 0 );
   #endif
-  
+
   #if defined(DEBUG_RESET) && !defined(DEBUG_LDCS)
   //if LDCS is defined, it will pick this up
   #ifndef DISABLE_TARGET_TIMEOUT

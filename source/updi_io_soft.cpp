@@ -62,9 +62,9 @@ uint8_t UPDI_io::get() {
 
             // wait for start edge
             "WaitStart: \n\t"
-            " ld r18,%a[timerflags] \n\t" // load the timer flags to r18. which isn't needed until later
-            " andi r18,%[targflag]  \n\t"      // AND with WAIT_FOR_TARGET
-            " brne EndByte \n\t"       // If the product of the ANDI operation was 0, the BRNE will jump it out of here
+            " ld r18,%a[timerflags] \n\t"   // load the timer flags to r18. which isn't needed until later
+            " andi r18,%[targflag]  \n\t"   // AND with WAIT_FOR_TARGET
+            " brne EndByte \n\t"            // If the product of the ANDI operation was 0, the BRNE will jump it out of here
             " sbic %[uart_port], %[uart_pin] \n\t"
             " rjmp WaitStart \n\t"
             // all that stuff with the timer will add 4 cycles on a classic AVR and 3 on a XAVR.
