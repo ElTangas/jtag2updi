@@ -890,6 +890,24 @@ programmer
 ;
 
 programmer
+  id    = "arduinoisp";
+  desc  = "Arduino ISP Programmer";
+  type  = "usbtiny";
+  connection_type = usb;
+  usbvid     = 0x2341;
+  usbpid     = 0x0049;
+;
+
+programmer
+  id    = "arduinoisporg";
+  desc  = "Arduino ISP Programmer";
+  type  = "usbtiny";
+  connection_type = usb;
+  usbvid     = 0x2A03;
+  usbpid     = 0x0049;
+;
+
+programmer
   id    = "butterfly";
   desc  = "Atmel Butterfly Development Board";
   type  = "butterfly";
@@ -1139,6 +1157,14 @@ programmer
   type  = "jtagice3_updi";
   connection_type = usb;
   usbpid = 0x2145;
+;
+
+programmer
+  id    = "curiosity_updi";
+  desc  = "Curiosity in UPDI mode";
+  type  = "jtagice3_updi";
+  connection_type = usb;
+  usbpid = 0x2175;
 ;
 
 programmer
@@ -1478,6 +1504,20 @@ programmer
 #  mosi  = ?;
 #  miso  = ?;
 #;
+
+
+#This programmer uses the built in linux SPI bus devices to program an
+#attached AVR. A GPIO accessed through the sysfs GPIO interface needs to
+#be specified for a reset pin since the linux SPI userspace functions do
+#not allow for control over the slave select/chip select signal.
+#
+programmer
+  id = "linuxspi";
+  desc = "Use Linux SPI device in /dev/spidev*";
+  type = "linuxspi";
+  reset = 25;
+;
+
 
 # some ultra cheap programmers use bitbanging on the
 # serialport.
@@ -15210,7 +15250,7 @@ part
 part
     id		= ".avr8x";
     desc	= "AVR8X family common values";
-    has_pdi	= yes;
+    has_updi	= yes;
     nvm_base	= 0x1000;
     ocd_base	= 0x0F80;
 
@@ -16169,7 +16209,7 @@ part parent    ".avr8x_mega"
 part
     id    = ".avrda";
     desc  = "AVRDA family common values";
-    has_pdi  = yes;
+    has_updi  = yes;
     nvm_base  = 0x1000;
     ocd_base  = 0x0F80;
     rampz     = 0x0B;
@@ -16235,14 +16275,6 @@ part
         # SRAM, only used to supply the offset
         offset    = 0x1000000;
     ;
-
-    memory "usersig"
-        size		= 0x20;
-        offset		= 0x1080;
-        page_size	= 0x20;
-        readsize	= 0x100;
-    ;
-
 ;
 
 #------------------------------------------------------------
@@ -16259,6 +16291,10 @@ part parent    ".avrda"
         offset    = 0x800000;
         page_size = 0x200;
         readsize  = 0x100;
+        load_ext_addr   = "  0   1   0   0      1   1   0   1",
+                          "  0   0   0   0      0   0   0   0",
+                          "  0   0   0   0      0   0   0 a16",
+                          "  0   0   0   0      0   0   0   0";
     ;
 
     memory "eeprom"
@@ -16283,6 +16319,10 @@ part parent    ".avrda"
         offset    = 0x800000;
         page_size = 0x200;
         readsize  = 0x100;
+        load_ext_addr   = "  0   1   0   0      1   1   0   1",
+                          "  0   0   0   0      0   0   0   0",
+                          "  0   0   0   0      0   0   0 a16",
+                          "  0   0   0   0      0   0   0   0";
     ;
 
     memory "eeprom"
@@ -16307,6 +16347,10 @@ part parent    ".avrda"
         offset    = 0x800000;
         page_size = 0x200;
         readsize  = 0x200;
+        load_ext_addr   = "  0   1   0   0      1   1   0   1",
+                          "  0   0   0   0      0   0   0   0",
+                          "  0   0   0   0      0   0   0 a16",
+                          "  0   0   0   0      0   0   0   0";
     ;
 
     memory "eeprom"
@@ -16331,6 +16375,10 @@ part parent    ".avrda"
         offset    = 0x800000;
         page_size = 0x200;
         readsize  = 0x100;
+        load_ext_addr   = "  0   1   0   0      1   1   0   1",
+                          "  0   0   0   0      0   0   0   0",
+                          "  0   0   0   0      0   0   0 a16",
+                          "  0   0   0   0      0   0   0   0";
     ;
 
     memory "eeprom"
@@ -16342,6 +16390,460 @@ part parent    ".avrda"
 ;
 
 
+
+#------------------------------------------------------------
+# AVR64DA64
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr64da64";
+    desc      = "AVR64DA64";
+    signature = 0x1E 0x96 0x12;
+
+    memory "flash"
+        size      = 0x10000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x100;
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+#------------------------------------------------------------
+# AVR64DA48
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr64da48";
+    desc      = "AVR64DA48";
+    signature = 0x1E 0x96 0x13;
+
+    memory "flash"
+        size      = 0x10000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x100;
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+#------------------------------------------------------------
+# AVR64DA32
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr64da32";
+    desc      = "AVR64DA32";
+    signature = 0x1E 0x96 0x14;
+
+    memory "flash"
+        size      = 0x10000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x200;
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+#------------------------------------------------------------
+# AVR64DA28
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr64da28";
+    desc      = "AVR64DA28";
+    signature = 0x1E 0x96 0x15;
+
+    memory "flash"
+        size      = 0x10000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x100;
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+
+#------------------------------------------------------------
+# AVR32DA48
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr32da48";
+    desc      = "AVR32DA48";
+    signature = 0x1E 0x95 0x32;
+
+    memory "flash"
+        size      = 0x8000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x100;
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+#------------------------------------------------------------
+# AVR32DA32
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr32da32";
+    desc      = "AVR32DA32";
+    signature = 0x1E 0x95 0x33;
+
+    memory "flash"
+        size      = 0x8000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x200;
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+#------------------------------------------------------------
+# AVR32DA28
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr32da28";
+    desc      = "AVR32DA28";
+    signature = 0x1E 0x95 0x34;
+
+    memory "flash"
+        size      = 0x8000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x100;
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+
+
+#------------------------------------------------------------
+# AVR128DB64
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr128db64";
+    desc      = "AVR128DB64";
+    signature = 0x1E 0x97 0x0B;
+
+    memory "flash"
+        size      = 0x20000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x100;
+        load_ext_addr   = "  0   1   0   0      1   1   0   1",
+                          "  0   0   0   0      0   0   0   0",
+                          "  0   0   0   0      0   0   0 a16",
+                          "  0   0   0   0      0   0   0   0";
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+#------------------------------------------------------------
+# AVR128DB48
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr128db48";
+    desc      = "AVR128DB48";
+    signature = 0x1E 0x97 0x0C;
+
+    memory "flash"
+        size      = 0x20000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x100;
+        load_ext_addr   = "  0   1   0   0      1   1   0   1",
+                          "  0   0   0   0      0   0   0   0",
+                          "  0   0   0   0      0   0   0 a16",
+                          "  0   0   0   0      0   0   0   0";
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+#------------------------------------------------------------
+# AVR128DB32
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr128db32";
+    desc      = "AVR128DB32";
+    signature = 0x1E 0x97 0x0D;
+
+    memory "flash"
+        size      = 0x20000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x200;
+        load_ext_addr   = "  0   1   0   0      1   1   0   1",
+                          "  0   0   0   0      0   0   0   0",
+                          "  0   0   0   0      0   0   0 a16",
+                          "  0   0   0   0      0   0   0   0";
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+#------------------------------------------------------------
+# AVR128DB28
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr128db28";
+    desc      = "AVR128DB28";
+    signature = 0x1E 0x97 0x0E;
+
+    memory "flash"
+        size      = 0x20000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x100;
+        load_ext_addr   = "  0   1   0   0      1   1   0   1",
+                          "  0   0   0   0      0   0   0   0",
+                          "  0   0   0   0      0   0   0 a16",
+                          "  0   0   0   0      0   0   0   0";
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+
+#------------------------------------------------------------
+# AVR64DB64
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr64db64";
+    desc      = "AVR64DB64";
+    signature = 0x1E 0x96 0x16;
+
+    memory "flash"
+        size      = 0x10000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x100;
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+#------------------------------------------------------------
+# AVR64DB48
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr64db48";
+    desc      = "AVR64DB48";
+    signature = 0x1E 0x96 0x17;
+
+    memory "flash"
+        size      = 0x10000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x100;
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+#------------------------------------------------------------
+# AVR64DB32
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr64db32";
+    desc      = "AVR64DB32";
+    signature = 0x1E 0x96 0x18;
+
+    memory "flash"
+        size      = 0x10000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x200;
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+#------------------------------------------------------------
+# AVR64DB28
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr64db28";
+    desc      = "AVR64DB28";
+    signature = 0x1E 0x96 0x19;
+
+    memory "flash"
+        size      = 0x10000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x100;
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+
+
+#------------------------------------------------------------
+# AVR32DB48
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr32db48";
+    desc      = "AVR32DB48";
+    signature = 0x1E 0x95 0x35;
+
+    memory "flash"
+        size      = 0x8000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x100;
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+#------------------------------------------------------------
+# AVR32DB32
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr32db32";
+    desc      = "AVR32DB32";
+    signature = 0x1E 0x95 0x36;
+
+    memory "flash"
+        size      = 0x8000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x200;
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
+
+#------------------------------------------------------------
+# AVR32DB28
+#------------------------------------------------------------
+
+part parent    ".avrda"
+    id        = "avr32db28";
+    desc      = "AVR32DB28";
+    signature = 0x1E 0x95 0x37;
+
+    memory "flash"
+        size      = 0x8000;
+        offset    = 0x800000;
+        page_size = 0x200;
+        readsize  = 0x100;
+    ;
+
+    memory "eeprom"
+        size      = 0x200;
+        offset    = 0x1400;
+        page_size = 0x20;
+        readsize  = 0x100;
+    ;
+;
 
 
 
