@@ -39,9 +39,7 @@ namespace {
     /* Initialize serial links */
     JICE_io::init();
     UPDI_io::init();
-
   }
-
 
   inline void loop() {
     #ifndef DISABLE_HOST_TIMEOUT

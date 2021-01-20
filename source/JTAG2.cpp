@@ -164,7 +164,7 @@ void JTAG2::set_parameter() {
 }
 
 void JTAG2::set_device_descriptor() {
-  flash_pagesize = *(uint16_t *) &packet.body[244];
+  flash_pagesize = packet.body[244] + 256*packet.body[245];
   eeprom_pagesize = packet.body[246];
   // Now they've told us what we're talking to, and we will try to connect to it
   /* Initialize or enable UPDI */

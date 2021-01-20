@@ -57,7 +57,7 @@ namespace NVM_v2 {
     EEMBER16    = 0x1C,    /* EEPROM 16-byte Erase Enable */
     EEMBER32    = 0x1D,    /* EEPROM 32-byte Erase Enable */
     CHER        = 0x20,    /* Erase Flash and EEPROM. EEPROM is skipped if EESAVE fuse is set. (UPDI access only.) */
-    EECHER      = 0x30    /* Erase EEPROM */
+    EECHER      = 0x30     /* Erase EEPROM */
   };
   // *** NVM Functions ***
   template <bool preserve_ptr>

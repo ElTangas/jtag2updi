@@ -10,8 +10,8 @@
 #include "sys.h"
 #include "dbg.h"
 
-// _l  versions have long (24-bit) address poimter
-// otherwisem, address pointer is 16-bit
+// _l  versions have long (24-bit) address pointer
+// otherwise, address pointer is 16-bit
 
 
 
@@ -25,7 +25,6 @@ FLASH<uint8_t> UPDI::UserRow_Write[8] {0x65, 0x74, 0x26, 0x73, 0x55, 0x4D, 0x56,
 STCS - Store to Control Register
 
 */
-
 
 void UPDI::stcs(reg r, uint8_t data) {
 #ifdef DEBUG_STCS
@@ -42,7 +41,6 @@ void UPDI::stcs(reg r, uint8_t data) {
 LDCS - Load Control Register
 
 */
-
 
 uint8_t UPDI::ldcs(reg r) {
 #ifdef DEBUG_LDCS
@@ -64,7 +62,6 @@ uint8_t UPDI::ldcs(reg r) {
 REP - Repeat Command
 
 */
-
 
 void UPDI::rep(uint8_t repeats) {
 #ifdef DEBUG_REP
@@ -158,8 +155,6 @@ STS - Byte oriented Store with Direct Addressing
 
 */
 
-
-
 void UPDI::sts_b(uint16_t address, uint8_t data) {
 #ifdef DEBUG_STS
   DBG::updi_sts(address,data);
@@ -230,7 +225,6 @@ STPTR - Set pointer for indirect addressing
 
 */
 
-
 void UPDI::stptr_b(uint8_t address) {
   // No debug code here - byte-addressed STPTR is never actually used!
   UPDI_io::put(UPDI::SYNCH);
@@ -262,7 +256,7 @@ void UPDI::stptr_l(uint32_t address) {
   UPDI_io::get();
 }
 
-void UPDI::stptr_p(uint8_t* addr_p, uint8_t n) {
+void UPDI::stptr_p(const uint8_t* addr_p, uint8_t n) {
   UPDI_io::put(UPDI::SYNCH);
   UPDI_io::put(0x68 + --n);
   UPDI_io::put(*(addr_p++));
@@ -278,7 +272,6 @@ void UPDI::stptr_p(uint8_t* addr_p, uint8_t n) {
 LDPTR - Load pointer for indirect addressing
 
 */
-
 
 uint8_t UPDI::ldptr_b() {
   UPDI_io::put(UPDI::SYNCH);
@@ -356,7 +349,7 @@ void UPDI::stinc_w(uint16_t data) {
 
 STINC noget variants
 For use when the RSD bit is set in control register A
-This is done to improve performance when doing busst writes
+This is done to improve performance when doing burst writes
 
 stinc_b_noget is copy of stinc_b without the get()
 
