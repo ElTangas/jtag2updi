@@ -24,14 +24,16 @@ namespace JTAG2 {
 
   // *** valid values for PARAM_BAUD_RATE_VAL
   enum baud_rate {
-    baud_2400   = 0x01,
-    baud_4800,
-    baud_9600,
-    baud_19200,         // default
-    baud_38400,
-    baud_57600,
-    baud_115200,
-    baud_14400
+    BAUD_2400   = 0x01,
+    BAUD_4800,
+    BAUD_9600,
+    BAUD_19200,         // default
+    BAUD_38400,
+    BAUD_57600,
+    BAUD_115200,
+    BAUD_14400,
+    BAUD_LOWER = BAUD_2400,
+    BAUD_UPPER = BAUD_14400
   };
 
   // *** Parameter Values ***

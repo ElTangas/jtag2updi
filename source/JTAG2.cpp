@@ -96,7 +96,7 @@ void JTAG2::set_status(uint8_t status_code) {
 void JTAG2::sign_on() {
   // Initialize JTAGICE2 variables
   JTAG2::PARAM_EMU_MODE_VAL = 0x02;
-  JTAG2::PARAM_BAUD_RATE_VAL = JTAG2::baud_19200;
+  JTAG2::PARAM_BAUD_RATE_VAL = JTAG2::BAUD_19200;
   // Send sign on message
   packet.size_word[0] = sizeof(sgn_resp);
   for (uint8_t i = 0; i < sizeof(sgn_resp); i++) {
@@ -151,7 +151,7 @@ void JTAG2::set_parameter() {
       break;
     case PARAM_BAUD_RATE:
       // check if baud rate parameter is valid
-      if ((param_val >= baud_2400) && (param_val <= baud_14400)) {
+      if ((param_val >= BAUD_LOWER) && (param_val <= BAUD_UPPER)) {
         PARAM_BAUD_RATE_VAL = (baud_rate)param_val;
         break;
       }

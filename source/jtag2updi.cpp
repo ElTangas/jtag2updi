@@ -80,8 +80,8 @@ namespace {
             #if defined(DEBUG_ON)
               DBG::debug("Giving up...");
             #endif
-            JTAG2::PARAM_BAUD_RATE_VAL = JTAG2::baud_19200;
-            JICE_io::set_baud(JTAG2::baud_19200);
+            JTAG2::PARAM_BAUD_RATE_VAL = JTAG2::BAUD_19200;
+            JICE_io::set_baud(JTAG2::BAUD_19200);
             JTAG2::ConnectedTo&=0xFD; // no longer talking to host.
             if (JTAG2::ConnectedTo&0x01) {
               //if this is true, we're still talking to the target! We're better tell it we're done...
@@ -125,7 +125,7 @@ namespace {
         break;
       case JTAG2::CMND_SIGN_OFF:
         // Restore default baud rate before exiting
-        JTAG2::PARAM_BAUD_RATE_VAL = JTAG2::baud_19200;
+        JTAG2::PARAM_BAUD_RATE_VAL = JTAG2::BAUD_19200;
         if (JTAG2::ConnectedTo&0x01) {
           //if this is true, we're talking to the target too! We're better tell it we're done...
           JTAG2::leave_progmode();
