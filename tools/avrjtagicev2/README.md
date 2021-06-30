@@ -61,7 +61,7 @@ To burn the USB module, use [avr-aosp.py](https://github.com/cbalint13/avr-aosp/
 1) Erase content of module:
 
 ```
-python2 avr-aosp.py -op erase
+python3 avr-aosp.py -op erase
 
 INFO
 
@@ -85,7 +85,7 @@ ERASE program memory
 2) Upload the firmware:
 
 ```
-python2 avr-aosp.py -op write -file ../../build/JTAG2UPDI.hex
+python3 avr-aosp.py -op write -file ../../build/JTAG2UPDI.hex
 
 INFO
 
