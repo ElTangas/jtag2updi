@@ -14,7 +14,39 @@
 namespace {
   // *** Baud rate lookup table for UBRR0 register ***
   // Indexed by valid values for PARAM_BAUD_RATE_VAL (defined in JTAG2.h)
-  FLASH<uint16_t> baud_tbl[8] = {baud_reg_val(2400), baud_reg_val(4800), baud_reg_val(9600), baud_reg_val(19200), baud_reg_val(38400), baud_reg_val(57600), baud_reg_val(115200), baud_reg_val(14400)};
+  FLASH<uint16_t> baud_tbl[28] = {
+    baud_reg_val(2400),
+    baud_reg_val(4800),
+    baud_reg_val(9600),
+    baud_reg_val(19200),
+    baud_reg_val(38400),
+    baud_reg_val(57600),
+    baud_reg_val(115200),
+    baud_reg_val(14400),
+    // Extension to jtagmkII protocol: extra baud rates, standard series.
+    baud_reg_val(153600);
+    baud_reg_val(230400);
+    baud_reg_val(460800);
+    baud_reg_val(921600);
+    // Extension to jtagmkII protocol: extra baud rates, binary series.
+    baud_reg_val(128000);
+    baud_reg_val(256000);
+    baud_reg_val(512000);
+    baud_reg_val(1024000);
+    // Extension to jtagmkII protocol: extra baud rates, decimal series.
+    baud_reg_val(150000);
+    baud_reg_val(200000);
+    baud_reg_val(250000);
+    baud_reg_val(300000);
+    baud_reg_val(400000);
+    baud_reg_val(500000);
+    baud_reg_val(600000);
+    baud_reg_val(666666);
+    baud_reg_val(1000000);
+    baud_reg_val(1500000);
+    baud_reg_val(2000000);
+    baud_reg_val(3000000);
+    };
 }
 
 // Functions
