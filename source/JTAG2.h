@@ -32,8 +32,32 @@ namespace JTAG2 {
     BAUD_57600,
     BAUD_115200,
     BAUD_14400,
+    // Extension to jtagmkII protocol: extra baud rates, standard series.
+    BAUD_153600,
+    BAUD_230400,
+    BAUD_460800,
+    BAUD_921600,
+    // Extension to jtagmkII protocol: extra baud rates, binary series.
+    BAUD_128000,
+    BAUD_256000,
+    BAUD_512000,
+    BAUD_1024000,
+    // Extension to jtagmkII protocol: extra baud rates, decimal series.
+    BAUD_150000,
+    BAUD_200000,
+    BAUD_250000,
+    BAUD_300000,
+    BAUD_400000,
+    BAUD_500000,
+    BAUD_600000,
+    BAUD_666666,
+    BAUD_1000000,
+    BAUD_1500000,
+    BAUD_2000000,
+    BAUD_3000000,
+
     BAUD_LOWER = BAUD_2400,
-    BAUD_UPPER = BAUD_14400
+    BAUD_UPPER = BAUD_3000000
   };
 
   // *** Parameter Values ***
