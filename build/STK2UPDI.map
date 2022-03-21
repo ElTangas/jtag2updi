@@ -3,9 +3,9 @@ Archive member included to satisfy reference by file (symbol)
 c:/users/jr/appdata/local/arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/../lib/gcc/avr/7.3.0/avr5\libgcc.a(_exit.o)
                               c:/users/jr/appdata/local/arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avr5/crtatmega328p.o (exit)
 c:/users/jr/appdata/local/arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/../lib/gcc/avr/7.3.0/avr5\libgcc.a(_copy_data.o)
-                              x:\ccFuqEFe.ltrans0.ltrans.o (__do_copy_data)
+                              x:\ccTxmlbx.ltrans0.ltrans.o (__do_copy_data)
 c:/users/jr/appdata/local/arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/../lib/gcc/avr/7.3.0/avr5\libgcc.a(_clear_bss.o)
-                              x:\ccFuqEFe.ltrans0.ltrans.o (__do_clear_bss)
+                              x:\ccTxmlbx.ltrans0.ltrans.o (__do_clear_bss)
 
 Discarded input sections
 
@@ -108,7 +108,7 @@ Linker script and memory map
 Address of section .data set to 0x800100
 LOAD c:/users/jr/appdata/local/arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avr5/crtatmega328p.o
 LOAD jtag2updi.o
-LOAD x:\ccFuqEFe.ltrans0.ltrans.o
+LOAD x:\ccTxmlbx.ltrans0.ltrans.o
 LOAD JTAG2.o
 LOAD jice_io.o
 LOAD UPDI_lo_lvl.o
@@ -226,7 +226,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0xcae
+.text           0x00000000      0xcb4
  *(.vectors)
  .vectors       0x00000000       0x68 c:/users/jr/appdata/local/arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -242,7 +242,7 @@ END GROUP
  *libprintf_flt.a:*(.progmem.data)
  *libc.a:*(.progmem.data)
  *(.progmem*)
- .progmem.data  0x00000068      0x265 x:\ccFuqEFe.ltrans0.ltrans.o
+ .progmem.data  0x00000068      0x265 x:\ccTxmlbx.ltrans0.ltrans.o
                 0x000002ce                . = ALIGN (0x2)
  *fill*         0x000002cd        0x1 
  *(.jumptables)
@@ -313,16 +313,16 @@ END GROUP
                 0x00000304                __vector_16
                 0x00000304                __vector_18
                 0x00000304                __vector_20
- .text          0x00000306      0x3ca x:\ccFuqEFe.ltrans0.ltrans.o
-                0x000006d0                . = ALIGN (0x2)
+ .text          0x00000306      0x3d0 x:\ccTxmlbx.ltrans0.ltrans.o
+                0x000006d6                . = ALIGN (0x2)
  *(.text.*)
- .text.startup  0x000006d0      0x5da x:\ccFuqEFe.ltrans0.ltrans.o
-                0x000006d0                main
-                0x00000caa                . = ALIGN (0x2)
+ .text.startup  0x000006d6      0x5da x:\ccTxmlbx.ltrans0.ltrans.o
+                0x000006d6                main
+                0x00000cb0                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000caa        0x0 c:/users/jr/appdata/local/arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/../lib/gcc/avr/7.3.0/avr5\libgcc.a(_exit.o)
-                0x00000caa                _exit
-                0x00000caa                exit
+ .fini9         0x00000cb0        0x0 c:/users/jr/appdata/local/arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/../lib/gcc/avr/7.3.0/avr5\libgcc.a(_exit.o)
+                0x00000cb0                _exit
+                0x00000cb0                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -341,14 +341,14 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000caa        0x4 c:/users/jr/appdata/local/arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/../lib/gcc/avr/7.3.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x00000cb0        0x4 c:/users/jr/appdata/local/arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino5/bin/../lib/gcc/avr/7.3.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000cae                _etext = .
+                0x00000cb4                _etext = .
 
-.data           0x00800100        0x2 load address 0x00000cae
+.data           0x00800100        0x2 load address 0x00000cb4
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
- .data          0x00800100        0x1 x:\ccFuqEFe.ltrans0.ltrans.o
+ .data          0x00800100        0x1 x:\ccTxmlbx.ltrans0.ltrans.o
  *(.data*)
  *(.gnu.linkonce.d*)
  *(.rodata)
@@ -362,12 +362,12 @@ END GROUP
 .bss            0x00800102      0x2c8
                 0x00800102                PROVIDE (__bss_start, .)
  *(.bss)
- .bss           0x00800102      0x2c8 x:\ccFuqEFe.ltrans0.ltrans.o
+ .bss           0x00800102      0x2c8 x:\ccTxmlbx.ltrans0.ltrans.o
  *(.bss*)
  *(COMMON)
                 0x008003ca                PROVIDE (__bss_end, .)
-                0x00000cae                __data_load_start = LOADADDR (.data)
-                0x00000cb0                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00000cb4                __data_load_start = LOADADDR (.data)
+                0x00000cb6                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x008003ca        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
@@ -415,7 +415,7 @@ END GROUP
 
 .comment        0x00000000       0x11
  *(.comment)
- .comment       0x00000000       0x11 x:\ccFuqEFe.ltrans0.ltrans.o
+ .comment       0x00000000       0x11 x:\ccTxmlbx.ltrans0.ltrans.o
                                  0x12 (size before relaxing)
 
 .note.gnu.avr.deviceinfo
