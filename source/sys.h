@@ -112,7 +112,7 @@
   // Can even change the host USART if you want
 
 
-#elif defined (__AVR_ATmega_Zero__ ) || defined( __AVR_DA__)
+#elif defined (__AVR_ATmega_Zero__ ) || defined( __AVR_DX__)
 // 4808, 4809. and the rest of the megaAVR 0-series
 // Same as above, pretty much
 // big difference here is your specify the name of the peripheral instead of the number, and the target baud rate, because we grab the OSCCAL value per datasheet./
@@ -162,6 +162,7 @@
   # ifndef HOST_RX_PIN
   #   define HOST_RX_PIN 3
   # endif
+
 
 #elif defined( __AVR_ATmega_Mighty__ )
 // For ATmega16, 32, ... 128 and the later x4 parts (up to the 1284P).
@@ -224,6 +225,7 @@
 
   #endif
 
+
 #elif defined (__AVR_ATmega_Mega__)
 // 2560 and that family, like the ones used on the Arduino Mega
 
@@ -248,9 +250,8 @@
   # endif
 
 
-#elif defined (__AVR_ATmega_Zero__ ) || defined( __AVR_DA__)
+#elif defined (__AVR_ATmega_Zero__)
 // 4808, 4809. and the rest of the megaAVR 0-series
-
 
   # ifndef UPDI_PORT
   #   define UPDI_PORT B
@@ -266,6 +267,43 @@
 
   # ifndef LED_PIN
   #   define LED_PIN 1
+  # endif
+
+  # ifndef HOST_USART
+  #   define HOST_USART USART0
+  # endif
+
+  # ifndef HOST_TX_PORT
+  #   define HOST_TX_PORT A
+  # endif
+
+  # ifndef HOST_TX_PIN
+  #   define HOST_TX_PIN 0
+  # endif
+
+  # ifndef HOST_RX_PIN
+  #   define HOST_RX_PIN 1
+  # endif
+
+
+#elif defined (__AVR_DX__)
+// AVR-DA series
+// Note: the UPDI and LED pins were chosen to correspond to the pins in the same position on the DIP-28 atmega328p
+
+  # ifndef UPDI_PORT
+  #   define UPDI_PORT D
+  # endif
+
+  # ifndef UPDI_PIN
+  #   define UPDI_PIN 6
+  # endif
+
+  # ifndef LED_PORT
+  #   define LED_PORT A
+  # endif
+
+  # ifndef LED_PIN
+  #   define LED_PIN 6
   # endif
 
   # ifndef HOST_USART

@@ -39,17 +39,20 @@
       #define __AVR_ATmega_Mini__
 
 
-#elif (defined(__AVR_ATmega808__) ||defined(__AVR_ATmega1608__) ||defined(__AVR_ATmega3208__) ||defined(__AVR_ATmega4808__) || \
-       defined(__AVR_ATmega809__) ||defined(__AVR_ATmega1609__) ||defined(__AVR_ATmega3209__) ||defined(__AVR_ATmega4809__) )
+#elif (defined(__AVR_ATmega808__) || defined(__AVR_ATmega1608__) || defined(__AVR_ATmega3208__) || defined(__AVR_ATmega4808__) || \
+       defined(__AVR_ATmega809__) || defined(__AVR_ATmega1609__) || defined(__AVR_ATmega3209__) || defined(__AVR_ATmega4809__) )
 
       #define __AVR_ATmega_Zero__
 
 
-#elif (defined(__AVR_AVR128DA28__) ||defined(__AVR_AVR128DA32__) ||defined(__AVR_AVR128DA48__) ||defined(__AVR_AVR128DA64__) || \
-       defined(__AVR_AVR64DA28__)  ||defined(__AVR_AVR64DA32__)  ||defined(__AVR_AVR64DA48__)  ||defined(__AVR_AVR64DA64__)  || \
-       defined(__AVR_AVR32DA28__)  ||defined(__AVR_AV324DA32__)  ||defined(__AVR_AVR32DA48__)  )
-
-      #define __AVR_DA__
+#elif (defined(__AVR_AVR128DA28__) || defined(__AVR_AVR128DA32__) || defined(__AVR_AVR128DA48__) || defined(__AVR_AVR128DA64__) || \
+       defined(__AVR_AVR64DA28__)  || defined(__AVR_AVR64DA32__)  || defined(__AVR_AVR64DA48__)  || defined(__AVR_AVR64DA64__)  || \
+       defined(__AVR_AVR32DA28__)  || defined(__AVR_AV324DA32__)  || defined(__AVR_AVR32DA48__)                                 || \
+       defined(__AVR_AVR128DB28__) || defined(__AVR_AVR128DB32__) || defined(__AVR_AVR128DB48__) || defined(__AVR_AVR128DB64__) || \
+       defined(__AVR_AVR64DB28__)  || defined(__AVR_AVR64DB32__)  || defined(__AVR_AVR64DB48__)  || defined(__AVR_AVR64DB64__)  || \
+       defined(__AVR_AVR32DB28__)  || defined(__AVR_AV324DB32__)  || defined(__AVR_AVR32DB48__)  )
+       
+      #define __AVR_DX__
 
 
 #endif

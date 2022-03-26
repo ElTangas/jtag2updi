@@ -13,29 +13,17 @@
 #include <string.h>
 
 
-#include <stdio.h>
-#include <string.h>
-
-
-
 void SYS::init(void) {
   #ifdef DEBUG_ON
     DBG::initDebug();
   #endif
 
   #ifdef XAVR
-    #ifdef __AVR_DA__
-      #if (F_CPU == 24000000)
+    #ifdef __AVR_DX__
+      #if (F_CPU == 24000000 | F_CPU == 20000000 | F_CPU == 16000000 | F_CPU == 12000000 | F_CPU == 8000000)
+        #define FREQSEL_VAL (F_CPU/4000000L + 3)
         /* No division on clock */
-        _PROTECTED_WRITE(CLKCTRL_OSCHFCTRLA, (CLKCTRL_OSCHFCTRLA & ~CLKCTRL_FREQSEL_gm ) | (0x09<< CLKCTRL_FREQSEL_gp ));
-
-      #elif (F_CPU == 20000000)
-        /* No division on clock */
-        _PROTECTED_WRITE(CLKCTRL_OSCHFCTRLA, (CLKCTRL_OSCHFCTRLA & ~CLKCTRL_FREQSEL_gm ) | (0x08<< CLKCTRL_FREQSEL_gp ));
-
-      #elif (F_CPU == 16000000)
-        /* No division on clock */
-        _PROTECTED_WRITE(CLKCTRL_OSCHFCTRLA, (CLKCTRL_OSCHFCTRLA & ~CLKCTRL_FREQSEL_gm ) | (0x07<< CLKCTRL_FREQSEL_gp ));
+        _PROTECTED_WRITE(CLKCTRL_OSCHFCTRLA, (CLKCTRL_OSCHFCTRLA & ~CLKCTRL_FREQSEL_gm ) | (FREQSEL_VAL << CLKCTRL_FREQSEL_gp ));
       #else
         #error "F_CPU defined as an unsupported value"
       #endif

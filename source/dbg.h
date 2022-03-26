@@ -190,7 +190,7 @@
     #endif
   #endif
 
-#elif defined (__AVR_ATmega_Zero__)
+#elif defined (__AVR_ATmega_Zero__ ) || defined( __AVR_DX__)
 // 4808, 4809. and the rest of the megaAVR 0-series
 
   #ifdef USE_SPIDEBUG

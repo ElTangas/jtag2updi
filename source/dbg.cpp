@@ -308,7 +308,7 @@ void DBG::initDebug(void) {
   #if defined(XAVR)
     // Set clock speed to maximum (default 20MHz, or 16MHz set by fuse)
     #if defined(USE_USARTDEBUG)
-      #if !defined(USE_EXTERNAL_OSCILLATOR) && !defined(__AVR_DA__)
+      #if !defined(USE_EXTERNAL_OSCILLATOR) && !defined(__AVR_DX__)
         #if (F_CPU==20000000UL) //this means we are on the 20MHz oscillator
           #ifdef UARTBAUD3V
             int8_t sigrow_val = SIGROW.OSC20ERR3V;
