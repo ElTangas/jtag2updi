@@ -86,9 +86,14 @@ void JTAG2::delay_exec() {
 }
 
 // *** Set status function ***
-void JTAG2::set_status(uint8_t status_code) {
+void JTAG2::set_status(response status_code) {
   packet.size_word[0] = 1;
   packet.body[0] = status_code;
+}
+void JTAG2::set_status(response status_code, uint8_t param) {
+    packet.size_word[0] = 2;
+    packet.body[0] = status_code;
+    packet.body[1] = param;
 }
 
 // *** General command functions ***
@@ -194,9 +199,9 @@ void JTAG2::enter_progmode() {
         break;
       }
       // At this point we need to check if the chip is locked, if so don't attempt to enter program mode
+      // This is because the previous chip reset may enable a lock bit that was just written (it only becomes active after reset).
       if (UPDI::CPU_mode<0x01>()) {
-        packet.body[0] = RSP_ILLEGAL_MCU_STATE;
-        packet.body[1] = system_status; // return system status (bit 0 will be set to indicate the MCU is locked)
+        set_status(RSP_ILLEGAL_MCU_STATE, system_status | 0x01); // return system status (bit 0 will be set to indicate the MCU is locked)
         break;
       }
       // Now we have time to enter program mode (this mode also disables the WDT)
@@ -243,8 +248,7 @@ void JTAG2::enter_progmode() {
       break;
     default:
       // If we're somehow NOT in programming mode now, that's no good - inform host of this unfortunate state of affairs
-      packet.body[0] = RSP_ILLEGAL_MCU_STATE;
-      packet.body[1] = system_status; // return whatever system status caused this error
+      set_status(RSP_ILLEGAL_MCU_STATE, system_status); // return whatever system status caused this error
   }
 }
 
@@ -276,9 +280,7 @@ void JTAG2::leave_progmode() {
       break;
     // in other modes fail and inform host of wrong mode
     default:
-      packet.size_word[0] = 2;
-      packet.body[0] = RSP_ILLEGAL_MCU_STATE;
-      packet.body[1] = system_status; // 0x01;
+      set_status(RSP_ILLEGAL_MCU_STATE, 0x01);
   }
 }
 
@@ -294,9 +296,7 @@ void JTAG2::go() {
   void JTAG2::read_mem() {
     if (UPDI::CPU_mode() != 0x08){
       // fail if not in program mode
-      packet.size_word[0] = 2;
-      packet.body[0] = RSP_ILLEGAL_MCU_STATE;
-      packet.body[1] = 0x01;
+      set_status(RSP_ILLEGAL_MCU_STATE, 0x01);
     }
     else {
       // in program mode
@@ -320,9 +320,7 @@ void JTAG2::go() {
   void JTAG2::write_mem() {
     if (UPDI::CPU_mode() != 0x08) {
       // fail if not in program mode
-      packet.size_word[0] = 2;
-      packet.body[0] = RSP_ILLEGAL_MCU_STATE;
-      packet.body[1] = 0x01;
+      set_status(RSP_ILLEGAL_MCU_STATE, 0x01);
     }
     else {
       // in program mode
