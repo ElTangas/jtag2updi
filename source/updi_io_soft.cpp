@@ -128,9 +128,6 @@ uint8_t UPDI_io::get() {
             "WaitStart: \n\t"
             " sbic %[uart_port], %[uart_pin] \n\t"
             " rjmp WaitStart \n\t"
-            // all that stuff with the timer will add 4 cycles on a classic AVR and 3 on a XAVR.
-            // so thhe "scatter" introduced by this will be in the range 0~6 or 0~5 ias opposed to
-            // 0~2 like it was before.
 
             // skew into middle of bit
             " ldi r18, %[rxdelay] /2 + 6/3  \n\t"  // 0.5 bit cycle delay -
@@ -184,8 +181,8 @@ uint8_t UPDI_io::put(char c) {
             " ldi r19, 0x78 \n\t"        // High nibble: bits counter (8); Low nibble: parity accumulator
 
             // pre delay (stop bits from previous sent byte)
-            // ~2x bit time
-            " delay %[txdelay] + (%[txdelay]/2) \n\t"
+            // Note that pre-delay and stop bit edge rise delay should add up to ~2x bit time
+            " delay %[txdelay] + (%[txdelay] + 1)/2 \n\t"
 
             // start bit
             " cbi %[uart_port], %[uart_pin] \n\t"
@@ -216,7 +213,8 @@ uint8_t UPDI_io::put(char c) {
             // edge rise delay
             // we must give some time for the stop bit edge to rise before changing the data pin to input
             // this is because of possible parasitic capacitance affecting the UPDI line
-            " delay %[txdelay] /2 \n\t"
+            // Note that pre-delay and stop bit edge rise delay should add up to ~2x bit time
+            " delay (%[txdelay] + 1)/2 \n\t"
             
             :
             : [uart_port] "i" (_SFR_IO_ADDR(PORT(UPDI_PORT))),
