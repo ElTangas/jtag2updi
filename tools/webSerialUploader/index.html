@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>WebSerial Arduino Nano Flasher</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- <script src="https://github.com/dbuezas/arduino-web-uploader/releases/download/v1.1.2/main.js"></script> -->
+  <script src="./arduino-web-uploader.v1.1.2.js"></script>
+</head>
+
+<body>
+  <h1> WebSerial Arduino Nano Flasher</h1>
+  This page is here to make it easier for those who would like to load in a precompiled binary for an arduino nano instead.
+  <br>
+  You will need to open this page on a browser that supports WebSerial API, such as google chrome.
+  <br>
+  <a href="../../">Click Here To Jump Back To Readme</a>
+
+  <h2> Load Main Application Firmware </h2>
+  <button arduino-uploader hex-href="../../build/JTAG2UPDI.hex" board="nano" verify>
+    Upload JTAG2UPDI v3.2.1 to nano/uno/pro/pro-mini [<span class="upload-progress"></span>]
+  </button>
+  <br>
+  <button arduino-uploader hex-href="../../build/JTAG2UPDI.hex" board="nanoOldBootloader" verify>
+    Upload JTAG2UPDI v3.2.1 to nano with old bootloader (most chinese clones) [<span class="upload-progress"></span>]
+  </button>
+
+  <h2> Test blink Firmware (For Sanity Check) </h2>
+  <button arduino-uploader hex-href="./Blink.ino.eightanaloginputs.hex" board="nano" verify>
+    Upload Test Blink Firmware to nano/uno/pro/pro-mini [<span class="upload-progress"></span>]
+  </button>
+  <br>
+  <button arduino-uploader hex-href="./Blink.ino.eightanaloginputs.hex" board="nanoOldBootloader" verify>
+    Upload Test Blink Firmware to nano with old bootloader (most chinese clones) [<span class="upload-progress"></span>]
+  </button>
+
+
+  <h2> Source arduino-web-uploader </h2>
+
+  The webserial uploader source code is from <a href="https://github.com/dbuezas/arduino-web-uploader">https://github.com/dbuezas/arduino-web-uploader</a>
+
+</body>
+</html>
