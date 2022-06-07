@@ -16,6 +16,12 @@
 
       #define __AVR_ATtiny_Zero_One__
 
+#elif  (defined(__AVR_ATtiny3224__) || defined(__AVR_ATtiny1627__) || defined(__AVR_ATtiny1624__) || defined(__AVR_ATtiny1627__) || \
+      defined(__AVR_ATtiny3226__) || defined(__AVR_ATtiny1626__) || defined(__AVR_ATtiny1626__) || defined(__AVR_ATtiny1624__))
+
+      #define __AVR_ATtiny_Zero_One__
+      #define __AVR_ATtiny_Two__
+
 
 #elif (defined(__AVR_ATmega16__)    || defined(__AVR_ATmega32__)    || defined(__AVR_ATmega64__)    || defined(__AVR_ATmega128__)   || \
        defined(__AVR_ATmega164A__)  || defined(__AVR_ATmega164PA__) || \
