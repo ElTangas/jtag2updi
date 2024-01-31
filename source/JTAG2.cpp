@@ -294,7 +294,14 @@ void JTAG2::go() {
 
   // *** Read/Write/Erase functions ***
   void JTAG2::read_mem() {
-    if (UPDI::CPU_mode() != 0x08){
+    const uint8_t mem_type = packet.body[1];
+    bool need_lock_cpu = true;
+    if (mem_type == MTYPE_SRAM) {
+      // UDPI can read/write SRAM without having the CPU locked
+      need_lock_cpu = false;
+    }
+
+    if (UPDI::CPU_mode() != 0x08 && need_lock_cpu){
       // fail if not in program mode
       set_status(RSP_ILLEGAL_MCU_STATE, 0x01);
     }
@@ -318,13 +325,19 @@ void JTAG2::go() {
 
 
   void JTAG2::write_mem() {
-    if (UPDI::CPU_mode() != 0x08) {
+    const uint8_t mem_type = packet.body[1];
+    bool need_lock_cpu = true;
+    if (mem_type == MTYPE_SRAM) {
+      // UDPI can read/write SRAM without having the CPU locked
+      need_lock_cpu = false;
+    }
+
+    if (UPDI::CPU_mode() != 0x08 && need_lock_cpu) {
       // fail if not in program mode
       set_status(RSP_ILLEGAL_MCU_STATE, 0x01);
     }
     else {
       // in program mode
-      const uint8_t mem_type = packet.body[1];
       const uint16_t length = packet.body[2] | (packet.body[3] << 8);             /* number of bytes to write */
       const bool is_flash = ((mem_type == MTYPE_FLASH) || (mem_type == MTYPE_BOOT_FLASH));
       if (nvm_version == 1) {
@@ -335,6 +348,9 @@ void JTAG2::go() {
           case MTYPE_FUSE_BITS:
           case MTYPE_LOCK_BITS:
             NVM_fuse_write (address, packet.body[10]);
+            break;
+          case MTYPE_SRAM:
+            UPDI::sts_b_l(address, packet.body[10]);
             break;
           case MTYPE_FLASH:
           case MTYPE_BOOT_FLASH:
